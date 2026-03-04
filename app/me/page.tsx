@@ -46,19 +46,7 @@ export default async function MePage() {
     .eq("bookmarked", true)
     .order("last_answered_at", { ascending: false });
 
-  const bookmarked =
-    (bookmarkedRows ?? []) as {
-      word_id: number;
-      correct_count: number | null;
-      wrong_count: number | null;
-      bookmarked: boolean;
-      words:
-        | {
-            english: string | null;
-            japanese: string | null;
-          }[]
-        | null;
-    }[];
+  const bookmarked = (bookmarkedRows ?? []) as any[];
 
   return (
     <div className="min-h-screen bg-background px-4 py-12">
