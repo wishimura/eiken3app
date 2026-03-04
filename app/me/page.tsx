@@ -56,7 +56,7 @@ export default async function MePage() {
         | {
             english: string | null;
             japanese: string | null;
-          }
+          }[]
         | null;
     }[];
 
@@ -119,8 +119,8 @@ export default async function MePage() {
                 {bookmarked.length > 0 ? (
                   bookmarked.map((row) => (
                     <TableRow key={row.word_id}>
-                      <TableCell>{row.words?.english}</TableCell>
-                      <TableCell>{row.words?.japanese}</TableCell>
+                      <TableCell>{row.words?.[0]?.english}</TableCell>
+                      <TableCell>{row.words?.[0]?.japanese}</TableCell>
                       <TableCell className="text-right text-xs text-muted-foreground">
                         {row.correct_count} /{" "}
                         {row.correct_count + row.wrong_count}
