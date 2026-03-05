@@ -3,19 +3,22 @@ import { createSupabaseClientForRoute } from "@/lib/supabase/route-handler";
 
 export async function POST(request: Request) {
   const formData = await request.formData();
-  const email = String(formData.get("email") ?? "");
+  const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
+
+  if (!email || password.length < 6) {
+    return NextResponse.redirect(
+      new URL("/signup?error=signup_failed", request.url)
+    );
+  }
 
   const { supabase, applyCookiesToResponse } =
     createSupabaseClientForRoute(request);
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const { error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
     return NextResponse.redirect(
-      new URL("/login?error=invalid_credentials", request.url)
+      new URL("/signup?error=signup_failed", request.url)
     );
   }
 
@@ -27,4 +30,3 @@ export async function POST(request: Request) {
   const response = NextResponse.redirect(redirectUrl);
   return applyCookiesToResponse(response);
 }
-

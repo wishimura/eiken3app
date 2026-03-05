@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 
 export const dynamic = "force-dynamic";
 
-export default async function LoginPage({
+export default async function SignupPage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
@@ -26,20 +26,23 @@ export default async function LoginPage({
       <div className="mx-auto w-full max-w-md space-y-8 rounded-2xl border border-border bg-card p-8 shadow-sm">
         <div className="space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Eiken Grade 3 Flashcards
+            新規登録
           </h1>
           <p className="text-sm text-muted-foreground">
-            メールアドレスとパスワードでログイン
+            メールアドレスとパスワードを設定してください
           </p>
         </div>
-        {error === "invalid_credentials" && (
-          <p className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
-            メールアドレスまたはパスワードが違います。
+        {error === "signup_failed" && (
+          <p
+            className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive"
+            role="alert"
+          >
+            登録に失敗しました。別のメールアドレスか、6文字以上のパスワードを試してください。
           </p>
         )}
         <form
           className="space-y-5"
-          action="/auth/login"
+          action="/auth/signup"
           method="post"
         >
           <div className="space-y-2">
@@ -47,7 +50,7 @@ export default async function LoginPage({
               htmlFor="email"
               className="text-xs font-medium uppercase tracking-wider text-muted-foreground"
             >
-              Email
+              メールアドレス
             </label>
             <Input
               id="email"
@@ -63,14 +66,15 @@ export default async function LoginPage({
               htmlFor="password"
               className="text-xs font-medium uppercase tracking-wider text-muted-foreground"
             >
-              Password
+              パスワード（6文字以上）
             </label>
             <Input
               id="password"
               name="password"
               type="password"
               required
-              autoComplete="current-password"
+              minLength={6}
+              autoComplete="new-password"
               className="rounded-xl border-border"
             />
           </div>
@@ -78,16 +82,18 @@ export default async function LoginPage({
             type="submit"
             className="w-full rounded-xl py-6 text-base font-medium"
           >
-            ログイン
+            登録する
           </Button>
         </form>
         <p className="text-center text-sm text-muted-foreground">
-          <a href="/signup" className="font-medium text-primary underline underline-offset-2 hover:no-underline">
-            新規登録はこちら
+          <a
+            href="/login"
+            className="font-medium text-primary underline underline-offset-2 hover:no-underline"
+          >
+            すでにアカウントがある方はログイン
           </a>
         </p>
       </div>
     </div>
   );
 }
-
