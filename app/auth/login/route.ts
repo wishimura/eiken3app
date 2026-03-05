@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   }
 
   // Let Supabase's onAuthStateChange write session to our cookie store
-  await new Promise((r) => setTimeout(r, 100));
+  await new Promise((r) => setTimeout(r, 0));
 
   const url = new URL(request.url);
   const redirectUrl = new URL("/study", url.origin);

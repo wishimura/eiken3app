@@ -73,6 +73,15 @@ export async function POST(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true });
+  const { data: words } = await supabase
+    .from("words")
+    .select("id, english, japanese")
+    .limit(50);
+  const nextWord =
+    words && words.length > 0
+      ? words[Math.floor(Math.random() * words.length)]!
+      : null;
+
+  return NextResponse.json({ ok: true, word: nextWord });
 }
 

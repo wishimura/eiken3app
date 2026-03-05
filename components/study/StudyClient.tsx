@@ -79,15 +79,20 @@ export function StudyClient() {
         }),
       });
 
-      if (!response.ok) {
-        const json = (await response.json().catch(() => null)) as
-          | { error?: string }
-          | null;
+      const json = (await response.json().catch(() => null)) as
+        | { ok?: boolean; error?: string; word?: Word }
+        | null;
+      if (!response.ok || !json?.ok) {
         setError(json?.error ?? "Failed to record answer");
         return;
       }
-
-      await loadNextWord();
+      if (json.word) {
+        setWord(json.word);
+        setBookmarked(false);
+        setShowAnswer(false);
+      } else {
+        await loadNextWord();
+      }
     } catch {
       setError("Unexpected error while recording answer");
     } finally {
