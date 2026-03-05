@@ -41,7 +41,7 @@ export function StudyClient() {
         const json = (await response.json()) as NextWordResponse;
 
         if (!response.ok || !json.ok) {
-          setError(json.error ?? "Failed to load next word");
+          setError("error" in json ? json.error : "Failed to load next word");
           setWord(null);
           return;
         }
