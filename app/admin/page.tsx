@@ -33,13 +33,22 @@ export default async function AdminPage() {
             <Button asChild className="w-full rounded-xl py-6 text-base font-medium">
               <a href="/admin/words">Vocabulary list</a>
             </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="w-full rounded-xl border-border py-6 text-base font-medium"
-            >
-              <a href="/admin/import">Import CSV</a>
-            </Button>
+            <div className="flex w-full flex-col gap-2 sm:flex-row">
+              <Button
+                asChild
+                variant="outline"
+                className="w-full rounded-xl border-border py-6 text-base font-medium"
+              >
+                <a href="/admin/import">Import vocabulary CSV</a>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="w-full rounded-xl border-border py-6 text-base font-medium"
+              >
+                <a href="/admin/cloze/import">Import cloze CSV</a>
+              </Button>
+            </div>
           </div>
         </Card>
       </div>

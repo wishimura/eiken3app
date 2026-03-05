@@ -48,6 +48,29 @@ export default async function MePage() {
 
   const bookmarked = (bookmarkedRows ?? []) as any[];
 
+  // Cloze stats
+  const { data: clozeRows } = await supabase
+    .from("cloze_user_progress")
+    .select("correct_count, wrong_count");
+
+  const clozeCorrect =
+    clozeRows?.reduce((sum, r) => sum + (r.correct_count ?? 0), 0) ?? 0;
+  const clozeWrong =
+    clozeRows?.reduce((sum, r) => sum + (r.wrong_count ?? 0), 0) ?? 0;
+  const clozeTotal = clozeCorrect + clozeWrong;
+  const clozeAccuracy =
+    clozeTotal > 0 ? Math.round((clozeCorrect / clozeTotal) * 100) : 0;
+
+  const { data: clozeBookmarkedRows } = await supabase
+    .from("cloze_user_progress")
+    .select(
+      "question_id, correct_count, wrong_count, bookmarked, cloze_questions (question_text, choice_1, choice_2, choice_3, choice_4, correct_choice)",
+    )
+    .eq("bookmarked", true)
+    .order("last_answered_at", { ascending: false });
+
+  const clozeBookmarked = (clozeBookmarkedRows ?? []) as any[];
+
   return (
     <div className="min-h-screen bg-background px-4 py-12">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
@@ -91,6 +114,20 @@ export default async function MePage() {
         </div>
 
         <Card className="rounded-2xl border border-border p-6 shadow-sm">
+          <div className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
+            Cloze accuracy
+          </div>
+          <div className="mt-2 flex items-baseline gap-3">
+            <div className="text-2xl font-semibold text-foreground">
+              {clozeAccuracy}%
+            </div>
+            <div className="text-xs text-muted-foreground">
+              ({clozeCorrect} correct / {clozeTotal} answers)
+            </div>
+          </div>
+        </Card>
+
+        <Card className="rounded-2xl border border-border p-6 shadow-sm">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">
             Bookmarked words
           </h2>
@@ -122,6 +159,59 @@ export default async function MePage() {
                       className="py-8 text-center text-sm text-muted-foreground"
                     >
                       No bookmarks yet.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
+
+        <Card className="rounded-2xl border border-border p-6 shadow-sm">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+            Bookmarked cloze questions
+          </h2>
+          <div className="mt-4 overflow-hidden rounded-xl border border-border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Question</TableHead>
+                  <TableHead className="w-24 text-right">Score</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {clozeBookmarked.length > 0 ? (
+                  clozeBookmarked.map((row) => {
+                    const q = row.cloze_questions?.[0];
+                    if (!q) return null;
+                    const correctChoice = q.correct_choice as number;
+                    const correctText =
+                      q[
+                        `choice_${correctChoice}` as
+                          | "choice_1"
+                          | "choice_2"
+                          | "choice_3"
+                          | "choice_4"
+                      ];
+                    return (
+                      <TableRow key={row.question_id}>
+                        <TableCell className="max-w-md">
+                          {q.question_text.replace("( )", `(${correctText})`)}
+                        </TableCell>
+                        <TableCell className="text-right text-xs text-muted-foreground">
+                          {row.correct_count} /{" "}
+                          {row.correct_count + row.wrong_count}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={2}
+                      className="py-8 text-center text-sm text-muted-foreground"
+                    >
+                      No cloze bookmarks yet.
                     </TableCell>
                   </TableRow>
                 )}
