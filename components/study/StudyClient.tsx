@@ -101,6 +101,13 @@ export function StudyClient() {
         setLastResult(null);
         return;
       }
+      if (!correct) {
+        await fetch("/api/study/bookmark", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ wordId: word.id, bookmarked: true }),
+        });
+      }
       if (json.word) {
         setWord(json.word);
         setBookmarked(false);
@@ -108,7 +115,7 @@ export function StudyClient() {
       } else {
         await loadNextWord();
       }
-      setTimeout(() => setLastResult(null), 400);
+      setTimeout(() => setLastResult(null), 220);
     } catch {
       setError("Unexpected error while recording answer");
       setLastResult(null);
@@ -200,7 +207,7 @@ export function StudyClient() {
               {lastResult === "correct" ? "✓" : "✗"}
             </span>
             <span className="text-xl font-bold sm:text-2xl">
-              {lastResult === "correct" ? "Correct!" : "Wrong"}
+              {lastResult === "correct" ? "知ってる!" : "あとで練習"}
             </span>
             {lastResult === "correct" && streak >= 2 && (
               <span className="text-sm font-medium opacity-90">
@@ -284,7 +291,7 @@ export function StudyClient() {
             disabled={loading || !word}
             onClick={() => void submitAnswer(false)}
           >
-            Wrong
+            あとで練習
           </Button>
           <Button
             className="btn-primary-gradient min-h-[48px] flex-1 rounded-xl border-0 py-4 text-base font-medium shadow-sm sm:py-6"
@@ -292,7 +299,7 @@ export function StudyClient() {
             disabled={loading || !word}
             onClick={() => void submitAnswer(true)}
           >
-            Correct
+            知ってる!
           </Button>
         </div>
 
