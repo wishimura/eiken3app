@@ -1,0 +1,59 @@
+/**
+ * Simple sound effects using Web Audio API (no external files, no copyright issues).
+ * Plays on user gesture so autoplay policy is satisfied.
+ */
+
+let audioContext: AudioContext | null = null;
+
+function getContext(): AudioContext | null {
+  if (typeof window === "undefined") return null;
+  if (!audioContext) {
+    const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!Ctx) return null;
+    audioContext = new Ctx();
+  }
+  return audioContext;
+}
+
+function playTone(
+  frequency: number,
+  duration: number,
+  type: OscillatorType = "sine",
+  volume = 0.3
+) {
+  try {
+    const ctx = getContext();
+    if (!ctx) return;
+    if (ctx.state === "suspended") void ctx.resume();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type;
+    osc.frequency.value = frequency;
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch {
+    // ignore
+  }
+}
+
+/** Pleasant two-tone "correct" chime */
+export function playCorrectSound() {
+  if (typeof window === "undefined") return;
+  playTone(523.25, 0.12, "sine", 0.25);
+  setTimeout(() => {
+    playTone(659.25, 0.2, "sine", 0.2);
+  }, 80);
+}
+
+/** Soft "wrong" tone (not harsh) */
+export function playWrongSound() {
+  if (typeof window === "undefined") return;
+  playTone(220, 0.15, "sine", 0.2);
+  setTimeout(() => {
+    playTone(196, 0.2, "sine", 0.15);
+  }, 60);
+}

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { playCorrectSound, playWrongSound } from "@/lib/sounds";
 
 type StudyMode = "EN_TO_JA" | "JA_TO_EN";
 
@@ -29,6 +30,9 @@ export function StudyClient() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
+  const [lastResult, setLastResult] = useState<"correct" | "wrong" | null>(null);
+  const [streak, setStreak] = useState(0);
+  const [sessionScore, setSessionScore] = useState(0);
 
   const loadNextWord = useCallback(
     async (options?: { keepMode?: boolean }) => {
@@ -64,8 +68,18 @@ export function StudyClient() {
 
   async function submitAnswer(correct: boolean) {
     if (!word) return;
-    setLoading(true);
     setError(null);
+    if (correct) {
+      playCorrectSound();
+      setLastResult("correct");
+      setStreak((s) => s + 1);
+      setSessionScore((n) => n + 1);
+    } else {
+      playWrongSound();
+      setLastResult("wrong");
+      setStreak(0);
+    }
+    setLoading(true);
     try {
       const response = await fetch("/api/study/answer", {
         method: "POST",
@@ -84,6 +98,7 @@ export function StudyClient() {
         | null;
       if (!response.ok || !json?.ok) {
         setError(json?.error ?? "Failed to record answer");
+        setLastResult(null);
         return;
       }
       if (json.word) {
@@ -93,8 +108,10 @@ export function StudyClient() {
       } else {
         await loadNextWord();
       }
+      setTimeout(() => setLastResult(null), 400);
     } catch {
       setError("Unexpected error while recording answer");
+      setLastResult(null);
     } finally {
       setLoading(false);
     }
@@ -128,9 +145,19 @@ export function StudyClient() {
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-2 sm:gap-8 sm:px-0">
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-          Study
-        </h1>
+        <div className="flex flex-col gap-0.5">
+          <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+            Study
+          </h1>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span className="font-medium text-primary">Score: {sessionScore}</span>
+            {streak >= 2 && (
+              <span className="animate-pulse font-medium text-amber-600">
+                🔥 {streak} in a row!
+              </span>
+            )}
+          </div>
+        </div>
         <div className="flex items-center gap-2">
           <span className="hidden text-xs text-muted-foreground sm:inline">Mode</span>
           <div className="flex rounded-lg border border-border bg-muted/30 p-0.5">
@@ -158,7 +185,31 @@ export function StudyClient() {
         </div>
       </header>
 
-      <Card className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-4 shadow-md sm:p-8">
+      <Card className="relative flex flex-col gap-6 rounded-2xl border border-border bg-card p-4 shadow-md sm:p-8">
+        {/* Instant feedback overlay */}
+        {lastResult && (
+          <div
+            className={`absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 rounded-2xl transition-opacity duration-150 ${
+              lastResult === "correct"
+                ? "bg-primary/90 text-primary-foreground"
+                : "bg-muted-foreground/85 text-background"
+            }`}
+            aria-live="polite"
+          >
+            <span className="text-4xl sm:text-5xl">
+              {lastResult === "correct" ? "✓" : "✗"}
+            </span>
+            <span className="text-xl font-bold sm:text-2xl">
+              {lastResult === "correct" ? "Correct!" : "Wrong"}
+            </span>
+            {lastResult === "correct" && streak >= 2 && (
+              <span className="text-sm font-medium opacity-90">
+                {streak} in a row! 🎉
+              </span>
+            )}
+          </div>
+        )}
+
         <div className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
           Current word
         </div>

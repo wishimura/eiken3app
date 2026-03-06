@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { playCorrectSound, playWrongSound } from "@/lib/sounds";
 
 type ClozeQuestion = {
   id: string;
@@ -80,6 +81,12 @@ export function ClozeClient() {
       if (!response.ok || !json?.ok) {
         setError(json?.error ?? "Failed to record answer");
         return;
+      }
+
+      if (json.correct) {
+        playCorrectSound();
+      } else {
+        playWrongSound();
       }
 
       const correctChoice = json.correctChoice ?? 0;
