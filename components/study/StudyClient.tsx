@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { playCorrectSound, playWrongSound } from "@/lib/sounds";
+import { playCorrectSound, playFlipSound, playLaterSound } from "@/lib/sounds";
 
 type StudyMode = "EN_TO_JA" | "JA_TO_EN";
 
@@ -75,7 +75,7 @@ export function StudyClient() {
       setStreak((s) => s + 1);
       setSessionScore((n) => n + 1);
     } else {
-      playWrongSound();
+      playLaterSound();
       setLastResult("wrong");
       setStreak(0);
     }
@@ -115,7 +115,7 @@ export function StudyClient() {
       } else {
         await loadNextWord();
       }
-      setTimeout(() => setLastResult(null), 220);
+      setTimeout(() => setLastResult(null), 2000);
     } catch {
       setError("Unexpected error while recording answer");
       setLastResult(null);
@@ -195,17 +195,19 @@ export function StudyClient() {
       <Card className="relative flex flex-col gap-6 rounded-2xl border border-border bg-card p-4 shadow-md sm:p-8">
         {/* Instant feedback overlay */}
         {lastResult && (
-          <div
-            className={`absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 rounded-2xl transition-opacity duration-150 ${
+          <button
+            type="button"
+            className={`absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 rounded-2xl transition-opacity duration-150 cursor-pointer border-0 ${
               lastResult === "correct"
                 ? "bg-primary/90 text-primary-foreground"
-                : "bg-muted-foreground/85 text-background"
+                : "bg-primary/75 text-primary-foreground"
             }`}
             aria-live="polite"
+            onClick={() => setLastResult(null)}
           >
-            <span className="text-4xl sm:text-5xl">
-              {lastResult === "correct" ? "✓" : "✗"}
-            </span>
+            {lastResult === "correct" && (
+              <span className="text-4xl sm:text-5xl">✓</span>
+            )}
             <span className="text-xl font-bold sm:text-2xl">
               {lastResult === "correct" ? "知ってる!" : "あとで練習"}
             </span>
@@ -214,7 +216,8 @@ export function StudyClient() {
                 {streak} in a row! 🎉
               </span>
             )}
-          </div>
+            <span className="text-xs opacity-80 mt-2">タップして次へ</span>
+          </button>
         )}
 
         <div className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
@@ -230,7 +233,12 @@ export function StudyClient() {
             type="button"
             className="absolute inset-0 z-10 h-full w-full cursor-pointer rounded-2xl border-0 bg-transparent p-0"
             disabled={loading || !word}
-            onClick={() => word && setShowAnswer((v) => !v)}
+            onClick={() => {
+              if (!word) return;
+              const next = !showAnswer;
+              setShowAnswer(next);
+              if (next) playFlipSound();
+            }}
             aria-label={showAnswer ? "Show question" : "Reveal answer"}
           >
             <span className="sr-only">

@@ -49,11 +49,43 @@ export function playCorrectSound() {
   }, 80);
 }
 
-/** Soft "wrong" tone (not harsh) */
+/** Soft "wrong" tone (not harsh) — for Cloze etc. */
 export function playWrongSound() {
   if (typeof window === "undefined") return;
   playTone(220, 0.15, "sine", 0.2);
   setTimeout(() => {
     playTone(196, 0.2, "sine", 0.15);
   }, 60);
+}
+
+/** Gentle "saved for later" tone — positive, not negative (あとで練習) */
+export function playLaterSound() {
+  if (typeof window === "undefined") return;
+  playTone(440, 0.1, "sine", 0.2);
+  setTimeout(() => {
+    playTone(554.37, 0.15, "sine", 0.18);
+  }, 70);
+}
+
+/** Short "flip" sound — シャッっとめくる感じ */
+export function playFlipSound() {
+  if (typeof window === "undefined") return;
+  try {
+    const ctx = getContext();
+    if (!ctx) return;
+    if (ctx.state === "suspended") void ctx.resume();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(900, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.05);
+  } catch {
+    // ignore
+  }
 }
