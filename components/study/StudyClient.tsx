@@ -15,20 +15,28 @@ type Word = {
 };
 
 type NextWordResponse =
-  | {
-      ok: true;
-      word: Word;
-    }
-  | {
-      ok: false;
-      error: string;
-    };
+  | { ok: true; word: Word }
+  | { ok: false; error: string };
+
+type WordsResponse =
+  | { ok: true; words: Word[] }
+  | { ok: false; error: string };
+
+function pickRandomFromPool(pool: Word[], excludeId?: string): Word {
+  const candidates = excludeId && pool.length > 1
+    ? pool.filter((w) => w.id !== excludeId)
+    : pool;
+  return candidates[Math.floor(Math.random() * candidates.length)]!;
+}
 
 export function StudyClient() {
   const [mode, setMode] = useState<StudyMode>("EN_TO_JA");
+  const [wordsPool, setWordsPool] = useState<Word[] | null>(null);
   const [word, setWord] = useState<Word | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
   const [lastResult, setLastResult] = useState<"correct" | "wrong" | null>(null);
@@ -37,37 +45,33 @@ export function StudyClient() {
   const [sessionScore, setSessionScore] = useState(0);
   const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const loadNextWord = useCallback(
-    async (options?: { keepMode?: boolean }) => {
-      setLoading(true);
-      setError(null);
-      setShowAnswer(false);
-
-      try {
-        const response = await fetch("/api/study/next");
-        const json = (await response.json()) as NextWordResponse;
-
-        if (!response.ok || !json.ok) {
-          setError("error" in json ? json.error : "Failed to load next word");
-          setWord(null);
-          return;
-        }
-
-        setWord(json.word);
-        setBookmarked(false);
-      } catch {
-        setError("Unexpected error while loading next word");
-        setWord(null);
-      } finally {
-        setLoading(false);
+  const loadAllWords = useCallback(async () => {
+    setDownloadLoading(true);
+    setDownloadError(null);
+    try {
+      const response = await fetch("/api/study/words");
+      const json = (await response.json()) as WordsResponse;
+      if (!response.ok || !json.ok) {
+        setDownloadError("error" in json ? json.error : "Failed to load words");
+        return;
       }
-    },
-    [],
-  );
+      const list = "words" in json ? json.words : [];
+      if (list.length === 0) {
+        setDownloadError("No words available");
+        return;
+      }
+      setWordsPool(list);
+      setWord(pickRandomFromPool(list));
+      setBookmarked(false);
+      setShowAnswer(false);
+    } catch {
+      setDownloadError("Failed to download words");
+    } finally {
+      setDownloadLoading(false);
+    }
+  }, []);
 
-  useEffect(() => {
-    void loadNextWord({ keepMode: true });
-  }, [loadNextWord]);
+  const isPoolMode = wordsPool !== null && wordsPool.length > 0;
 
   async function submitAnswer(correct: boolean) {
     if (!word) return;
@@ -83,15 +87,44 @@ export function StudyClient() {
       setLastResult("wrong");
       setStreak(0);
     }
+
+    const currentWordId = word.id;
+
+    if (isPoolMode && wordsPool) {
+      const next = pickRandomFromPool(wordsPool, currentWordId);
+      setWord(next);
+      setBookmarked(false);
+      setShowAnswer(false);
+      setNextWordReady(true);
+      if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
+      dismissTimeoutRef.current = setTimeout(() => {
+        dismissTimeoutRef.current = null;
+        setLastResult(null);
+      }, 2000);
+      void fetch("/api/study/answer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ wordId: currentWordId, correct, mode }),
+      }).then((res) => {
+        if (!res.ok) return;
+        if (!correct) {
+          void fetch("/api/study/bookmark", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ wordId: currentWordId, bookmarked: true }),
+          });
+        }
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch("/api/study/answer", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          wordId: word.id,
+          wordId: currentWordId,
           correct,
           mode,
         }),
@@ -109,7 +142,7 @@ export function StudyClient() {
         await fetch("/api/study/bookmark", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ wordId: word.id, bookmarked: true }),
+          body: JSON.stringify({ wordId: currentWordId, bookmarked: true }),
         });
       }
       if (json.word) {
@@ -117,7 +150,13 @@ export function StudyClient() {
         setBookmarked(false);
         setShowAnswer(false);
       } else {
-        await loadNextWord();
+        const res = await fetch("/api/study/next");
+        const nextJson = (await res.json()) as NextWordResponse;
+        if (res.ok && nextJson.ok) {
+          setWord(nextJson.word);
+          setBookmarked(false);
+          setShowAnswer(false);
+        }
       }
       setNextWordReady(true);
       if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
@@ -156,6 +195,31 @@ export function StudyClient() {
     } catch {
       setError("Failed to update bookmark");
     }
+  }
+
+  if (wordsPool === null) {
+    return (
+      <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-2 sm:gap-8 sm:px-0">
+        <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+          Study
+        </h1>
+        <Card className="flex flex-col items-center justify-center gap-6 rounded-2xl border border-border p-8 shadow-md sm:p-12">
+          <p className="text-center text-muted-foreground">
+            単語をダウンロードしてから始めましょう。読み込み後はオフラインでスムーズに学習できます。
+          </p>
+          <Button
+            className="btn-primary-gradient min-h-[48px] rounded-xl px-8 text-base font-medium"
+            disabled={downloadLoading}
+            onClick={() => void loadAllWords()}
+          >
+            {downloadLoading ? "ダウンロード中…" : "単語をダウンロード"}
+          </Button>
+          {downloadError && (
+            <p className="text-center text-sm text-destructive">{downloadError}</p>
+          )}
+        </Card>
+      </div>
+    );
   }
 
   return (
