@@ -32,6 +32,7 @@ export function StudyClient() {
   const [error, setError] = useState<string | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
   const [lastResult, setLastResult] = useState<"correct" | "wrong" | null>(null);
+  const [nextWordReady, setNextWordReady] = useState(false);
   const [streak, setStreak] = useState(0);
   const [sessionScore, setSessionScore] = useState(0);
   const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -71,6 +72,17 @@ export function StudyClient() {
   async function submitAnswer(correct: boolean) {
     if (!word) return;
     setError(null);
+    setNextWordReady(false);
+    if (correct) {
+      playCorrectSound();
+      setLastResult("correct");
+      setStreak((s) => s + 1);
+      setSessionScore((n) => n + 1);
+    } else {
+      playLaterSound();
+      setLastResult("wrong");
+      setStreak(0);
+    }
     setLoading(true);
     try {
       const response = await fetch("/api/study/answer", {
@@ -100,7 +112,6 @@ export function StudyClient() {
           body: JSON.stringify({ wordId: word.id, bookmarked: true }),
         });
       }
-      // 先に次の単語をセットしてからオーバーレイを出す → タップで消した直後に次の問題が表示される
       if (json.word) {
         setWord(json.word);
         setBookmarked(false);
@@ -108,16 +119,7 @@ export function StudyClient() {
       } else {
         await loadNextWord();
       }
-      if (correct) {
-        playCorrectSound();
-        setStreak((s) => s + 1);
-        setSessionScore((n) => n + 1);
-        setLastResult("correct");
-      } else {
-        playLaterSound();
-        setStreak(0);
-        setLastResult("wrong");
-      }
+      setNextWordReady(true);
       if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
       dismissTimeoutRef.current = setTimeout(() => {
         dismissTimeoutRef.current = null;
@@ -211,6 +213,7 @@ export function StudyClient() {
             }`}
             aria-live="polite"
             onClick={() => {
+              if (!nextWordReady) return;
               if (dismissTimeoutRef.current) {
                 clearTimeout(dismissTimeoutRef.current);
                 dismissTimeoutRef.current = null;
@@ -229,7 +232,9 @@ export function StudyClient() {
                 {streak} in a row! 🎉
               </span>
             )}
-            <span className="text-xs opacity-80 mt-2">タップして次へ</span>
+            <span className="text-xs opacity-80 mt-2">
+              {nextWordReady ? "タップして次へ" : "…"}
+            </span>
           </button>
         )}
 
