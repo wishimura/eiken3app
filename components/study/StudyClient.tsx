@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { playCorrectSound, playFlipSound, playLaterSound } from "@/lib/sounds";
@@ -33,6 +34,7 @@ export function StudyClient() {
   const [lastResult, setLastResult] = useState<"correct" | "wrong" | null>(null);
   const [streak, setStreak] = useState(0);
   const [sessionScore, setSessionScore] = useState(0);
+  const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const loadNextWord = useCallback(
     async (options?: { keepMode?: boolean }) => {
@@ -115,7 +117,11 @@ export function StudyClient() {
       } else {
         await loadNextWord();
       }
-      setTimeout(() => setLastResult(null), 2000);
+      if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
+      dismissTimeoutRef.current = setTimeout(() => {
+        dismissTimeoutRef.current = null;
+        setLastResult(null);
+      }, 2000);
     } catch {
       setError("Unexpected error while recording answer");
       setLastResult(null);
@@ -197,13 +203,19 @@ export function StudyClient() {
         {lastResult && (
           <button
             type="button"
-            className={`absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 rounded-2xl transition-opacity duration-150 cursor-pointer border-0 ${
+            className={`absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 rounded-2xl cursor-pointer border-0 ${
               lastResult === "correct"
                 ? "bg-primary/90 text-primary-foreground"
                 : "bg-primary/75 text-primary-foreground"
             }`}
             aria-live="polite"
-            onClick={() => setLastResult(null)}
+            onClick={() => {
+              if (dismissTimeoutRef.current) {
+                clearTimeout(dismissTimeoutRef.current);
+                dismissTimeoutRef.current = null;
+              }
+              flushSync(() => setLastResult(null));
+            }}
           >
             {lastResult === "correct" && (
               <span className="text-4xl sm:text-5xl">✓</span>
