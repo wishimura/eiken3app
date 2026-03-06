@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, User, Settings } from "lucide-react";
@@ -12,6 +13,11 @@ const items = [
 
 export function BottomNav() {
   const pathname = usePathname();
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPendingHref(null);
+  }, [pathname]);
 
   if (pathname === "/login") return null;
 
@@ -22,13 +28,18 @@ export function BottomNav() {
     >
       <div className="mx-auto flex max-w-lg items-center justify-around">
         {items.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + "/");
+          const active =
+            pendingHref === href ||
+            pathname === href ||
+            pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={href}
-              className="flex min-h-[56px] min-w-[80px] flex-1 flex-col items-center justify-center gap-1 text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-primary"
+              prefetch={true}
+              className="flex min-h-[56px] min-w-[80px] flex-1 flex-col items-center justify-center gap-1 text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-primary active:scale-[0.98]"
               aria-current={active ? "page" : undefined}
+              onClick={() => setPendingHref(href)}
             >
               <Icon
                 className="h-6 w-6 shrink-0"
