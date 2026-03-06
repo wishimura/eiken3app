@@ -71,16 +71,6 @@ export function StudyClient() {
   async function submitAnswer(correct: boolean) {
     if (!word) return;
     setError(null);
-    if (correct) {
-      playCorrectSound();
-      setLastResult("correct");
-      setStreak((s) => s + 1);
-      setSessionScore((n) => n + 1);
-    } else {
-      playLaterSound();
-      setLastResult("wrong");
-      setStreak(0);
-    }
     setLoading(true);
     try {
       const response = await fetch("/api/study/answer", {
@@ -110,12 +100,23 @@ export function StudyClient() {
           body: JSON.stringify({ wordId: word.id, bookmarked: true }),
         });
       }
+      // 先に次の単語をセットしてからオーバーレイを出す → タップで消した直後に次の問題が表示される
       if (json.word) {
         setWord(json.word);
         setBookmarked(false);
         setShowAnswer(false);
       } else {
         await loadNextWord();
+      }
+      if (correct) {
+        playCorrectSound();
+        setStreak((s) => s + 1);
+        setSessionScore((n) => n + 1);
+        setLastResult("correct");
+      } else {
+        playLaterSound();
+        setStreak(0);
+        setLastResult("wrong");
       }
       if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
       dismissTimeoutRef.current = setTimeout(() => {
