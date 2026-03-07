@@ -115,9 +115,12 @@ export function ClozeClient() {
         <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
           穴埋め問題
         </h1>
-        <Card className="flex flex-col items-center justify-center gap-6 rounded-2xl border border-border p-8 shadow-md sm:p-12">
+        <Card className="flex flex-col items-center justify-center gap-6 rounded-2xl border-2 border-primary/30 bg-primary/5 p-8 shadow-md sm:p-12">
+          <p className="text-center text-sm font-medium text-foreground">
+            まず問題をダウンロード
+          </p>
           <p className="text-center text-muted-foreground">
-            問題をダウンロードしてから始めましょう。読み込み後はスムーズに解けます。
+            下のボタンで問題を読み込んでから始めましょう。読み込み後はスムーズに解けます。
           </p>
           <Button
             className="btn-primary-gradient min-h-[48px] rounded-xl px-8 text-base font-medium"

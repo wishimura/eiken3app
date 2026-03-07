@@ -12,7 +12,7 @@ export function StudySwitcher() {
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-4 sm:gap-6">
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center gap-2">
         <div className="inline-flex rounded-full border border-border bg-muted/40 p-1">
           <Button
             type="button"
@@ -33,6 +33,11 @@ export function StudySwitcher() {
             穴埋め
           </Button>
         </div>
+        {tab === "cloze" && (
+          <p className="text-center text-xs text-muted-foreground">
+            下の「問題をダウンロード」ボタンで読み込んでから解けます
+          </p>
+        )}
       </div>
 
       {tab === "vocab" ? <StudyClient /> : <ClozeClient />}
