@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { Card } from "@/components/ui/card";
@@ -9,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { UnbookmarkWordButton } from "@/components/me/UnbookmarkWordButton";
+import { UnbookmarkClozeButton } from "@/components/me/UnbookmarkClozeButton";
 
 export const dynamic = "force-dynamic";
 
@@ -128,9 +131,19 @@ export default async function MePage() {
         </Card>
 
         <Card className="rounded-2xl border border-border p-6 shadow-sm">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-            Bookmarked words
-          </h2>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+              Bookmarked words
+            </h2>
+            {bookmarked.length > 0 && (
+              <Link
+                href="/study/bookmarks?tab=words"
+                className="text-xs text-primary hover:underline"
+              >
+                ブックマークだけ練習 →
+              </Link>
+            )}
+          </div>
           <div className="mt-4 overflow-hidden rounded-xl border border-border">
             <Table>
               <TableHeader>
@@ -138,6 +151,7 @@ export default async function MePage() {
                   <TableHead>English</TableHead>
                   <TableHead>Japanese</TableHead>
                   <TableHead className="w-24 text-right">Score</TableHead>
+                  <TableHead className="w-20 text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -150,12 +164,15 @@ export default async function MePage() {
                         {row.correct_count} /{" "}
                         {row.correct_count + row.wrong_count}
                       </TableCell>
+                      <TableCell className="text-right">
+                        <UnbookmarkWordButton wordId={row.word_id} />
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={3}
+                      colSpan={4}
                       className="py-8 text-center text-sm text-muted-foreground"
                     >
                       No bookmarks yet.
@@ -168,15 +185,26 @@ export default async function MePage() {
         </Card>
 
         <Card className="rounded-2xl border border-border p-6 shadow-sm">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-            Bookmarked cloze questions
-          </h2>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-foreground">
+              Bookmarked cloze questions
+            </h2>
+            {clozeBookmarked.length > 0 && (
+              <Link
+                href="/study/bookmarks?tab=cloze"
+                className="text-xs text-primary hover:underline"
+              >
+                ブックマークだけ練習 →
+              </Link>
+            )}
+          </div>
           <div className="mt-4 overflow-hidden rounded-xl border border-border">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Question</TableHead>
                   <TableHead className="w-24 text-right">Score</TableHead>
+                  <TableHead className="w-20 text-right">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -202,13 +230,16 @@ export default async function MePage() {
                           {row.correct_count} /{" "}
                           {row.correct_count + row.wrong_count}
                         </TableCell>
+                        <TableCell className="text-right">
+                          <UnbookmarkClozeButton questionId={row.question_id} />
+                        </TableCell>
                       </TableRow>
                     );
                   })
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={2}
+                      colSpan={3}
                       className="py-8 text-center text-sm text-muted-foreground"
                     >
                       No cloze bookmarks yet.
