@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { playCorrectSound, playWrongSound } from "@/lib/sounds";
@@ -12,114 +13,125 @@ type ClozeQuestion = {
   choice_2: string;
   choice_3: string;
   choice_4: string;
+  correct_choice: number;
+  explanation?: string | null;
 };
 
-type NextResponse =
-  | { ok: true; question: ClozeQuestion }
+type QuestionsResponse =
+  | { ok: true; questions: ClozeQuestion[] }
   | { ok: false; error: string };
 
-type AnswerResponse = {
-  ok: boolean;
-  correct?: boolean;
-  correctChoice?: number;
-  explanation?: string | null;
-  nextQuestion?: ClozeQuestion | null;
-  error?: string;
-};
+function pickRandomFromPool(
+  pool: ClozeQuestion[],
+  excludeId?: string,
+): ClozeQuestion | null {
+  const candidates =
+    excludeId && pool.length > 1 ? pool.filter((q) => q.id !== excludeId) : pool;
+  return candidates.length > 0
+    ? candidates[Math.floor(Math.random() * candidates.length)]!
+    : null;
+}
 
 export function ClozeClient() {
+  const [questionsPool, setQuestionsPool] = useState<ClozeQuestion[] | null>(null);
   const [question, setQuestion] = useState<ClozeQuestion | null>(null);
   const [loading, setLoading] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
-   const [bookmarked, setBookmarked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
 
-  async function loadNext() {
-    setLoading(true);
-    setError(null);
+  const loadAllQuestions = useCallback(async () => {
+    setDownloadLoading(true);
+    setDownloadError(null);
     try {
-      const response = await fetch("/api/study/cloze/next");
-      const json = (await response.json()) as NextResponse;
+      const response = await fetch("/api/study/cloze/questions");
+      const json = (await response.json()) as QuestionsResponse;
       if (!response.ok || !json.ok) {
-        setError(
-          "error" in json ? json.error : "Failed to load cloze question",
-        );
-        setQuestion(null);
+        setDownloadError("error" in json ? json.error : "Failed to load questions");
         return;
       }
-      setQuestion(json.question);
+      const list = "questions" in json ? json.questions : [];
+      if (list.length === 0) {
+        setDownloadError("No questions available");
+        return;
+      }
+      setQuestionsPool(list);
+      setQuestion(pickRandomFromPool(list));
       setFeedback(null);
       setBookmarked(false);
     } catch {
-      setError("Unexpected error while loading cloze question");
-      setQuestion(null);
+      setDownloadError("Failed to download questions");
     } finally {
-      setLoading(false);
+      setDownloadLoading(false);
     }
-  }
-
-  useEffect(() => {
-    void loadNext();
   }, []);
+
+  const isPoolMode = questionsPool !== null && questionsPool.length > 0;
 
   async function answer(choice: number) {
     if (!question) return;
-    setLoading(true);
     setError(null);
-    try {
-      const response = await fetch("/api/study/cloze/answer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ questionId: question.id, choice }),
-      });
-      const json = (await response.json().catch(() => null)) as
-        | AnswerResponse
-        | null;
+    setFeedback(null);
 
-      if (!response.ok || !json?.ok) {
-        setError(json?.error ?? "Failed to record answer");
-        return;
-      }
-
-      if (json.correct) {
-        playCorrectSound();
-      } else {
-        playWrongSound();
-      }
-
-      const correctChoice = json.correctChoice ?? 0;
+    const correct = choice === question.correct_choice;
+    if (correct) {
+      playCorrectSound();
+      setFeedback("Correct! よくできました。");
+    } else {
+      playWrongSound();
       const correctText =
         question[
-          `choice_${correctChoice}` as
+          `choice_${question.correct_choice}` as
             | "choice_1"
             | "choice_2"
             | "choice_3"
             | "choice_4"
         ];
-
-      if (json.correct) {
-        setFeedback("Correct! よくできました。");
-      } else {
-        setFeedback(
-          `Incorrect. 正解は「${correctText}」${
-            json.explanation ? ` – ${json.explanation}` : ""
-          }`,
-        );
-      }
-
-      if (json.nextQuestion) {
-        setQuestion(json.nextQuestion);
-        setBookmarked(false);
-      } else {
-        await loadNext();
-      }
-    } catch {
-      setError("Unexpected error while recording answer");
-    } finally {
-      setLoading(false);
+      setFeedback(
+        `Incorrect. 正解は「${correctText}」${
+          question.explanation ? ` – ${question.explanation}` : ""
+        }`,
+      );
     }
+
+    const currentId = question.id;
+    const pool = questionsPool ?? [];
+    const next = pickRandomFromPool(pool, currentId);
+    setQuestion(next ?? (pool.length > 0 ? pool[0]! : null));
+    setBookmarked(false);
+
+    void fetch("/api/study/cloze/answer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ questionId: currentId, choice }),
+    });
+  }
+
+  if (questionsPool === null) {
+    return (
+      <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-2 sm:gap-8 sm:px-0">
+        <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+          穴埋め問題
+        </h1>
+        <Card className="flex flex-col items-center justify-center gap-6 rounded-2xl border border-border p-8 shadow-md sm:p-12">
+          <p className="text-center text-muted-foreground">
+            問題をダウンロードしてから始めましょう。読み込み後はスムーズに解けます。
+          </p>
+          <Button
+            className="btn-primary-gradient min-h-[48px] rounded-xl px-8 text-base font-medium"
+            disabled={downloadLoading}
+            onClick={() => void loadAllQuestions()}
+          >
+            {downloadLoading ? "ダウンロード中…" : "問題をダウンロード"}
+          </Button>
+          {downloadError && (
+            <p className="text-center text-sm text-destructive">{downloadError}</p>
+          )}
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -217,4 +229,3 @@ export function ClozeClient() {
     </div>
   );
 }
-
