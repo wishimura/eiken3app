@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
+type Word = { id: string; english: string; japanese: string };
+
+type ProgressRow = {
+  word_id: string;
+  words: Word | Word[] | null;
+};
+
 export async function GET() {
   const supabase = getSupabaseServerClient();
 
@@ -27,9 +34,12 @@ export async function GET() {
     );
   }
 
-  const words = (rows ?? [])
-    .map((r) => (r as { words: { id: string; english: string; japanese: string } | null }).words)
-    .filter((w): w is { id: string; english: string; japanese: string } => w != null);
+  const raw = (rows ?? []) as ProgressRow[];
+  const words: Word[] = raw.flatMap((r) => {
+    const w = r.words;
+    if (w == null) return [];
+    return Array.isArray(w) ? w : [w];
+  });
 
   return NextResponse.json({ ok: true, words });
 }

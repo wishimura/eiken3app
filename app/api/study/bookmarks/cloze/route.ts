@@ -1,6 +1,21 @@
 import { NextResponse } from "next/server";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
+type ClozeQuestion = {
+  id: string;
+  question_text: string;
+  choice_1: string;
+  choice_2: string;
+  choice_3: string;
+  choice_4: string;
+  correct_choice: number;
+};
+
+type ClozeProgressRow = {
+  question_id: string;
+  cloze_questions: ClozeQuestion | ClozeQuestion[] | null;
+};
+
 export async function GET() {
   const supabase = getSupabaseServerClient();
 
@@ -32,12 +47,12 @@ export async function GET() {
     );
   }
 
-  const questions = (rows ?? [])
-    .map((r) => (r as { cloze_questions: Record<string, unknown> | null }).cloze_questions)
-    .filter(
-      (q): q is { id: string; question_text: string; choice_1: string; choice_2: string; choice_3: string; choice_4: string; correct_choice: number } =>
-        q != null && typeof (q as { id?: string }).id === "string",
-    );
+  const raw = (rows ?? []) as ClozeProgressRow[];
+  const questions: ClozeQuestion[] = raw.flatMap((r) => {
+    const q = r.cloze_questions;
+    if (q == null) return [];
+    return Array.isArray(q) ? q : [q];
+  });
 
   return NextResponse.json({ ok: true, questions });
 }
