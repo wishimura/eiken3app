@@ -15,6 +15,8 @@ import { UnbookmarkClozeButton } from "@/components/me/UnbookmarkClozeButton";
 import { AccuracyCircle } from "@/components/me/AccuracyCircle";
 import { LearningCalendar } from "@/components/me/LearningCalendar";
 import { MeClientStats } from "@/components/me/MeClientStats";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -254,6 +256,18 @@ export default async function MePage() {
             </Table>
           </div>
         </Card>
+
+        {/* Logout */}
+        <form action="/auth/logout" method="post">
+          <Button
+            type="submit"
+            variant="outline"
+            className="w-full rounded-xl border-destructive/30 py-6 text-base font-medium text-destructive hover:bg-destructive/5"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            ログアウト
+          </Button>
+        </form>
       </div>
     </div>
   );

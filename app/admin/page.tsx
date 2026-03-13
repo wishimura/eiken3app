@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
@@ -15,42 +14,38 @@ export default async function AdminPage() {
     redirect("/login");
   }
 
-  // Admin check is performed server-side via SQL policies.
-
   return (
-    <div className="min-h-screen bg-background px-4 py-12">
-      <div className="mx-auto w-full max-w-xl min-w-0">
-        <Card className="flex flex-col gap-6 rounded-2xl border border-border p-8 shadow-sm">
-          <div className="space-y-1">
-            <h1 className="text-xl font-semibold tracking-tight text-foreground">
-              Admin dashboard
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Manage vocabulary for the Eiken Grade 3 flashcards.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Button asChild className="w-full rounded-xl py-6 text-base font-medium">
-              <a href="/admin/words">Vocabulary list</a>
-            </Button>
-            <div className="flex w-full flex-col gap-2 sm:flex-row">
-              <Button
-                asChild
-                variant="outline"
-                className="w-full rounded-xl border-border py-6 text-base font-medium"
-              >
-                <a href="/admin/import">Import vocabulary CSV</a>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="w-full rounded-xl border-border py-6 text-base font-medium"
-              >
-                <a href="/admin/cloze/import">Import cloze CSV</a>
-              </Button>
-            </div>
-          </div>
-        </Card>
+    <div className="flex min-h-screen flex-col bg-background">
+      <div className="nav-gradient px-4 pb-14 pt-16 text-center text-white">
+        <h1 className="text-2xl font-bold tracking-tight">管理ダッシュボード</h1>
+        <p className="mt-1.5 text-sm opacity-80">
+          英検3級の単語・穴埋め問題を管理
+        </p>
+      </div>
+
+      <div className="mx-auto -mt-8 w-full max-w-md px-4">
+        <div className="card-study flex flex-col gap-3 rounded-[20px] bg-card p-8">
+          <Button
+            asChild
+            className="btn-primary-gradient w-full rounded-xl border-0 py-6 text-base font-medium transition-transform active:scale-[0.97]"
+          >
+            <a href="/admin/words">単語リスト</a>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="w-full rounded-xl border-border py-6 text-base font-medium"
+          >
+            <a href="/admin/import">単語 CSV インポート</a>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="w-full rounded-xl border-border py-6 text-base font-medium"
+          >
+            <a href="/admin/cloze/import">穴埋め CSV インポート</a>
+          </Button>
+        </div>
       </div>
     </div>
   );
