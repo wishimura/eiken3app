@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Eiken Grade 3 Flashcards",
-  description: "Simple vocabulary flashcards for Eiken Grade 3.",
+  title: "英検3級 単語マスター",
+  description: "英検3級の単語・穴埋め練習アプリ",
 };
 
 export const viewport = {
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ja">
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased`}
       >

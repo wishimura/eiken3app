@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, User, Settings } from "lucide-react";
+import { BookOpen, User, Settings, Bookmark } from "lucide-react";
 
 const items = [
-  { href: "/study", label: "Study", icon: BookOpen },
-  { href: "/me", label: "My page", icon: User },
-  { href: "/admin", label: "Admin", icon: Settings },
+  { href: "/study", label: "学習", icon: BookOpen },
+  { href: "/study/bookmarks", label: "復習", icon: Bookmark },
+  { href: "/me", label: "マイページ", icon: User },
+  { href: "/admin", label: "管理", icon: Settings },
 ] as const;
 
 export function BottomNav() {
@@ -19,33 +20,45 @@ export function BottomNav() {
     setPendingHref(null);
   }, [pathname]);
 
-  if (pathname === "/login") return null;
+  if (pathname === "/login" || pathname === "/signup") return null;
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl border border-b-0 border-border bg-card/95 shadow-[0_-4px_16px_-4px_rgba(0,0,0,0.08)] backdrop-blur supports-[backdrop-filter]:bg-card/90"
+      className="fixed bottom-0 left-0 right-0 z-50 nav-gradient shadow-[0_-4px_24px_-4px_rgba(11,65,160,0.25)]"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0)" }}
     >
       <div className="mx-auto flex max-w-lg items-center justify-around">
         {items.map(({ href, label, icon: Icon }) => {
           const active =
             pendingHref === href ||
-            pathname === href ||
-            pathname.startsWith(href + "/");
+            (href === "/study" &&
+              pathname === "/study") ||
+            (href === "/study/bookmarks" &&
+              pathname.startsWith("/study/bookmarks")) ||
+            (href !== "/study" &&
+              href !== "/study/bookmarks" &&
+              (pathname === href || pathname.startsWith(href + "/")));
           return (
             <Link
               key={href}
               href={href}
               prefetch={true}
-              className="flex min-h-[56px] min-w-[80px] flex-1 flex-col items-center justify-center gap-1 text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-primary active:scale-[0.98]"
+              className={`relative flex min-h-[60px] min-w-[64px] flex-1 flex-col items-center justify-center gap-1 transition-all active:scale-[0.95] ${
+                active ? "text-white" : "text-white/60"
+              }`}
               aria-current={active ? "page" : undefined}
               onClick={() => setPendingHref(href)}
             >
+              {active && (
+                <span className="absolute inset-x-2 inset-y-1.5 rounded-2xl bg-white/15" />
+              )}
               <Icon
-                className="h-6 w-6 shrink-0"
-                strokeWidth={active ? 2.2 : 1.8}
+                className="relative z-10 h-5 w-5 shrink-0"
+                strokeWidth={active ? 2.4 : 1.8}
               />
-              <span className="text-[11px] font-medium">{label}</span>
+              <span className="relative z-10 text-[10px] font-semibold">
+                {label}
+              </span>
             </Link>
           );
         })}

@@ -5,6 +5,7 @@ import { flushSync } from "react-dom";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Flame } from "lucide-react";
 import { playCorrectSound, playFlipSound, playLaterSound } from "@/lib/sounds";
 
 type Word = { id: string; english: string; japanese: string };
@@ -24,6 +25,7 @@ export function BookmarkedWordsClient() {
   const [error, setError] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<"correct" | "wrong" | null>(null);
   const [nextWordReady, setNextWordReady] = useState(false);
+  const [streak, setStreak] = useState(0);
   const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const loadBookmarks = useCallback(async () => {
@@ -44,7 +46,7 @@ export function BookmarkedWordsClient() {
       setLastResult(null);
       setNextWordReady(true);
     } catch {
-      setError("Failed to load bookmarks");
+      setError("読み込みに失敗しました");
       setPool([]);
       setWord(null);
     } finally {
@@ -63,9 +65,11 @@ export function BookmarkedWordsClient() {
     if (correct) {
       playCorrectSound();
       setLastResult("correct");
+      setStreak((s) => s + 1);
     } else {
       playLaterSound();
       setLastResult("wrong");
+      setStreak(0);
     }
 
     const currentWordId = word.id;
@@ -118,7 +122,7 @@ export function BookmarkedWordsClient() {
       <div className="mx-auto max-w-lg flex flex-col gap-4 px-2">
         <p className="text-destructive">{error}</p>
         <Link href="/me" className="text-sm text-primary hover:underline">
-          ← My page へ
+          ← マイページへ
         </Link>
       </div>
     );
@@ -129,74 +133,93 @@ export function BookmarkedWordsClient() {
       <div className="mx-auto max-w-lg flex flex-col gap-4 px-2">
         <p className="text-muted-foreground">ブックマーク単語がありません。</p>
         <Link href="/me" className="text-sm text-primary hover:underline">
-          ← My page へ
+          ← マイページへ
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-2 sm:gap-8 sm:px-0">
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-5 px-2 sm:gap-6 sm:px-0">
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-          ブックマーク単語
-        </h1>
+        <div className="flex flex-col gap-0.5">
+          <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+            ブックマーク単語
+          </h1>
+          {streak >= 2 && (
+            <span className="flex items-center gap-1 text-xs font-semibold text-orange-500">
+              <Flame className="h-3.5 w-3.5 streak-fire" />
+              {streak}連続!
+            </span>
+          )}
+        </div>
         <div className="flex items-center gap-2">
-          <span className="hidden text-xs text-muted-foreground sm:inline">Mode</span>
           <div className="flex rounded-lg border border-border bg-muted/30 p-0.5">
             <Button
               type="button"
               size="sm"
               variant={mode === "EN_TO_JA" ? "default" : "ghost"}
-              className="h-8 rounded-md px-3 text-xs font-medium"
+              className={`h-8 rounded-md px-3 text-xs font-medium ${
+                mode === "EN_TO_JA" ? "btn-primary-gradient border-0" : ""
+              }`}
               onClick={() => setMode("EN_TO_JA")}
               disabled={!!lastResult}
             >
-              EN → JA
+              英→日
             </Button>
             <Button
               type="button"
               size="sm"
               variant={mode === "JA_TO_EN" ? "default" : "ghost"}
-              className="h-8 rounded-md px-3 text-xs font-medium"
+              className={`h-8 rounded-md px-3 text-xs font-medium ${
+                mode === "JA_TO_EN" ? "btn-primary-gradient border-0" : ""
+              }`}
               onClick={() => setMode("JA_TO_EN")}
               disabled={!!lastResult}
             >
-              JA → EN
+              日→英
             </Button>
           </div>
         </div>
       </header>
 
-      <Card className="relative flex flex-col gap-6 rounded-2xl border border-border bg-card p-4 shadow-md sm:p-8">
+      <Card className="relative flex flex-col gap-5 card-study border-0 bg-card p-4 sm:p-8">
+        {/* Slide-in feedback banner */}
         {lastResult && (
-          <button
-            type="button"
-            className={`absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 rounded-2xl cursor-pointer border-0 ${
-              lastResult === "correct" ? "bg-primary/90 text-primary-foreground" : "bg-primary/75 text-primary-foreground"
+          <div
+            className={`slide-up flex items-center justify-between rounded-2xl px-5 py-3 ${
+              lastResult === "correct" ? "feedback-correct" : "feedback-wrong"
             }`}
+            role="status"
             aria-live="polite"
-            onClick={() => {
-              if (!nextWordReady) return;
-              if (dismissTimeoutRef.current) {
-                clearTimeout(dismissTimeoutRef.current);
-                dismissTimeoutRef.current = null;
-              }
-              flushSync(() => setLastResult(null));
-            }}
           >
-            {lastResult === "correct" && <span className="text-4xl sm:text-5xl">✓</span>}
-            <span className="text-xl font-bold sm:text-2xl">
-              {lastResult === "correct" ? "知ってる!" : "あとで練習"}
-            </span>
-            <span className="text-xs opacity-80 mt-2">
-              {nextWordReady ? "タップして次へ" : "…"}
-            </span>
-          </button>
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">
+                {lastResult === "correct" ? "✓" : "✗"}
+              </span>
+              <span className="text-base font-bold">
+                {lastResult === "correct" ? "正解!" : "あとで練習"}
+              </span>
+            </div>
+            <button
+              type="button"
+              className="rounded-lg bg-white/20 px-3 py-1 text-xs font-medium transition-colors hover:bg-white/30"
+              onClick={() => {
+                if (!nextWordReady) return;
+                if (dismissTimeoutRef.current) {
+                  clearTimeout(dismissTimeoutRef.current);
+                  dismissTimeoutRef.current = null;
+                }
+                flushSync(() => setLastResult(null));
+              }}
+            >
+              次へ
+            </button>
+          </div>
         )}
 
-        <div className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
-          Current word（残り {pool.length}）
+        <div className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+          今の単語（残り {pool.length}）
         </div>
 
         <div
@@ -213,9 +236,9 @@ export function BookmarkedWordsClient() {
               setShowAnswer(next);
               if (next) playFlipSound();
             }}
-            aria-label={showAnswer ? "Show question" : "Reveal answer"}
+            aria-label={showAnswer ? "問題を表示" : "答えをめくる"}
           >
-            <span className="sr-only">{showAnswer ? "Show question" : "Tap to reveal answer"}</span>
+            <span className="sr-only">{showAnswer ? "問題を表示" : "タップしてめくる"}</span>
           </button>
           <div
             className="absolute inset-0 transition-transform duration-300 ease-out [transform-style:preserve-3d]"
@@ -232,7 +255,7 @@ export function BookmarkedWordsClient() {
               </div>
               {word && !showAnswer && (
                 <p className="absolute bottom-4 left-0 right-0 text-center text-xs text-muted-foreground">
-                  Tap to flip
+                  タップしてめくる
                 </p>
               )}
             </div>
@@ -246,16 +269,16 @@ export function BookmarkedWordsClient() {
                 </p>
               </div>
               <p className="absolute bottom-4 left-0 right-0 text-center text-xs text-muted-foreground">
-                Tap to flip back
+                タップして戻す
               </p>
             </div>
           </div>
         </div>
 
-        <div className="flex gap-3 pt-2 sm:gap-4 sm:pt-4">
+        <div className="flex gap-3 pt-1 sm:gap-4 sm:pt-2">
           <Button
             variant="outline"
-            className="min-h-[48px] flex-1 rounded-xl border-border py-4 text-base font-medium sm:py-6"
+            className="min-h-[48px] flex-1 rounded-xl border-border py-4 text-base font-medium transition-transform active:scale-[0.97] sm:py-6"
             type="button"
             disabled={!!lastResult || !word}
             onClick={() => void submitAnswer(false)}
@@ -263,7 +286,7 @@ export function BookmarkedWordsClient() {
             あとで練習
           </Button>
           <Button
-            className="btn-primary-gradient min-h-[48px] flex-1 rounded-xl border-0 py-4 text-base font-medium shadow-sm sm:py-6"
+            className="btn-primary-gradient min-h-[48px] flex-1 rounded-xl border-0 py-4 text-base font-medium shadow-sm transition-transform active:scale-[0.95] sm:py-6"
             type="button"
             disabled={!!lastResult || !word}
             onClick={() => void submitAnswer(true)}
@@ -272,9 +295,9 @@ export function BookmarkedWordsClient() {
           </Button>
         </div>
 
-        <div className="flex justify-end border-t border-border pt-4">
+        <div className="flex justify-end border-t border-border pt-3">
           <Link href="/me" className="text-sm text-muted-foreground hover:text-foreground">
-            ← My page
+            ← マイページ
           </Link>
         </div>
 

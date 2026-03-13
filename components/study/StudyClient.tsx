@@ -1,10 +1,18 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { playCorrectSound, playFlipSound, playLaterSound } from "@/lib/sounds";
+import { Star, Flame } from "lucide-react";
+import { playCorrectSound, playFlipSound, playLaterSound, playXpGainSound, playStreakBonusSound } from "@/lib/sounds";
+import {
+  calculateXpGain,
+  addXp,
+  incrementDailyCount,
+  recordStudyDay,
+  isMilestoneStreak,
+} from "@/lib/gamification";
 
 type StudyMode = "EN_TO_JA" | "JA_TO_EN";
 
@@ -43,6 +51,7 @@ export function StudyClient() {
   const [nextWordReady, setNextWordReady] = useState(false);
   const [streak, setStreak] = useState(0);
   const [sessionScore, setSessionScore] = useState(0);
+  const [xpGained, setXpGained] = useState<number | null>(null);
   const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const loadAllWords = useCallback(async () => {
@@ -52,12 +61,12 @@ export function StudyClient() {
       const response = await fetch("/api/study/words");
       const json = (await response.json()) as WordsResponse;
       if (!response.ok || !json.ok) {
-        setDownloadError("error" in json ? json.error : "Failed to load words");
+        setDownloadError("error" in json ? json.error : "読み込みに失敗しました");
         return;
       }
       const list = "words" in json ? json.words : [];
       if (list.length === 0) {
-        setDownloadError("No words available");
+        setDownloadError("単語がありません");
         return;
       }
       setWordsPool(list);
@@ -65,7 +74,7 @@ export function StudyClient() {
       setBookmarked(false);
       setShowAnswer(false);
     } catch {
-      setDownloadError("Failed to download words");
+      setDownloadError("ダウンロードに失敗しました");
     } finally {
       setDownloadLoading(false);
     }
@@ -77,15 +86,34 @@ export function StudyClient() {
     if (!word) return;
     setError(null);
     setNextWordReady(false);
+
     if (correct) {
       playCorrectSound();
       setLastResult("correct");
-      setStreak((s) => s + 1);
+      const newStreak = streak + 1;
+      setStreak(newStreak);
       setSessionScore((n) => n + 1);
+
+      const xp = calculateXpGain(newStreak);
+      addXp(xp);
+      incrementDailyCount();
+      recordStudyDay();
+      setXpGained(xp);
+      setTimeout(() => setXpGained(null), 1000);
+      playXpGainSound();
+
+      window.dispatchEvent(new CustomEvent("xp-gained", { detail: { gained: xp } }));
+      window.dispatchEvent(new Event("daily-progress-update"));
+
+      if (isMilestoneStreak(newStreak)) {
+        playStreakBonusSound();
+      }
     } else {
       playLaterSound();
       setLastResult("wrong");
       setStreak(0);
+      incrementDailyCount();
+      window.dispatchEvent(new Event("daily-progress-update"));
     }
 
     const currentWordId = word.id;
@@ -123,18 +151,14 @@ export function StudyClient() {
       const response = await fetch("/api/study/answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          wordId: currentWordId,
-          correct,
-          mode,
-        }),
+        body: JSON.stringify({ wordId: currentWordId, correct, mode }),
       });
 
       const json = (await response.json().catch(() => null)) as
         | { ok?: boolean; error?: string; word?: Word }
         | null;
       if (!response.ok || !json?.ok) {
-        setError(json?.error ?? "Failed to record answer");
+        setError(json?.error ?? "記録に失敗しました");
         setLastResult(null);
         return;
       }
@@ -165,7 +189,7 @@ export function StudyClient() {
         setLastResult(null);
       }, 2000);
     } catch {
-      setError("Unexpected error while recording answer");
+      setError("エラーが発生しました");
       setLastResult(null);
     } finally {
       setLoading(false);
@@ -184,31 +208,29 @@ export function StudyClient() {
     try {
       const response = await fetch("/api/study/bookmark", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ wordId: word.id, bookmarked: next }),
       });
       if (!response.ok) {
-        setError("Failed to update bookmark");
+        setError("ブックマークの更新に失敗しました");
       }
     } catch {
-      setError("Failed to update bookmark");
+      setError("ブックマークの更新に失敗しました");
     }
   }
 
   if (wordsPool === null) {
     return (
       <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-2 sm:gap-8 sm:px-0">
-        <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-          Study
+        <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+          単語カード
         </h1>
-        <Card className="flex flex-col items-center justify-center gap-6 rounded-2xl border border-border p-8 shadow-md sm:p-12">
+        <Card className="card-study flex flex-col items-center justify-center gap-6 border-0 p-8 sm:p-12">
           <p className="text-center text-muted-foreground">
             単語をダウンロードしてから始めましょう。読み込み後はオフラインでスムーズに学習できます。
           </p>
           <Button
-            className="btn-primary-gradient min-h-[48px] rounded-xl px-8 text-base font-medium"
+            className="btn-primary-gradient min-h-[48px] rounded-xl px-8 text-base font-medium transition-transform active:scale-[0.97]"
             disabled={downloadLoading}
             onClick={() => void loadAllWords()}
           >
@@ -223,90 +245,58 @@ export function StudyClient() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-2 sm:gap-8 sm:px-0">
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-5 px-2 sm:gap-6 sm:px-0">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-col gap-0.5">
-          <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-            Study
+          <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+            単語カード
           </h1>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <span className="font-medium text-primary">Score: {sessionScore}</span>
+            <span className="font-semibold text-primary">スコア: {sessionScore}</span>
             {streak >= 2 && (
-              <span className="animate-pulse font-medium text-amber-600">
-                🔥 {streak} in a row!
+              <span className="flex items-center gap-1 font-semibold text-orange-500">
+                <Flame className="h-3.5 w-3.5 streak-fire" />
+                {streak}連続!
               </span>
             )}
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="hidden text-xs text-muted-foreground sm:inline">Mode</span>
           <div className="flex rounded-lg border border-border bg-muted/30 p-0.5">
             <Button
               type="button"
               size="sm"
               variant={mode === "EN_TO_JA" ? "default" : "ghost"}
-              className="h-8 rounded-md px-3 text-xs font-medium"
+              className={`h-8 rounded-md px-3 text-xs font-medium ${
+                mode === "EN_TO_JA" ? "btn-primary-gradient border-0" : ""
+              }`}
               onClick={() => setMode("EN_TO_JA")}
               disabled={loading}
             >
-              EN → JA
+              英→日
             </Button>
             <Button
               type="button"
               size="sm"
               variant={mode === "JA_TO_EN" ? "default" : "ghost"}
-              className="h-8 rounded-md px-3 text-xs font-medium"
+              className={`h-8 rounded-md px-3 text-xs font-medium ${
+                mode === "JA_TO_EN" ? "btn-primary-gradient border-0" : ""
+              }`}
               onClick={() => setMode("JA_TO_EN")}
               disabled={loading}
             >
-              JA → EN
+              日→英
             </Button>
           </div>
         </div>
       </header>
 
-      <Card className="relative flex flex-col gap-6 rounded-2xl border border-border bg-card p-4 shadow-md sm:p-8">
-        {/* Instant feedback overlay */}
-        {lastResult && (
-          <button
-            type="button"
-            className={`absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 rounded-2xl cursor-pointer border-0 ${
-              lastResult === "correct"
-                ? "bg-primary/90 text-primary-foreground"
-                : "bg-primary/75 text-primary-foreground"
-            }`}
-            aria-live="polite"
-            onClick={() => {
-              if (!nextWordReady) return;
-              if (dismissTimeoutRef.current) {
-                clearTimeout(dismissTimeoutRef.current);
-                dismissTimeoutRef.current = null;
-              }
-              flushSync(() => setLastResult(null));
-            }}
-          >
-            {lastResult === "correct" && (
-              <span className="text-4xl sm:text-5xl">✓</span>
-            )}
-            <span className="text-xl font-bold sm:text-2xl">
-              {lastResult === "correct" ? "知ってる!" : "あとで練習"}
-            </span>
-            {lastResult === "correct" && streak >= 2 && (
-              <span className="text-sm font-medium opacity-90">
-                {streak} in a row! 🎉
-              </span>
-            )}
-            <span className="text-xs opacity-80 mt-2">
-              {nextWordReady ? "タップして次へ" : "…"}
-            </span>
-          </button>
-        )}
-
-        <div className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
-          Current word
+      <Card className="relative flex flex-col gap-5 card-study border-0 bg-card p-4 sm:p-8">
+        <div className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+          今の単語
         </div>
 
-        {/* Tap-to-flip card: fixed height so inner centering works */}
+        {/* Tap-to-flip card */}
         <div
           className="relative h-[240px] w-full sm:h-[280px] [perspective:1000px]"
           style={{ perspective: "1000px" }}
@@ -321,10 +311,10 @@ export function StudyClient() {
               setShowAnswer(next);
               if (next) playFlipSound();
             }}
-            aria-label={showAnswer ? "Show question" : "Reveal answer"}
+            aria-label={showAnswer ? "問題を表示" : "答えをめくる"}
           >
             <span className="sr-only">
-              {showAnswer ? "Show question" : "Tap to reveal answer"}
+              {showAnswer ? "問題を表示" : "タップしてめくる"}
             </span>
           </button>
           <div
@@ -333,7 +323,7 @@ export function StudyClient() {
               transform: showAnswer ? "rotateY(180deg)" : "rotateY(0deg)",
             }}
           >
-            {/* Front face: word absolutely centered, hint at bottom */}
+            {/* Front face */}
             <div
               className="absolute inset-0 rounded-2xl border border-border bg-card [backface-visibility:hidden]"
               style={{ backfaceVisibility: "hidden" }}
@@ -341,15 +331,15 @@ export function StudyClient() {
               <div className="absolute inset-0 flex items-center justify-center px-4">
                 <p className="text-center text-2xl font-semibold leading-snug text-foreground sm:text-3xl">
                   {loading && !word
-                    ? "Loading..."
+                    ? "読み込み中..."
                     : word
                       ? frontText
-                      : "No words available"}
+                      : "単語がありません"}
                 </p>
               </div>
               {word && !showAnswer && (
                 <p className="absolute bottom-4 left-0 right-0 text-center text-xs text-muted-foreground">
-                  Tap to flip
+                  タップしてめくる
                 </p>
               )}
             </div>
@@ -367,16 +357,60 @@ export function StudyClient() {
                 </p>
               </div>
               <p className="absolute bottom-4 left-0 right-0 text-center text-xs text-muted-foreground">
-                Tap to flip back
+                タップして戻す
               </p>
             </div>
           </div>
         </div>
 
-        <div className="flex gap-3 pt-2 sm:gap-4 sm:pt-4">
+        {/* Slide-in feedback banner */}
+        {lastResult && (
+          <div
+            className={`slide-up flex items-center justify-between rounded-2xl px-5 py-3 ${
+              lastResult === "correct" ? "feedback-correct" : "feedback-wrong"
+            }`}
+            role="status"
+            aria-live="polite"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">
+                {lastResult === "correct" ? "✓" : "✗"}
+              </span>
+              <div className="flex flex-col">
+                <span className="text-base font-bold">
+                  {lastResult === "correct" ? "正解!" : "あとで練習"}
+                </span>
+                {lastResult === "correct" && streak >= 2 && (
+                  <span className="text-xs opacity-90">{streak}連続正解!</span>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              {xpGained !== null && lastResult === "correct" && (
+                <span className="text-sm font-bold opacity-90">+{xpGained} XP</span>
+              )}
+              <button
+                type="button"
+                className="rounded-lg bg-white/20 px-3 py-1 text-xs font-medium transition-colors hover:bg-white/30"
+                onClick={() => {
+                  if (!nextWordReady) return;
+                  if (dismissTimeoutRef.current) {
+                    clearTimeout(dismissTimeoutRef.current);
+                    dismissTimeoutRef.current = null;
+                  }
+                  flushSync(() => setLastResult(null));
+                }}
+              >
+                次へ
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="flex gap-3 pt-1 sm:gap-4 sm:pt-2">
           <Button
             variant="outline"
-            className="min-h-[48px] flex-1 rounded-xl border-border py-4 text-base font-medium sm:py-6"
+            className="min-h-[48px] flex-1 rounded-xl border-border py-4 text-base font-medium transition-transform active:scale-[0.97] sm:py-6"
             type="button"
             disabled={loading || !word}
             onClick={() => void submitAnswer(false)}
@@ -384,7 +418,7 @@ export function StudyClient() {
             あとで練習
           </Button>
           <Button
-            className="btn-primary-gradient min-h-[48px] flex-1 rounded-xl border-0 py-4 text-base font-medium shadow-sm sm:py-6"
+            className="btn-primary-gradient min-h-[48px] flex-1 rounded-xl border-0 py-4 text-base font-medium shadow-sm transition-transform active:scale-[0.95] sm:py-6"
             type="button"
             disabled={loading || !word}
             onClick={() => void submitAnswer(true)}
@@ -393,19 +427,23 @@ export function StudyClient() {
           </Button>
         </div>
 
-        <div className="flex justify-end border-t border-border pt-4">
+        <div className="flex justify-end border-t border-border pt-3">
           <Button
             type="button"
             size="sm"
             variant={bookmarked ? "secondary" : "ghost"}
-            className="min-h-[44px] min-w-[44px] rounded-lg text-muted-foreground hover:text-foreground"
+            className="min-h-[44px] min-w-[44px] gap-1.5 rounded-lg text-muted-foreground hover:text-foreground"
             disabled={loading || !word}
             onClick={(e) => {
               e.stopPropagation();
               void toggleBookmark();
             }}
           >
-            {bookmarked ? "★ Bookmarked" : "☆ Bookmark"}
+            <Star
+              className="h-4 w-4"
+              fill={bookmarked ? "currentColor" : "none"}
+            />
+            ブックマーク
           </Button>
         </div>
 
@@ -416,4 +454,3 @@ export function StudyClient() {
     </div>
   );
 }
-

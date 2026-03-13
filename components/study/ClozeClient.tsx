@@ -1,10 +1,17 @@
 'use client';
 
-import { useCallback, useState } from "react";
-import Link from "next/link";
+import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { playCorrectSound, playWrongSound } from "@/lib/sounds";
+import { Star, Flame } from "lucide-react";
+import { playCorrectSound, playWrongSound, playXpGainSound, playStreakBonusSound } from "@/lib/sounds";
+import {
+  calculateXpGain,
+  addXp,
+  incrementDailyCount,
+  recordStudyDay,
+  isMilestoneStreak,
+} from "@/lib/gamification";
 
 type ClozeQuestion = {
   id: string;
@@ -40,7 +47,15 @@ export function ClozeClient() {
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [feedbackType, setFeedbackType] = useState<"correct" | "wrong" | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
+  const [streak, setStreak] = useState(0);
+  const [sessionScore, setSessionScore] = useState(0);
+  const [xpGained, setXpGained] = useState<number | null>(null);
+  const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
+  const [correctChoice, setCorrectChoice] = useState<number | null>(null);
+  const [answered, setAnswered] = useState(false);
+  const nextQuestionRef = useRef<ClozeQuestion | null>(null);
 
   const loadAllQuestions = useCallback(async () => {
     setDownloadLoading(true);
@@ -49,38 +64,76 @@ export function ClozeClient() {
       const response = await fetch("/api/study/cloze/questions");
       const json = (await response.json()) as QuestionsResponse;
       if (!response.ok || !json.ok) {
-        setDownloadError("error" in json ? json.error : "Failed to load questions");
+        setDownloadError("error" in json ? json.error : "読み込みに失敗しました");
         return;
       }
       const list = "questions" in json ? json.questions : [];
       if (list.length === 0) {
-        setDownloadError("No questions available");
+        setDownloadError("問題がありません");
         return;
       }
       setQuestionsPool(list);
       setQuestion(pickRandomFromPool(list));
       setFeedback(null);
+      setFeedbackType(null);
       setBookmarked(false);
     } catch {
-      setDownloadError("Failed to download questions");
+      setDownloadError("ダウンロードに失敗しました");
     } finally {
       setDownloadLoading(false);
     }
   }, []);
 
-  const isPoolMode = questionsPool !== null && questionsPool.length > 0;
+  function goToNextQuestion() {
+    if (nextQuestionRef.current) {
+      setQuestion(nextQuestionRef.current);
+      nextQuestionRef.current = null;
+    }
+    setFeedback(null);
+    setFeedbackType(null);
+    setSelectedChoice(null);
+    setCorrectChoice(null);
+    setAnswered(false);
+    setBookmarked(false);
+  }
 
   async function answer(choice: number) {
-    if (!question) return;
+    if (!question || answered) return;
     setError(null);
-    setFeedback(null);
 
     const correct = choice === question.correct_choice;
+    setSelectedChoice(choice);
+    setCorrectChoice(question.correct_choice);
+    setAnswered(true);
+
     if (correct) {
       playCorrectSound();
-      setFeedback("Correct! よくできました。");
+      setFeedbackType("correct");
+      setFeedback("正解! よくできました");
+      const newStreak = streak + 1;
+      setStreak(newStreak);
+      setSessionScore((n) => n + 1);
+
+      const xp = calculateXpGain(newStreak);
+      addXp(xp);
+      incrementDailyCount();
+      recordStudyDay();
+      setXpGained(xp);
+      setTimeout(() => setXpGained(null), 1000);
+      playXpGainSound();
+
+      window.dispatchEvent(new CustomEvent("xp-gained", { detail: { gained: xp } }));
+      window.dispatchEvent(new Event("daily-progress-update"));
+
+      if (isMilestoneStreak(newStreak)) {
+        playStreakBonusSound();
+      }
     } else {
       playWrongSound();
+      setFeedbackType("wrong");
+      setStreak(0);
+      incrementDailyCount();
+      window.dispatchEvent(new Event("daily-progress-update"));
       const correctText =
         question[
           `choice_${question.correct_choice}` as
@@ -90,8 +143,8 @@ export function ClozeClient() {
             | "choice_4"
         ];
       setFeedback(
-        `Incorrect. 正解は「${correctText}」${
-          question.explanation ? ` – ${question.explanation}` : ""
+        `不正解。正解は「${correctText}」${
+          question.explanation ? ` — ${question.explanation}` : ""
         }`,
       );
     }
@@ -99,8 +152,7 @@ export function ClozeClient() {
     const currentId = question.id;
     const pool = questionsPool ?? [];
     const next = pickRandomFromPool(pool, currentId);
-    setQuestion(next ?? (pool.length > 0 ? pool[0]! : null));
-    setBookmarked(false);
+    nextQuestionRef.current = next ?? (pool.length > 0 ? pool[0]! : null);
 
     void fetch("/api/study/cloze/answer", {
       method: "POST",
@@ -112,10 +164,10 @@ export function ClozeClient() {
   if (questionsPool === null) {
     return (
       <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-2 sm:gap-8 sm:px-0">
-        <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+        <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
           穴埋め問題
         </h1>
-        <Card className="flex flex-col items-center justify-center gap-6 rounded-2xl border-2 border-primary/30 bg-primary/5 p-8 shadow-md sm:p-12">
+        <Card className="card-study flex flex-col items-center justify-center gap-6 border-0 p-8 sm:p-12">
           <p className="text-center text-sm font-medium text-foreground">
             まず問題をダウンロード
           </p>
@@ -123,7 +175,7 @@ export function ClozeClient() {
             下のボタンで問題を読み込んでから始めましょう。読み込み後はスムーズに解けます。
           </p>
           <Button
-            className="btn-primary-gradient min-h-[48px] rounded-xl px-8 text-base font-medium"
+            className="btn-primary-gradient min-h-[48px] rounded-xl px-8 text-base font-medium transition-transform active:scale-[0.97]"
             disabled={downloadLoading}
             onClick={() => void loadAllQuestions()}
           >
@@ -138,60 +190,125 @@ export function ClozeClient() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-lg flex-col gap-6 px-2 sm:gap-8 sm:px-0">
+    <div className="mx-auto flex w-full max-w-lg flex-col gap-5 px-2 sm:gap-6 sm:px-0">
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-          穴埋め問題
-        </h1>
+        <div className="flex flex-col gap-0.5">
+          <h1 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+            穴埋め問題
+          </h1>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span className="font-semibold text-primary">スコア: {sessionScore}</span>
+            {streak >= 2 && (
+              <span className="flex items-center gap-1 font-semibold text-orange-500">
+                <Flame className="h-3.5 w-3.5 streak-fire" />
+                {streak}連続!
+              </span>
+            )}
+          </div>
+        </div>
       </header>
 
-      <Card className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-4 shadow-md sm:p-8">
-        <div className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
-          Cloze question
+      <Card className="flex flex-col gap-5 card-study border-0 bg-card p-4 sm:p-8">
+        <div className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+          穴埋め問題
         </div>
 
-        <div className="min-h-[140px]">
+        <div className="min-h-[120px]">
           <p className="text-base leading-relaxed text-foreground sm:text-lg">
             {loading && !question
-              ? "Loading..."
+              ? "読み込み中..."
               : question
                 ? question.question_text
-                : "No questions available"}
+                : "問題がありません"}
           </p>
         </div>
 
-        <div className="grid gap-3 pt-2 sm:grid-cols-2 sm:gap-4 sm:pt-4">
-          {[1, 2, 3, 4].map((n) => (
-            <Button
-              key={n}
-              type="button"
-              variant="outline"
-              className="min-h-[44px] justify-start rounded-xl border-border text-left text-sm font-medium sm:text-base"
-              disabled={loading || !question}
-              onClick={() => void answer(n)}
-            >
-              <span className="mr-2 text-xs text-muted-foreground">{n}.</span>
-              <span>
-                {question
-                  ? question[
-                      `choice_${n}` as
-                        | "choice_1"
-                        | "choice_2"
-                        | "choice_3"
-                        | "choice_4"
-                    ]
-                  : ""}
-              </span>
-            </Button>
-          ))}
+        <div className="grid gap-3 pt-1 sm:grid-cols-2 sm:gap-4 sm:pt-2">
+          {[1, 2, 3, 4].map((n) => {
+            const isCorrectChoice = answered && n === correctChoice;
+            const isSelectedWrong = answered && n === selectedChoice && n !== correctChoice;
+
+            return (
+              <Button
+                key={n}
+                type="button"
+                variant="outline"
+                className={`min-h-[52px] justify-start rounded-xl border-2 px-4 text-left text-sm font-medium transition-all sm:text-base
+                  ${isCorrectChoice
+                    ? "border-[oklch(0.55_0.16_145)] bg-[oklch(0.55_0.16_145/0.08)] text-foreground"
+                    : ""}
+                  ${isSelectedWrong
+                    ? "border-[oklch(0.55_0.18_30)] bg-[oklch(0.55_0.18_30/0.08)] text-foreground"
+                    : ""}
+                  ${!answered && !isCorrectChoice && !isSelectedWrong
+                    ? "hover:scale-[1.02] hover:shadow-md active:scale-[0.98]"
+                    : ""}
+                `}
+                disabled={loading || !question || answered}
+                onClick={() => void answer(n)}
+              >
+                <span className="mr-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
+                  {n}
+                </span>
+                <span>
+                  {question
+                    ? question[
+                        `choice_${n}` as
+                          | "choice_1"
+                          | "choice_2"
+                          | "choice_3"
+                          | "choice_4"
+                      ]
+                    : ""}
+                </span>
+                {isCorrectChoice && (
+                  <span className="ml-auto text-[oklch(0.55_0.16_145)]">✓</span>
+                )}
+                {isSelectedWrong && (
+                  <span className="ml-auto text-[oklch(0.55_0.18_30)]">✗</span>
+                )}
+              </Button>
+            );
+          })}
         </div>
 
-        <div className="flex justify-end border-t border-border pt-4">
+        {/* Feedback panel */}
+        {feedback && (
+          <div
+            className={`slide-up rounded-2xl px-5 py-3 ${
+              feedbackType === "correct" ? "feedback-correct" : "feedback-wrong"
+            }`}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <span className="text-xl">
+                  {feedbackType === "correct" ? "✓" : "✗"}
+                </span>
+                <p className="text-sm font-medium">{feedback}</p>
+              </div>
+              {xpGained !== null && feedbackType === "correct" && (
+                <span className="text-sm font-bold opacity-90">+{xpGained} XP</span>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Next question button */}
+        {answered && (
+          <Button
+            className="btn-primary-gradient min-h-[48px] rounded-xl text-base font-medium transition-transform active:scale-[0.97]"
+            onClick={goToNextQuestion}
+          >
+            次の問題へ
+          </Button>
+        )}
+
+        <div className="flex justify-end border-t border-border pt-3">
           <Button
             type="button"
             size="sm"
             variant={bookmarked ? "secondary" : "ghost"}
-            className="min-h-[44px] min-w-[44px] rounded-lg text-muted-foreground hover:text-foreground"
+            className="min-h-[44px] min-w-[44px] gap-1.5 rounded-lg text-muted-foreground hover:text-foreground"
             disabled={loading || !question}
             onClick={async () => {
               if (!question) return;
@@ -200,29 +317,28 @@ export function ClozeClient() {
               try {
                 const response = await fetch("/api/study/cloze/bookmark", {
                   method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
+                  headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
                     questionId: question.id,
                     bookmarked: next,
                   }),
                 });
                 if (!response.ok) {
-                  setError("Failed to update bookmark");
+                  setError("ブックマークの更新に失敗しました");
                 }
               } catch {
-                setError("Failed to update bookmark");
+                setError("ブックマークの更新に失敗しました");
               }
             }}
           >
-            {bookmarked ? "★ Bookmark" : "☆ Bookmark"}
+            <Star
+              className="h-4 w-4"
+              fill={bookmarked ? "currentColor" : "none"}
+            />
+            ブックマーク
           </Button>
         </div>
 
-        {feedback && (
-          <p className="pt-1 text-sm text-foreground sm:pt-2">{feedback}</p>
-        )}
         {error && (
           <p className="text-sm text-destructive" aria-live="polite">
             {error}

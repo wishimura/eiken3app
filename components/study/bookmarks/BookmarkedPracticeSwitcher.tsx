@@ -26,14 +26,16 @@ export function BookmarkedPracticeSwitcher() {
           href="/study"
           className="text-sm text-muted-foreground hover:text-foreground"
         >
-          ← Study
+          ← 学習
         </Link>
         <div className="inline-flex rounded-full border border-border bg-muted/40 p-1">
           <Button
             type="button"
             size="sm"
             variant={tab === "words" ? "default" : "ghost"}
-            className="h-8 rounded-full px-4 text-xs font-medium sm:h-9 sm:px-5"
+            className={`h-9 rounded-full px-5 text-xs font-semibold ${
+              tab === "words" ? "btn-primary-gradient border-0" : ""
+            }`}
             onClick={setWords}
           >
             単語
@@ -42,7 +44,9 @@ export function BookmarkedPracticeSwitcher() {
             type="button"
             size="sm"
             variant={tab === "cloze" ? "default" : "ghost"}
-            className="h-8 rounded-full px-4 text-xs font-medium sm:h-9 sm:px-5"
+            className={`h-9 rounded-full px-5 text-xs font-semibold ${
+              tab === "cloze" ? "btn-primary-gradient border-0" : ""
+            }`}
             onClick={setCloze}
           >
             穴埋め
@@ -57,7 +61,7 @@ export function BookmarkedPracticeSwitcher() {
 
 export function BookmarkedPracticeSwitcherWithSuspense() {
   return (
-    <Suspense fallback={<p className="text-muted-foreground">Loading…</p>}>
+    <Suspense fallback={<p className="text-muted-foreground">読み込み中…</p>}>
       <BookmarkedPracticeSwitcher />
     </Suspense>
   );

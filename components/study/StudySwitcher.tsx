@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { StudyClient } from "./StudyClient";
 import { ClozeClient } from "./ClozeClient";
+import { DailyProgress } from "./DailyProgress";
+import { XpDisplay } from "./XpDisplay";
 
 type Tab = "vocab" | "cloze";
 
@@ -12,26 +14,35 @@ export function StudySwitcher() {
 
   return (
     <div className="mx-auto flex w-full max-w-lg flex-col gap-4 sm:gap-6">
-      <div className="flex flex-col items-center gap-2">
-        <div className="inline-flex rounded-full border border-border bg-muted/40 p-1">
-          <Button
-            type="button"
-            size="sm"
-            variant={tab === "vocab" ? "default" : "ghost"}
-            className="h-8 rounded-full px-4 text-xs font-medium sm:h-9 sm:px-5"
-            onClick={() => setTab("vocab")}
-          >
-            単語カード
-          </Button>
-          <Button
-            type="button"
-            size="sm"
-            variant={tab === "cloze" ? "default" : "ghost"}
-            className="h-8 rounded-full px-4 text-xs font-medium sm:h-9 sm:px-5"
-            onClick={() => setTab("cloze")}
-          >
-            穴埋め
-          </Button>
+      <DailyProgress />
+
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <XpDisplay />
+          <div className="inline-flex rounded-full border border-border bg-muted/40 p-1">
+            <Button
+              type="button"
+              size="sm"
+              variant={tab === "vocab" ? "default" : "ghost"}
+              className={`h-9 rounded-full px-5 text-xs font-semibold ${
+                tab === "vocab" ? "btn-primary-gradient border-0" : ""
+              }`}
+              onClick={() => setTab("vocab")}
+            >
+              単語カード
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={tab === "cloze" ? "default" : "ghost"}
+              className={`h-9 rounded-full px-5 text-xs font-semibold ${
+                tab === "cloze" ? "btn-primary-gradient border-0" : ""
+              }`}
+              onClick={() => setTab("cloze")}
+            >
+              穴埋め
+            </Button>
+          </div>
         </div>
         {tab === "cloze" && (
           <p className="text-center text-xs text-muted-foreground">
@@ -44,4 +55,3 @@ export function StudySwitcher() {
     </div>
   );
 }
-
