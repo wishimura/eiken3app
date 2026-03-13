@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; status?: string }>;
 }) {
   const supabase = getSupabaseServerClient();
   const {
@@ -19,7 +19,7 @@ export default async function SignupPage({
     redirect("/study");
   }
 
-  const { error } = await searchParams;
+  const { error, status } = await searchParams;
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -34,6 +34,14 @@ export default async function SignupPage({
 
       <div className="mx-auto -mt-8 w-full max-w-md px-4">
         <div className="card-study space-y-6 rounded-[20px] bg-card p-8">
+          {status === "check_email" && (
+            <p
+              className="rounded-xl bg-primary/10 px-4 py-3 text-sm text-primary"
+              role="status"
+            >
+              確認メールを送信しました。メール内のリンクをクリックして登録を完了してください。
+            </p>
+          )}
           {error === "signup_failed" && (
             <p
               className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive"

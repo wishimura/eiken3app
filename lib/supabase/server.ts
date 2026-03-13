@@ -14,9 +14,9 @@ export function getSupabaseServerClient(): SupabaseClient {
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
-      async get(name: string) {
+      async getAll() {
         const cookieStore = await cookies();
-        return cookieStore.get(name)?.value;
+        return cookieStore.getAll();
       },
     },
   });
