@@ -17,6 +17,8 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL("/login?error=invalid_credentials", url.origin));
   }
 
-  const response = NextResponse.redirect(new URL("/study", url.origin));
+  const type = url.searchParams.get("type");
+  const redirectPath = type === "recovery" ? "/update-password" : "/study";
+  const response = NextResponse.redirect(new URL(redirectPath, url.origin));
   return applyCookiesToResponse(response);
 }

@@ -82,14 +82,24 @@ export default async function LoginPage({
               ログイン
             </Button>
           </form>
-          <p className="text-center text-sm text-muted-foreground">
-            <a
-              href="/signup"
-              className="font-medium text-primary underline underline-offset-2 hover:no-underline"
-            >
-              新規登録はこちら
-            </a>
-          </p>
+          <div className="space-y-2 text-center text-sm text-muted-foreground">
+            <p>
+              <a
+                href="/forgot-password"
+                className="font-medium text-primary underline underline-offset-2 hover:no-underline"
+              >
+                パスワードをお忘れですか？
+              </a>
+            </p>
+            <p>
+              <a
+                href="/signup"
+                className="font-medium text-primary underline underline-offset-2 hover:no-underline"
+              >
+                新規登録はこちら
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
