@@ -1,89 +1,136 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
-    <linearGradient id="bgGrad2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0f2460"/>
-      <stop offset="50%" stop-color="#1a3a8a"/>
-      <stop offset="100%" stop-color="#2563b0"/>
+    <linearGradient id="bgGrad2" x1="0" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#0c4a6e"/>
+      <stop offset="40%" stop-color="#0369a1"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
     </linearGradient>
-    <linearGradient id="accGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#60a5fa"/>
-      <stop offset="100%" stop-color="#93c5fd"/>
+    <linearGradient id="accentGrad2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
     </linearGradient>
+    <linearGradient id="pinkGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f472b6"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#f472b6"/>
+    </linearGradient>
+    <linearGradient id="pillGrad2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="white" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0.06"/>
+    </linearGradient>
+    <filter id="softShadow2">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000" flood-opacity="0.2"/>
+    </filter>
   </defs>
 
   <!-- Background -->
   <rect width="1200" height="630" fill="url(#bgGrad2)"/>
 
-  <!-- Decorative -->
-  <circle cx="1050" cy="500" r="250" fill="white" opacity="0.03"/>
-  <circle cx="200" cy="100" r="180" fill="white" opacity="0.03"/>
+  <!-- Decorative blobs -->
+  <circle cx="1050" cy="100" r="300" fill="#22d3ee" opacity="0.06"/>
+  <circle cx="100" cy="500" r="250" fill="#f472b6" opacity="0.05"/>
+  <circle cx="600" cy="650" r="180" fill="#818cf8" opacity="0.05"/>
+  <ellipse cx="400" cy="-50" rx="300" ry="150" fill="#06b6d4" opacity="0.04"/>
 
-  <!-- Left: Text -->
-  <g transform="translate(80, 80)">
-    <text x="0" y="50" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="20" font-weight="600" fill="#93c5fd" letter-spacing="3">LEARNING PROGRESS</text>
+  <!-- Grid pattern -->
+  <g opacity="0.03">
+    <line x1="0" y1="100" x2="1200" y2="100" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="200" x2="1200" y2="200" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="300" x2="1200" y2="300" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="400" x2="1200" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="500" x2="1200" y2="500" stroke="white" stroke-width="1"/>
+    <line x1="200" y1="0" x2="200" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="400" y1="0" x2="400" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="800" y1="0" x2="800" y2="630" stroke="white" stroke-width="1"/>
+    <line x1="1000" y1="0" x2="1000" y2="630" stroke="white" stroke-width="1"/>
+  </g>
 
-    <text x="0" y="110" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="44" font-weight="800" fill="white">学習進捗の記録</text>
+  <!-- Left: Text content -->
+  <g transform="translate(80, 70)">
+    <!-- Category label -->
+    <rect x="0" y="0" width="240" height="36" rx="18" fill="url(#accentGrad2)"/>
+    <text x="120" y="24" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">LEARNING PROGRESS</text>
 
-    <text x="0" y="170" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="18" fill="#93c5fd" opacity="0.9">正答率 &#183; ブックマーク &#183; 復習モード &#183; クラウド同期</text>
+    <!-- Main title -->
+    <text x="0" y="100" font-family="'Rounded Mplus 1c',sans-serif" font-size="52" font-weight="800" fill="white">学習進捗の記録</text>
+
+    <!-- Subtitle -->
+    <text x="0" y="160" font-family="'Rounded Mplus 1c',sans-serif" font-size="18" font-weight="500" fill="#a5f3fc">正答率 · ブックマーク · 復習モード · クラウド同期</text>
 
     <!-- Feature pills -->
-    <g transform="translate(0, 210)">
-      <rect x="0" y="0" width="120" height="40" rx="20" fill="white" opacity="0.15"/>
-      <text x="60" y="26" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">&#128200; 正答率</text>
+    <g transform="translate(0, 196)">
+      <rect x="0" y="0" width="130" height="46" rx="23" fill="url(#pillGrad2)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
+      <text x="65" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">📊 正答率</text>
 
-      <rect x="135" y="0" width="150" height="40" rx="20" fill="white" opacity="0.15"/>
-      <text x="210" y="26" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">&#9733; ブックマーク</text>
+      <rect x="146" y="0" width="170" height="46" rx="23" fill="url(#pillGrad2)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
+      <text x="231" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">⭐ ブックマーク</text>
 
-      <rect x="300" y="0" width="130" height="40" rx="20" fill="white" opacity="0.15"/>
-      <text x="365" y="26" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">&#9729; クラウド保存</text>
+      <rect x="332" y="0" width="160" height="46" rx="23" fill="url(#pillGrad2)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
+      <text x="412" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">☁️ クラウド保存</text>
     </g>
 
-    <text x="0" y="340" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="16" font-weight="600" fill="white" opacity="0.5">英検3級 単語アプリ</text>
+    <!-- App badge -->
+    <g transform="translate(0, 284)">
+      <rect x="0" y="0" width="220" height="40" rx="20" fill="white" opacity="0.08"/>
+      <text x="110" y="27" font-family="'Rounded Mplus 1c',sans-serif" font-size="14" font-weight="700" fill="white" opacity="0.6" text-anchor="middle">📖 英検3級 単語アプリ</text>
+    </g>
   </g>
 
   <!-- Right: Visual elements -->
-  <g transform="translate(700, 60)">
-    <!-- Accuracy circles -->
-    <g transform="translate(120, 100)">
-      <!-- Big circle -->
-      <circle cx="0" cy="0" r="90" fill="none" stroke="white" stroke-opacity="0.1" stroke-width="14"/>
-      <circle cx="0" cy="0" r="90" fill="none" stroke="url(#accGrad2)" stroke-width="14"
-              stroke-linecap="round" stroke-dasharray="565" stroke-dashoffset="124"
+  <g transform="translate(680, 40)">
+    <!-- Big accuracy circle -->
+    <g transform="translate(130, 120)" filter="url(#softShadow2)">
+      <circle cx="0" cy="0" r="105" fill="white" opacity="0.06"/>
+      <circle cx="0" cy="0" r="100" fill="none" stroke="white" stroke-opacity="0.1" stroke-width="16"/>
+      <circle cx="0" cy="0" r="100" fill="none" stroke="url(#ringGrad)" stroke-width="16"
+              stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="138"
               transform="rotate(-90)"/>
-      <text x="0" y="-6" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="40" font-weight="800" fill="white" text-anchor="middle">78%</text>
-      <text x="0" y="20" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#93c5fd" text-anchor="middle">単語 正答率</text>
+      <text x="0" y="-6" font-family="'Rounded Mplus 1c',sans-serif" font-size="48" font-weight="800" fill="white" text-anchor="middle">78%</text>
+      <text x="0" y="24" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="#a5f3fc" text-anchor="middle">単語 正答率</text>
     </g>
 
-    <!-- Small circle -->
-    <g transform="translate(320, 140)">
-      <circle cx="0" cy="0" r="60" fill="none" stroke="white" stroke-opacity="0.1" stroke-width="10"/>
-      <circle cx="0" cy="0" r="60" fill="none" stroke="url(#accGrad2)" stroke-width="10"
-              stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="128"
+    <!-- Small accuracy circle -->
+    <g transform="translate(350, 170)" filter="url(#softShadow2)">
+      <circle cx="0" cy="0" r="70" fill="white" opacity="0.06"/>
+      <circle cx="0" cy="0" r="65" fill="none" stroke="white" stroke-opacity="0.1" stroke-width="12"/>
+      <circle cx="0" cy="0" r="65" fill="none" stroke="url(#ringGrad)" stroke-width="12"
+              stroke-linecap="round" stroke-dasharray="408" stroke-dashoffset="139"
               transform="rotate(-90)"/>
-      <text x="0" y="-4" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="28" font-weight="800" fill="white" text-anchor="middle">66%</text>
-      <text x="0" y="18" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#93c5fd" text-anchor="middle">穴埋め 正答率</text>
+      <text x="0" y="-4" font-family="'Rounded Mplus 1c',sans-serif" font-size="32" font-weight="800" fill="white" text-anchor="middle">66%</text>
+      <text x="0" y="22" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#a5f3fc" text-anchor="middle">穴埋め 正答率</text>
     </g>
 
     <!-- Stats cards -->
-    <g transform="translate(20, 290)">
-      <rect x="0" y="0" width="140" height="80" rx="16" fill="white" opacity="0.1"/>
-      <text x="20" y="30" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#93c5fd">総回答数</text>
-      <text x="20" y="60" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="30" font-weight="800" fill="white">156</text>
+    <g transform="translate(20, 310)">
+      <rect x="0" y="0" width="150" height="90" rx="18" fill="white" opacity="0.1" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
+      <text x="24" y="35" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#a5f3fc">総回答数</text>
+      <text x="24" y="70" font-family="'Rounded Mplus 1c',sans-serif" font-size="34" font-weight="800" fill="white">156</text>
 
-      <rect x="160" y="0" width="140" height="80" rx="16" fill="white" opacity="0.1"/>
-      <text x="180" y="30" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#93c5fd">正解数</text>
-      <text x="180" y="60" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="30" font-weight="800" fill="white">122</text>
+      <rect x="168" y="0" width="150" height="90" rx="18" fill="white" opacity="0.1" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
+      <text x="192" y="35" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#a5f3fc">正解数</text>
+      <text x="192" y="70" font-family="'Rounded Mplus 1c',sans-serif" font-size="34" font-weight="800" fill="white">122</text>
 
-      <rect x="320" y="0" width="100" height="80" rx="16" fill="white" opacity="0.1"/>
-      <text x="340" y="30" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#93c5fd">穴埋め</text>
-      <text x="340" y="60" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="30" font-weight="800" fill="white">48</text>
+      <rect x="336" y="0" width="120" height="90" rx="18" fill="white" opacity="0.1" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
+      <text x="360" y="35" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#a5f3fc">穴埋め</text>
+      <text x="360" y="70" font-family="'Rounded Mplus 1c',sans-serif" font-size="34" font-weight="800" fill="white">48</text>
     </g>
 
-    <!-- Bookmark indicator -->
-    <g transform="translate(60, 400)">
-      <rect x="0" y="0" width="320" height="50" rx="12" fill="white" opacity="0.08"/>
-      <text x="20" y="32" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" font-weight="600" fill="white">&#9733; ブックマーク単語: 8件</text>
-      <text x="300" y="32" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" fill="#93c5fd" text-anchor="end">練習する →</text>
+    <!-- Bookmark row -->
+    <g transform="translate(20, 424)">
+      <rect x="0" y="0" width="436" height="56" rx="16" fill="white" opacity="0.08" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
+      <text x="24" y="36" font-family="'Rounded Mplus 1c',sans-serif" font-size="16" font-weight="700" fill="white">⭐ ブックマーク単語: 8件</text>
+      <text x="412" y="36" font-family="'Rounded Mplus 1c',sans-serif" font-size="14" font-weight="700" fill="#22d3ee" text-anchor="end">練習する →</text>
+    </g>
+
+    <!-- Cloud sync indicator -->
+    <g transform="translate(20, 500)">
+      <rect x="0" y="0" width="436" height="46" rx="14" fill="url(#pinkGrad)" opacity="0.3"/>
+      <text x="218" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">☁️ いつでもどこからでも続きから学習できます</text>
     </g>
   </g>
 </svg>
