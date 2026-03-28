@@ -21,52 +21,52 @@
 
     <!-- Status bar -->
     <rect x="0" y="0" width="375" height="48" fill="#eef1f8"/>
-    <text x="187" y="32" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" font-weight="600" fill="#1a2040" text-anchor="middle">9:41</text>
+    <text x="187" y="32" font-family="Inter" font-size="14" font-weight="600" fill="#1a2040" text-anchor="middle">9:41</text>
 
     <!-- Page title -->
-    <text x="187" y="80" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="18" font-weight="700" fill="#1a2040" text-anchor="middle">ブックマーク復習</text>
+    <text x="187" y="80" font-family="'Rounded Mplus 1c'" font-size="18" font-weight="700" fill="#1a2040" text-anchor="middle">ブックマーク復習</text>
 
     <!-- Tab switcher -->
     <g transform="translate(55, 96)">
       <rect x="0" y="0" width="265" height="40" rx="20" fill="#e8ecf4" stroke="#dde1ed" stroke-width="1"/>
       <rect x="3" y="3" width="128" height="34" rx="17" fill="url(#btnGrad3)"/>
-      <text x="67" y="25" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="13" font-weight="600" fill="white" text-anchor="middle">単語カード</text>
-      <text x="198" y="25" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="13" font-weight="600" fill="#6b7494" text-anchor="middle">穴埋め</text>
+      <text x="67" y="25" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="600" fill="white" text-anchor="middle">単語カード</text>
+      <text x="198" y="25" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="600" fill="#6b7494" text-anchor="middle">穴埋め</text>
     </g>
 
     <!-- Study card with bookmarked word -->
     <g transform="translate(20, 156)">
       <rect x="0" y="0" width="335" height="360" rx="20" fill="white" filter="url(#cardShadow3)"/>
 
-      <text x="20" y="32" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#6b7494" letter-spacing="1.5">ブックマーク復習</text>
-      <text x="20" y="50" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" fill="#6b7494">残り: 8単語</text>
+      <text x="20" y="32" font-family="'Rounded Mplus 1c'" font-size="11" font-weight="600" fill="#6b7494" letter-spacing="1.5">ブックマーク復習</text>
+      <text x="20" y="50" font-family="'Rounded Mplus 1c'" font-size="12" fill="#6b7494">残り: 8単語</text>
 
       <!-- Flashcard - showing answer -->
       <rect x="16" y="64" width="303" height="160" rx="16" fill="#f0f2f8" stroke="#e2e6f0" stroke-width="1"/>
 
       <!-- Front (faded/behind) -->
-      <text x="167" y="120" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="15" fill="#9ca3bf" text-anchor="middle">difficult</text>
+      <text x="167" y="120" font-family="Inter" font-size="15" fill="#9ca3bf" text-anchor="middle">difficult</text>
 
       <!-- Arrow -->
-      <text x="167" y="148" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#9ca3bf" text-anchor="middle">&#8595;</text>
+      <text x="167" y="148" font-family="Inter" font-size="14" fill="#9ca3bf" text-anchor="middle">&#8595;</text>
 
       <!-- Answer revealed -->
-      <text x="167" y="180" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="24" font-weight="600" fill="#1a2040" text-anchor="middle">難しい</text>
-      <text x="167" y="210" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" fill="#9ca3bf" text-anchor="middle">タップして戻す</text>
+      <text x="167" y="180" font-family="'Rounded Mplus 1c'" font-size="24" font-weight="600" fill="#1a2040" text-anchor="middle">難しい</text>
+      <text x="167" y="210" font-family="'Rounded Mplus 1c'" font-size="12" fill="#9ca3bf" text-anchor="middle">タップして戻す</text>
 
       <!-- Action buttons -->
       <rect x="16" y="238" width="145" height="48" rx="12" fill="white" stroke="#e2e6f0" stroke-width="1"/>
-      <text x="88" y="267" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="15" font-weight="500" fill="#1a2040" text-anchor="middle">あとで練習</text>
+      <text x="88" y="267" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="500" fill="#1a2040" text-anchor="middle">あとで練習</text>
 
       <rect x="174" y="238" width="145" height="48" rx="12" fill="url(#btnGrad3)"/>
-      <text x="246" y="267" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="15" font-weight="500" fill="white" text-anchor="middle">知ってる!</text>
+      <text x="246" y="267" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="500" fill="white" text-anchor="middle">知ってる!</text>
 
       <!-- Bookmark button (active) -->
       <line x1="16" y1="300" x2="319" y2="300" stroke="#f0f2f8" stroke-width="1"/>
       <g transform="translate(230, 310)">
         <rect x="0" y="0" width="90" height="34" rx="8" fill="#e8ecf4"/>
-        <text x="18" y="22" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#1a3a8a">&#9733;</text>
-        <text x="34" y="22" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" font-weight="500" fill="#6b7494">ブックマーク</text>
+        <text x="18" y="22" font-family="Inter" font-size="14" fill="#1a3a8a">&#9733;</text>
+        <text x="34" y="22" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="500" fill="#6b7494">ブックマーク</text>
       </g>
     </g>
 
@@ -75,44 +75,44 @@
       <rect x="0" y="0" width="335" height="72" rx="20" fill="white" filter="url(#cardShadow3)"/>
       <!-- XP info -->
       <rect x="16" y="14" width="54" height="24" rx="12" fill="url(#btnGrad3)"/>
-      <text x="28" y="30" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" font-weight="700" fill="white">&#9733; Lv.3</text>
-      <text x="78" y="24" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#1a2040">シルバー</text>
-      <text x="126" y="24" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#6b7494">420 XP</text>
+      <text x="28" y="30" font-family="Inter,'Rounded Mplus 1c'" font-size="10" font-weight="700" fill="white">font-family="Inter" font-size="10" font-weight="700" fill="white">&#9733; Lv.3#9733; Lv.3</text>
+      <text x="78" y="24" font-family="'Rounded Mplus 1c'" font-size="11" font-weight="600" fill="#1a2040">シルバー</text>
+      <text x="126" y="24" font-family="Inter,'Rounded Mplus 1c'" font-size="11" fill="#6b7494">420 XP</text>
 
       <!-- Daily progress -->
-      <text x="16" y="56" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="500" fill="#6b7494">今日の進捗</text>
-      <text x="319" y="56" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#1a2040" text-anchor="end">15 / 20</text>
+      <text x="16" y="56" font-family="'Rounded Mplus 1c'" font-size="11" font-weight="500" fill="#6b7494">今日の進捗</text>
+      <text x="319" y="56" font-family="Inter" font-size="11" font-weight="600" fill="#1a2040" text-anchor="end">15 / 20</text>
     </g>
 
     <!-- Bookmarked words list preview -->
     <g transform="translate(20, 626)">
       <rect x="0" y="0" width="335" height="96" rx="20" fill="white" filter="url(#cardShadow3)"/>
-      <text x="20" y="26" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="12" font-weight="700" fill="#1a2040">ブックマーク一覧</text>
+      <text x="20" y="26" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#1a2040">ブックマーク一覧</text>
 
       <line x1="16" y1="36" x2="319" y2="36" stroke="#f0f2f8" stroke-width="1"/>
-      <text x="20" y="56" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" fill="#1a2040">difficult</text>
-      <text x="120" y="56" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" fill="#1a2040">難しい</text>
-      <text x="250" y="56" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" fill="#6b7494" text-anchor="end">1/3</text>
+      <text x="20" y="56" font-family="Inter" font-size="12" fill="#1a2040">difficult</text>
+      <text x="120" y="56" font-family="'Rounded Mplus 1c'" font-size="12" fill="#1a2040">難しい</text>
+      <text x="250" y="56" font-family="Inter" font-size="10" fill="#6b7494" text-anchor="end">1/3</text>
 
       <line x1="16" y1="66" x2="319" y2="66" stroke="#f0f2f8" stroke-width="1"/>
-      <text x="20" y="86" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" fill="#1a2040">experience</text>
-      <text x="120" y="86" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" fill="#1a2040">経験</text>
-      <text x="250" y="86" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" fill="#6b7494" text-anchor="end">0/2</text>
+      <text x="20" y="86" font-family="Inter" font-size="12" fill="#1a2040">experience</text>
+      <text x="120" y="86" font-family="'Rounded Mplus 1c'" font-size="12" fill="#1a2040">経験</text>
+      <text x="250" y="86" font-family="Inter" font-size="10" fill="#6b7494" text-anchor="end">0/2</text>
     </g>
 
     <!-- Bottom Navigation -->
     <rect x="0" y="740" width="375" height="72" fill="url(#navGrad3)"/>
-    <g font-family="-apple-system,BlinkMacSystemFont,sans-serif">
+    <g>
       <text x="50" y="772" font-size="18" fill="white" opacity="0.6" text-anchor="middle">&#128214;</text>
-      <text x="50" y="790" font-size="10" font-weight="600" fill="white" opacity="0.6" text-anchor="middle">学習</text>
+      <text x="50" y="790" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="600" fill="white" opacity="0.6" text-anchor="middle">学習</text>
       <!-- 復習 (active) -->
       <rect x="106" y="747" width="76" height="52" rx="16" fill="white" opacity="0.15"/>
       <text x="144" y="772" font-size="18" fill="white" text-anchor="middle">&#128278;</text>
-      <text x="144" y="790" font-size="10" font-weight="600" fill="white" text-anchor="middle">復習</text>
+      <text x="144" y="790" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="600" fill="white" text-anchor="middle">復習</text>
       <text x="237" y="772" font-size="18" fill="white" opacity="0.6" text-anchor="middle">&#128100;</text>
-      <text x="237" y="790" font-size="10" font-weight="600" fill="white" opacity="0.6" text-anchor="middle">マイページ</text>
+      <text x="237" y="790" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="600" fill="white" opacity="0.6" text-anchor="middle">マイページ</text>
       <text x="331" y="772" font-size="18" fill="white" opacity="0.6" text-anchor="middle">&#9881;</text>
-      <text x="331" y="790" font-size="10" font-weight="600" fill="white" opacity="0.6" text-anchor="middle">管理</text>
+      <text x="331" y="790" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="600" fill="white" opacity="0.6" text-anchor="middle">管理</text>
     </g>
 
   </g>

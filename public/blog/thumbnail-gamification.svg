@@ -61,34 +61,34 @@
   <g transform="translate(80, 70)">
     <!-- Category label -->
     <rect x="0" y="0" width="200" height="36" rx="18" fill="url(#accentGrad)"/>
-    <text x="100" y="24" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">GAMIFICATION</text>
+    <text x="100" y="24" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="white" text-anchor="middle">GAMIFICATION</text>
 
     <!-- Main title -->
-    <text x="0" y="100" font-family="'Rounded Mplus 1c',sans-serif" font-size="52" font-weight="800" fill="white">ゲーミフィケーション</text>
-    <text x="0" y="166" font-family="'Rounded Mplus 1c',sans-serif" font-size="52" font-weight="800" fill="white">要素</text>
+    <text x="0" y="100" font-family="'Rounded Mplus 1c'" font-size="52" font-weight="800" fill="white">ゲーミフィケーション</text>
+    <text x="0" y="166" font-family="'Rounded Mplus 1c'" font-size="52" font-weight="800" fill="white">要素</text>
 
     <!-- Subtitle -->
-    <text x="0" y="218" font-family="'Rounded Mplus 1c',sans-serif" font-size="18" font-weight="500" fill="#c4b5fd">XP獲得 · レベルアップ · デイリー目標 · ランク制度</text>
+    <text x="0" y="218" font-family="'Rounded Mplus 1c'" font-size="18" font-weight="500" fill="#c4b5fd">XP獲得 · レベルアップ · デイリー目標 · ランク制度</text>
 
     <!-- Feature pills -->
     <g transform="translate(0, 252)">
       <rect x="0" y="0" width="146" height="46" rx="23" fill="url(#pillGrad)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
-      <text x="26" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="20" fill="#fbbf24">⭐</text>
-      <text x="50" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white">XPシステム</text>
+      <text x="26" y="30" font-family="'Rounded Mplus 1c'" font-size="20" fill="#fbbf24">⭐</text>
+      <text x="50" y="30" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="white">XPシステム</text>
 
       <rect x="162" y="0" width="150" height="46" rx="23" fill="url(#pillGrad)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
-      <text x="186" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="20" fill="#fb923c">🔥</text>
-      <text x="212" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white">ストリーク</text>
+      <text x="186" y="30" font-family="'Rounded Mplus 1c'" font-size="20" fill="#fb923c">🔥</text>
+      <text x="212" y="30" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="white">ストリーク</text>
 
       <rect x="328" y="0" width="158" height="46" rx="23" fill="url(#pillGrad)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
-      <text x="352" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="20" fill="#c084fc">🏆</text>
-      <text x="378" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white">6段階ランク</text>
+      <text x="352" y="30" font-family="'Rounded Mplus 1c'" font-size="20" fill="#c084fc">🏆</text>
+      <text x="378" y="30" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="white">6段階ランク</text>
     </g>
 
     <!-- App badge -->
     <g transform="translate(0, 340)">
       <rect x="0" y="0" width="220" height="40" rx="20" fill="white" opacity="0.08"/>
-      <text x="110" y="27" font-family="'Rounded Mplus 1c',sans-serif" font-size="14" font-weight="700" fill="white" opacity="0.6" text-anchor="middle">📖 英検3級 単語アプリ</text>
+      <text x="110" y="27" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white" opacity="0.6" text-anchor="middle">📖 英検3級 単語アプリ</text>
     </g>
   </g>
 
@@ -103,8 +103,8 @@
 
     <!-- Daily progress -->
     <g transform="translate(28, 40)">
-      <text x="0" y="14" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#6b7494">今日の進捗</text>
-      <text x="320" y="14" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#34d399" text-anchor="end">20 / 20 達成! ✨</text>
+      <text x="0" y="14" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#6b7494">今日の進捗</text>
+      <text x="320" y="14" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#34d399" text-anchor="end">20 / 20 達成! ✨</text>
       <rect x="0" y="24" width="320" height="12" rx="6" fill="#dde1ed"/>
       <rect x="0" y="24" width="320" height="12" rx="6" fill="url(#greenGrad)"/>
     </g>
@@ -112,9 +112,9 @@
     <!-- XP badge -->
     <g transform="translate(28, 82)">
       <rect x="0" y="0" width="64" height="28" rx="14" fill="#4338ca"/>
-      <text x="32" y="19" font-family="'Rounded Mplus 1c',sans-serif" font-size="11" font-weight="700" fill="white" text-anchor="middle">⭐ Lv.5</text>
-      <text x="74" y="12" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#1e1b4b">プラチナ</text>
-      <text x="130" y="12" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="500" fill="#6b7494">1250 XP</text>
+      <text x="32" y="19" font-family="'Rounded Mplus 1c'" font-size="11" font-weight="700" fill="white" text-anchor="middle">⭐ Lv.5</text>
+      <text x="74" y="12" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#1e1b4b">プラチナ</text>
+      <text x="130" y="12" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="500" fill="#6b7494">1250 XP</text>
       <rect x="74" y="20" width="90" height="6" rx="3" fill="#e2e6f0"/>
       <rect x="74" y="20" width="56" height="6" rx="3" fill="#4338ca"/>
     </g>
@@ -122,40 +122,40 @@
     <!-- Study card -->
     <g transform="translate(28, 122)">
       <rect x="0" y="0" width="320" height="210" rx="20" fill="white"/>
-      <text x="16" y="28" font-family="'Rounded Mplus 1c',sans-serif" font-size="11" font-weight="700" fill="#6b7494" letter-spacing="1">単語カード</text>
-      <text x="16" y="48" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#4338ca">スコア: 20</text>
-      <text x="100" y="48" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#fb923c">🔥 8連続!</text>
+      <text x="16" y="28" font-family="'Rounded Mplus 1c'" font-size="11" font-weight="700" fill="#6b7494" letter-spacing="1">単語カード</text>
+      <text x="16" y="48" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#4338ca">スコア: 20</text>
+      <text x="100" y="48" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#fb923c">🔥 8連続!</text>
 
       <rect x="16" y="60" width="288" height="86" rx="14" fill="#f5f3ff" stroke="#e2e6f0" stroke-width="1"/>
-      <text x="160" y="112" font-family="'Rounded Mplus 1c',sans-serif" font-size="26" font-weight="700" fill="#1e1b4b" text-anchor="middle">important</text>
+      <text x="160" y="112" font-family="'Rounded Mplus 1c'" font-size="26" font-weight="700" fill="#1e1b4b" text-anchor="middle">important</text>
 
       <!-- Correct banner -->
       <rect x="16" y="156" width="288" height="42" rx="14" fill="url(#greenGrad)"/>
-      <text x="40" y="182" font-family="'Rounded Mplus 1c',sans-serif" font-size="18" fill="white">✓</text>
-      <text x="62" y="182" font-family="'Rounded Mplus 1c',sans-serif" font-size="16" font-weight="700" fill="white">正解!</text>
-      <text x="62" y="194" font-family="'Rounded Mplus 1c',sans-serif" font-size="10" fill="white" opacity="0.9">8連続正解!</text>
-      <text x="260" y="182" font-family="'Rounded Mplus 1c',sans-serif" font-size="14" font-weight="700" fill="white">+20 XP ✨</text>
+      <text x="40" y="182" font-family="'Rounded Mplus 1c'" font-size="18" fill="white">✓</text>
+      <text x="62" y="182" font-family="'Rounded Mplus 1c'" font-size="16" font-weight="700" fill="white">正解!</text>
+      <text x="62" y="194" font-family="'Rounded Mplus 1c'" font-size="10" fill="white" opacity="0.9">8連続正解!</text>
+      <text x="260" y="182" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white">+20 XP ✨</text>
     </g>
 
     <!-- Rank & Streak cards -->
     <g transform="translate(28, 346)">
       <rect x="0" y="0" width="152" height="70" rx="16" fill="white"/>
       <circle cx="30" cy="35" r="20" fill="#4338ca"/>
-      <text x="30" y="42" font-family="'Rounded Mplus 1c',sans-serif" font-size="16" fill="white" text-anchor="middle">🏆</text>
-      <text x="60" y="28" font-family="'Rounded Mplus 1c',sans-serif" font-size="10" font-weight="500" fill="#6b7494">ランク</text>
-      <text x="60" y="48" font-family="'Rounded Mplus 1c',sans-serif" font-size="16" font-weight="700" fill="#1e1b4b">プラチナ</text>
+      <text x="30" y="42" font-family="'Rounded Mplus 1c'" font-size="16" fill="white" text-anchor="middle">🏆</text>
+      <text x="60" y="28" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="500" fill="#6b7494">ランク</text>
+      <text x="60" y="48" font-family="'Rounded Mplus 1c'" font-size="16" font-weight="700" fill="#1e1b4b">プラチナ</text>
 
       <rect x="168" y="0" width="152" height="70" rx="16" fill="white"/>
       <circle cx="198" cy="35" r="20" fill="#fb923c"/>
-      <text x="198" y="42" font-family="'Rounded Mplus 1c',sans-serif" font-size="16" fill="white" text-anchor="middle">🔥</text>
-      <text x="228" y="28" font-family="'Rounded Mplus 1c',sans-serif" font-size="10" font-weight="500" fill="#6b7494">連続学習</text>
-      <text x="228" y="48" font-family="'Rounded Mplus 1c',sans-serif" font-size="16" font-weight="700" fill="#1e1b4b">12日</text>
+      <text x="198" y="42" font-family="'Rounded Mplus 1c'" font-size="16" fill="white" text-anchor="middle">🔥</text>
+      <text x="228" y="28" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="500" fill="#6b7494">連続学習</text>
+      <text x="228" y="48" font-family="'Rounded Mplus 1c'" font-size="16" font-weight="700" fill="#1e1b4b">12日</text>
     </g>
 
     <!-- Calendar -->
     <g transform="translate(28, 430)">
       <rect x="0" y="0" width="320" height="76" rx="16" fill="white"/>
-      <text x="16" y="26" font-family="'Rounded Mplus 1c',sans-serif" font-size="13" font-weight="700" fill="#1e1b4b">🔥 12日連続学習</text>
+      <text x="16" y="26" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="700" fill="#1e1b4b">🔥 12日連続学習</text>
       <g transform="translate(16, 38)">
         <rect x="0" y="0" width="38" height="28" rx="8" fill="#34d399"/>
         <rect x="44" y="0" width="38" height="28" rx="8" fill="#34d399"/>

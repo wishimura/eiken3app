@@ -54,30 +54,30 @@
   <g transform="translate(80, 70)">
     <!-- Category label -->
     <rect x="0" y="0" width="240" height="36" rx="18" fill="url(#accentGrad2)"/>
-    <text x="120" y="24" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">LEARNING PROGRESS</text>
+    <text x="120" y="24" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="white" text-anchor="middle">LEARNING PROGRESS</text>
 
     <!-- Main title -->
-    <text x="0" y="100" font-family="'Rounded Mplus 1c',sans-serif" font-size="52" font-weight="800" fill="white">学習進捗の記録</text>
+    <text x="0" y="100" font-family="'Rounded Mplus 1c'" font-size="52" font-weight="800" fill="white">学習進捗の記録</text>
 
     <!-- Subtitle -->
-    <text x="0" y="160" font-family="'Rounded Mplus 1c',sans-serif" font-size="18" font-weight="500" fill="#a5f3fc">正答率 · ブックマーク · 復習モード · クラウド同期</text>
+    <text x="0" y="160" font-family="'Rounded Mplus 1c'" font-size="18" font-weight="500" fill="#a5f3fc">正答率 · ブックマーク · 復習モード · クラウド同期</text>
 
     <!-- Feature pills -->
     <g transform="translate(0, 196)">
       <rect x="0" y="0" width="130" height="46" rx="23" fill="url(#pillGrad2)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
-      <text x="65" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">📊 正答率</text>
+      <text x="65" y="30" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="white" text-anchor="middle">📊 正答率</text>
 
       <rect x="146" y="0" width="170" height="46" rx="23" fill="url(#pillGrad2)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
-      <text x="231" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">⭐ ブックマーク</text>
+      <text x="231" y="30" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="white" text-anchor="middle">⭐ ブックマーク</text>
 
       <rect x="332" y="0" width="160" height="46" rx="23" fill="url(#pillGrad2)" stroke="white" stroke-opacity="0.15" stroke-width="1"/>
-      <text x="412" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="white" text-anchor="middle">☁️ クラウド保存</text>
+      <text x="412" y="30" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="white" text-anchor="middle">☁️ クラウド保存</text>
     </g>
 
     <!-- App badge -->
     <g transform="translate(0, 284)">
       <rect x="0" y="0" width="220" height="40" rx="20" fill="white" opacity="0.08"/>
-      <text x="110" y="27" font-family="'Rounded Mplus 1c',sans-serif" font-size="14" font-weight="700" fill="white" opacity="0.6" text-anchor="middle">📖 英検3級 単語アプリ</text>
+      <text x="110" y="27" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white" opacity="0.6" text-anchor="middle">📖 英検3級 単語アプリ</text>
     </g>
   </g>
 
@@ -90,8 +90,8 @@
       <circle cx="0" cy="0" r="100" fill="none" stroke="url(#ringGrad)" stroke-width="16"
               stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="138"
               transform="rotate(-90)"/>
-      <text x="0" y="-6" font-family="'Rounded Mplus 1c',sans-serif" font-size="48" font-weight="800" fill="white" text-anchor="middle">78%</text>
-      <text x="0" y="24" font-family="'Rounded Mplus 1c',sans-serif" font-size="15" font-weight="700" fill="#a5f3fc" text-anchor="middle">単語 正答率</text>
+      <text x="0" y="-6" font-family="'Rounded Mplus 1c'" font-size="48" font-weight="800" fill="white" text-anchor="middle">78%</text>
+      <text x="0" y="24" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="#a5f3fc" text-anchor="middle">単語 正答率</text>
     </g>
 
     <!-- Small accuracy circle -->
@@ -101,36 +101,36 @@
       <circle cx="0" cy="0" r="65" fill="none" stroke="url(#ringGrad)" stroke-width="12"
               stroke-linecap="round" stroke-dasharray="408" stroke-dashoffset="139"
               transform="rotate(-90)"/>
-      <text x="0" y="-4" font-family="'Rounded Mplus 1c',sans-serif" font-size="32" font-weight="800" fill="white" text-anchor="middle">66%</text>
-      <text x="0" y="22" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#a5f3fc" text-anchor="middle">穴埋め 正答率</text>
+      <text x="0" y="-4" font-family="'Rounded Mplus 1c'" font-size="32" font-weight="800" fill="white" text-anchor="middle">66%</text>
+      <text x="0" y="22" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#a5f3fc" text-anchor="middle">穴埋め 正答率</text>
     </g>
 
     <!-- Stats cards -->
     <g transform="translate(20, 310)">
       <rect x="0" y="0" width="150" height="90" rx="18" fill="white" opacity="0.1" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
-      <text x="24" y="35" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#a5f3fc">総回答数</text>
-      <text x="24" y="70" font-family="'Rounded Mplus 1c',sans-serif" font-size="34" font-weight="800" fill="white">156</text>
+      <text x="24" y="35" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#a5f3fc">総回答数</text>
+      <text x="24" y="70" font-family="'Rounded Mplus 1c'" font-size="34" font-weight="800" fill="white">156</text>
 
       <rect x="168" y="0" width="150" height="90" rx="18" fill="white" opacity="0.1" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
-      <text x="192" y="35" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#a5f3fc">正解数</text>
-      <text x="192" y="70" font-family="'Rounded Mplus 1c',sans-serif" font-size="34" font-weight="800" fill="white">122</text>
+      <text x="192" y="35" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#a5f3fc">正解数</text>
+      <text x="192" y="70" font-family="'Rounded Mplus 1c'" font-size="34" font-weight="800" fill="white">122</text>
 
       <rect x="336" y="0" width="120" height="90" rx="18" fill="white" opacity="0.1" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
-      <text x="360" y="35" font-family="'Rounded Mplus 1c',sans-serif" font-size="12" font-weight="700" fill="#a5f3fc">穴埋め</text>
-      <text x="360" y="70" font-family="'Rounded Mplus 1c',sans-serif" font-size="34" font-weight="800" fill="white">48</text>
+      <text x="360" y="35" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#a5f3fc">穴埋め</text>
+      <text x="360" y="70" font-family="'Rounded Mplus 1c'" font-size="34" font-weight="800" fill="white">48</text>
     </g>
 
     <!-- Bookmark row -->
     <g transform="translate(20, 424)">
       <rect x="0" y="0" width="436" height="56" rx="16" fill="white" opacity="0.08" stroke="white" stroke-opacity="0.1" stroke-width="1"/>
-      <text x="24" y="36" font-family="'Rounded Mplus 1c',sans-serif" font-size="16" font-weight="700" fill="white">⭐ ブックマーク単語: 8件</text>
-      <text x="412" y="36" font-family="'Rounded Mplus 1c',sans-serif" font-size="14" font-weight="700" fill="#22d3ee" text-anchor="end">練習する →</text>
+      <text x="24" y="36" font-family="'Rounded Mplus 1c'" font-size="16" font-weight="700" fill="white">⭐ ブックマーク単語: 8件</text>
+      <text x="412" y="36" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="#22d3ee" text-anchor="end">練習する →</text>
     </g>
 
     <!-- Cloud sync indicator -->
     <g transform="translate(20, 500)">
       <rect x="0" y="0" width="436" height="46" rx="14" fill="url(#pinkGrad)" opacity="0.3"/>
-      <text x="218" y="30" font-family="'Rounded Mplus 1c',sans-serif" font-size="14" font-weight="700" fill="white" text-anchor="middle">☁️ いつでもどこからでも続きから学習できます</text>
+      <text x="218" y="30" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white" text-anchor="middle">☁️ いつでもどこからでも続きから学習できます</text>
     </g>
   </g>
 </svg>
