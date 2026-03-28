@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f2460"/>
+      <stop offset="50%" stop-color="#1a3a8a"/>
+      <stop offset="100%" stop-color="#2563b0"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="progressG" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#93c5fd"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="20" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="100" cy="530" r="200" fill="white" opacity="0.03"/>
+  <circle cx="1100" cy="100" r="150" fill="white" opacity="0.03"/>
+  <circle cx="600" cy="650" r="300" fill="white" opacity="0.02"/>
+
+  <!-- Left side: Text content -->
+  <g transform="translate(80, 80)">
+    <text x="0" y="50" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="20" font-weight="600" fill="#93c5fd" letter-spacing="3">GAMIFICATION</text>
+
+    <text x="0" y="110" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="44" font-weight="800" fill="white">ゲーミフィケーション</text>
+    <text x="0" y="165" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="44" font-weight="800" fill="white">要素</text>
+
+    <text x="0" y="220" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="18" fill="#93c5fd" opacity="0.9">XP獲得 &#183; レベルアップ &#183; デイリー目標 &#183; ランク制度</text>
+
+    <!-- Feature pills -->
+    <g transform="translate(0, 260)">
+      <rect x="0" y="0" width="120" height="40" rx="20" fill="white" opacity="0.15"/>
+      <text x="60" y="26" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">&#9733; XPシステム</text>
+
+      <rect x="135" y="0" width="130" height="40" rx="20" fill="white" opacity="0.15"/>
+      <text x="200" y="26" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">&#128293; ストリーク</text>
+
+      <rect x="280" y="0" width="140" height="40" rx="20" fill="white" opacity="0.15"/>
+      <text x="350" y="26" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">&#127942; 6段階ランク</text>
+    </g>
+
+    <!-- App name -->
+    <text x="0" y="390" font-family="-apple-system,BlinkMacSystemFont,'Hiragino Sans',sans-serif" font-size="16" font-weight="600" fill="white" opacity="0.5">英検3級 単語アプリ</text>
+  </g>
+
+  <!-- Right side: Mini phone mockup -->
+  <g transform="translate(750, 40)">
+    <rect x="0" y="0" width="360" height="550" rx="32" fill="#0d1b40" stroke="white" stroke-opacity="0.1" stroke-width="2"/>
+    <rect x="10" y="10" width="340" height="530" rx="26" fill="#eef1f8"/>
+
+    <!-- Daily progress -->
+    <g transform="translate(26, 30)">
+      <text x="0" y="14" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="500" fill="#6b7494">今日の進捗</text>
+      <text x="308" y="14" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="700" fill="#16a34a" text-anchor="end">20 / 20 達成!</text>
+      <rect x="0" y="22" width="308" height="10" rx="5" fill="#dde1ed"/>
+      <rect x="0" y="22" width="308" height="10" rx="5" fill="url(#greenGrad)"/>
+    </g>
+
+    <!-- XP + Level -->
+    <g transform="translate(26, 76)">
+      <rect x="0" y="0" width="56" height="24" rx="12" fill="#1a3a8a"/>
+      <text x="12" y="16" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" font-weight="700" fill="white">&#9733; Lv.5</text>
+      <text x="64" y="10" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#1a2040">プラチナ</text>
+      <text x="112" y="10" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" fill="#6b7494">1250 XP</text>
+      <rect x="64" y="16" width="80" height="6" rx="3" fill="#e2e6f0"/>
+      <rect x="64" y="16" width="50" height="6" rx="3" fill="#1a3a8a"/>
+    </g>
+
+    <!-- Card with correct feedback -->
+    <g transform="translate(26, 114)">
+      <rect x="0" y="0" width="308" height="200" rx="16" fill="white"/>
+      <text x="12" y="24" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" font-weight="600" fill="#6b7494" letter-spacing="1">単語カード</text>
+      <text x="12" y="42" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#1a3a8a">スコア: 20</text>
+      <text x="90" y="42" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="600" fill="#f97316">&#128293; 8連続!</text>
+
+      <rect x="12" y="56" width="284" height="80" rx="12" fill="#f8f9fc" stroke="#e2e6f0" stroke-width="1"/>
+      <text x="154" y="102" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="22" font-weight="600" fill="#1a2040" text-anchor="middle">important</text>
+
+      <!-- Correct banner -->
+      <rect x="12" y="146" width="284" height="42" rx="12" fill="url(#greenGrad)"/>
+      <text x="36" y="172" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="16" fill="white">&#10003;</text>
+      <text x="56" y="172" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" font-weight="700" fill="white">正解!</text>
+      <text x="56" y="184" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="10" fill="white" opacity="0.9">8連続正解!</text>
+      <text x="250" y="172" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="12" font-weight="700" fill="white">+20 XP</text>
+    </g>
+
+    <!-- Rank & Streak mini cards -->
+    <g transform="translate(26, 328)">
+      <rect x="0" y="0" width="148" height="64" rx="14" fill="white"/>
+      <circle cx="28" cy="32" r="18" fill="#1a3a8a"/>
+      <text x="28" y="38" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="white" text-anchor="middle">&#127942;</text>
+      <text x="56" y="26" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9" fill="#6b7494">ランク</text>
+      <text x="56" y="44" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" font-weight="700" fill="#1a2040">プラチナ</text>
+
+      <rect x="160" y="0" width="148" height="64" rx="14" fill="white"/>
+      <circle cx="188" cy="32" r="18" fill="#f97316"/>
+      <text x="188" y="38" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="white" text-anchor="middle">&#128293;</text>
+      <text x="216" y="26" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9" fill="#6b7494">連続学習</text>
+      <text x="216" y="44" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" font-weight="700" fill="#1a2040">12日</text>
+    </g>
+
+    <!-- Calendar heatmap -->
+    <g transform="translate(26, 406)">
+      <rect x="0" y="0" width="308" height="72" rx="14" fill="white"/>
+      <text x="24" y="24" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="14" fill="#f97316">&#128293;</text>
+      <text x="40" y="24" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="11" font-weight="700" fill="#1a2040">12日連続学習</text>
+      <g transform="translate(14, 36)">
+        <rect x="0" y="0" width="36" height="26" rx="6" fill="#16a34a"/>
+        <rect x="42" y="0" width="36" height="26" rx="6" fill="#16a34a"/>
+        <rect x="84" y="0" width="36" height="26" rx="6" fill="#16a34a"/>
+        <rect x="126" y="0" width="36" height="26" rx="6" fill="#16a34a"/>
+        <rect x="168" y="0" width="36" height="26" rx="6" fill="#16a34a"/>
+        <rect x="210" y="0" width="36" height="26" rx="6" fill="#16a34a"/>
+        <rect x="252" y="0" width="36" height="26" rx="6" fill="#16a34a"/>
+      </g>
+    </g>
+
+    <!-- Nav bar -->
+    <rect x="10" y="490" width="340" height="50" rx="0 0 26 26" fill="#152e75"/>
+  </g>
+</svg>
