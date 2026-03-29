@@ -63,30 +63,8 @@
 
   <!-- LEFT SIDE CONTENT -->
 
-  <!-- LEARNING PROGRESS label pill -->
-  <rect x="60" y="100" width="250" height="36" rx="18" fill="url(#cyanPill)"/>
-  <text x="185" y="124" font-family="Inter" font-size="14" font-weight="800" fill="white" text-anchor="middle" letter-spacing="2">LEARNING PROGRESS</text>
-
   <!-- Big title -->
-  <text x="60" y="200" font-family="'Rounded Mplus 1c'" font-size="40" font-weight="800" fill="white">学習進捗の記録</text>
-
-  <!-- Subtitle -->
-  <text x="60" y="248" font-family="'Rounded Mplus 1c'" font-size="16" font-weight="700" fill="rgba(255,255,255,0.6)">正答率・ブックマーク・学習カレンダーで</text>
-  <text x="60" y="274" font-family="'Rounded Mplus 1c'" font-size="16" font-weight="700" fill="rgba(255,255,255,0.6)">あなたの成長を可視化</text>
-
-  <!-- Feature pills -->
-  <rect x="60" y="306" width="130" height="40" rx="20" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-  <text x="125" y="332" font-family="Inter,'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white" text-anchor="middle">📊 正答率</text>
-
-  <rect x="204" y="306" width="170" height="40" rx="20" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-  <text x="289" y="332" font-family="Inter,'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white" text-anchor="middle">⭐ ブックマーク</text>
-
-  <rect x="388" y="306" width="180" height="40" rx="20" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-  <text x="478" y="332" font-family="Inter,'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white" text-anchor="middle">☁️ クラウド保存</text>
-
-  <!-- App name badge -->
-  <rect x="60" y="386" width="220" height="44" rx="22" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-  <text x="170" y="414" font-family="'Rounded Mplus 1c'" font-size="15" font-weight="700" fill="rgba(255,255,255,0.8)" text-anchor="middle">英検3級 学習アプリ</text>
+  <text x="60" y="200" font-family="'Rounded Mplus 1c'" font-size="48" font-weight="800" fill="white">英検学習アプリ</text>
 
   <!-- RIGHT SIDE - Accuracy Circles and Stats -->
 
