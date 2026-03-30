@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企業向け - 外国人材マッチングシステム</title>
+  <link rel="stylesheet" href="common.css">
+  <script src="common.js"></script>
+</head>
+<body>
+
+<!-- ========== ログイン画面 ========== -->
+<div id="screen-login" class="screen active">
+  <div class="login-wrapper">
+    <div class="login-box">
+      <h2>外国人材マッチングシステム</h2>
+      <p class="login-subtitle">企業アカウントでログイン</p>
+      <div class="form-group">
+        <label>メールアドレス</label>
+        <input type="email" placeholder="example@company.co.jp">
+      </div>
+      <div class="form-group">
+        <label>パスワード</label>
+        <input type="password" placeholder="パスワードを入力">
+      </div>
+      <button class="btn btn-primary btn-lg" onclick="showScreen('screen-job-list')">ログイン</button>
+      <div class="login-links">
+        <a href="#" onclick="dummyAction('パスワード再設定画面へ遷移します')">パスワードを忘れた方</a>
+        <a href="#" onclick="dummyAction('新規登録画面へ遷移します')">新規登録</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ヘッダー＋ナビ（ログイン後共通） ========== -->
+<!-- 各screen内にヘッダーを含める形にします -->
+
+<!-- ========== 企業プロフィール ========== -->
+<div id="screen-profile" class="screen">
+  <header class="app-header">
+    <h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 企業</span></h1>
+    <div class="header-right">
+      <span>株式会社サンプル商事</span>
+      <a href="#" onclick="showScreen('screen-login')">ログアウト</a>
+    </div>
+  </header>
+  <nav class="app-nav">
+    <a data-screen="screen-profile" class="active">企業プロフィール</a>
+    <a data-screen="screen-job-list">求人一覧</a>
+    <a data-screen="screen-applicant-list">応募者一覧</a>
+  </nav>
+  <div class="main-content">
+    <h2 class="page-title">企業プロフィール登録・編集</h2>
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group">
+          <label>会社名</label>
+          <input type="text" value="株式会社サンプル商事">
+        </div>
+        <div class="form-group">
+          <label>業種</label>
+          <select>
+            <option>製造業</option>
+            <option selected>食品加工</option>
+            <option>IT・情報通信</option>
+            <option>建設業</option>
+            <option>農林水産業</option>
+            <option>宿泊・飲食</option>
+            <option>介護・福祉</option>
+            <option>その他</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>所在地</label>
+        <input type="text" value="静岡県浜松市中央区中央1-2-3">
+      </div>
+      <div class="form-group">
+        <label>会社紹介</label>
+        <textarea>当社は食品加工業を営み、主に水産加工品の製造・販売を行っております。外国人スタッフも多数活躍中で、多言語対応の職場環境づくりに取り組んでいます。</textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>担当者名</label>
+          <input type="text" value="田中 太郎">
+        </div>
+        <div class="form-group">
+          <label>担当者メールアドレス</label>
+          <input type="email" value="tanaka@sample-shoji.co.jp">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>対応可能言語</label>
+          <input type="text" value="日本語、英語、ポルトガル語" placeholder="カンマ区切りで入力">
+        </div>
+        <div class="form-group">
+          <label>受入れ条件・備考</label>
+          <input type="text" value="社員寮あり、日本語研修制度あり" placeholder="自由記入">
+        </div>
+      </div>
+      <div class="mt-24 text-right">
+        <button class="btn btn-primary" onclick="dummyAction('プロフィールを保存しました')">保存する</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 求人一覧 ========== -->
+<div id="screen-job-list" class="screen">
+  <header class="app-header">
+    <h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 企業</span></h1>
+    <div class="header-right">
+      <span>株式会社サンプル商事</span>
+      <a href="#" onclick="showScreen('screen-login')">ログアウト</a>
+    </div>
+  </header>
+  <nav class="app-nav">
+    <a data-screen="screen-profile">企業プロフィール</a>
+    <a data-screen="screen-job-list" class="active">求人一覧</a>
+    <a data-screen="screen-applicant-list">応募者一覧</a>
+  </nav>
+  <div class="main-content">
+    <div class="page-title-row">
+      <h2 class="page-title">求人一覧</h2>
+      <button class="btn btn-primary" onclick="showScreen('screen-job-edit')">＋ 新規求人作成</button>
+    </div>
+    <div class="card" style="padding:0; overflow:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>求人タイトル</th>
+            <th>勤務地</th>
+            <th>雇用形態</th>
+            <th>公開状態</th>
+            <th>応募数</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>食品加工スタッフ</strong></td>
+            <td>浜松市中央区</td>
+            <td>正社員</td>
+            <td><span class="badge badge-green">公開中</span></td>
+            <td>5</td>
+            <td>
+              <button class="btn btn-outline btn-sm" onclick="showScreen('screen-job-detail')">詳細</button>
+              <button class="btn btn-outline btn-sm" onclick="showScreen('screen-job-edit')">編集</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>製造ライン管理補助</strong></td>
+            <td>浜松市浜名区</td>
+            <td>契約社員</td>
+            <td><span class="badge badge-green">公開中</span></td>
+            <td>3</td>
+            <td>
+              <button class="btn btn-outline btn-sm" onclick="showScreen('screen-job-detail')">詳細</button>
+              <button class="btn btn-outline btn-sm" onclick="showScreen('screen-job-edit')">編集</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>通訳・翻訳サポート</strong></td>
+            <td>浜松市中央区</td>
+            <td>パート</td>
+            <td><span class="badge badge-yellow">下書き</span></td>
+            <td>0</td>
+            <td>
+              <button class="btn btn-outline btn-sm" onclick="showScreen('screen-job-detail')">詳細</button>
+              <button class="btn btn-outline btn-sm" onclick="showScreen('screen-job-edit')">編集</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>倉庫管理スタッフ</strong></td>
+            <td>磐田市</td>
+            <td>正社員</td>
+            <td><span class="badge badge-gray">非公開</span></td>
+            <td>0</td>
+            <td>
+              <button class="btn btn-outline btn-sm" onclick="showScreen('screen-job-detail')">詳細</button>
+              <button class="btn btn-outline btn-sm" onclick="showScreen('screen-job-edit')">編集</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 求人作成・編集 ========== -->
+<div id="screen-job-edit" class="screen">
+  <header class="app-header">
+    <h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 企業</span></h1>
+    <div class="header-right">
+      <span>株式会社サンプル商事</span>
+      <a href="#" onclick="showScreen('screen-login')">ログアウト</a>
+    </div>
+  </header>
+  <nav class="app-nav">
+    <a data-screen="screen-profile">企業プロフィール</a>
+    <a data-screen="screen-job-list" class="active">求人一覧</a>
+    <a data-screen="screen-applicant-list">応募者一覧</a>
+  </nav>
+  <div class="main-content">
+    <h2 class="page-title">求人作成・編集</h2>
+    <div class="card">
+      <div class="form-row">
+        <div class="form-group">
+          <label>職種</label>
+          <input type="text" value="食品加工スタッフ">
+        </div>
+        <div class="form-group">
+          <label>雇用形態</label>
+          <select>
+            <option selected>正社員</option>
+            <option>契約社員</option>
+            <option>パート・アルバイト</option>
+            <option>技能実習</option>
+            <option>特定技能</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>業務内容</label>
+        <textarea id="job-description">水産加工品の製造ラインにおける加工作業全般。原材料の下処理、加工機械の操作、製品の検品・梱包作業を担当していただきます。未経験者歓迎、丁寧な研修制度があります。</textarea>
+      </div>
+      <div class="form-group">
+        <label>必要スキル・資格</label>
+        <textarea rows="3">特になし（未経験可）。食品衛生関連の資格があれば優遇。基本的な日本語でのコミュニケーションができること。</textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>勤務地</label>
+          <input type="text" value="静岡県浜松市中央区中央1-2-3">
+        </div>
+        <div class="form-group">
+          <label>給与</label>
+          <input type="text" value="月給 180,000円〜250,000円">
+        </div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>勤務時間</label>
+          <input type="text" value="8:00〜17:00">
+        </div>
+        <div class="form-group">
+          <label>日本語レベル</label>
+          <select>
+            <option>N1</option>
+            <option>N2</option>
+            <option selected>N3</option>
+            <option>N4</option>
+            <option>N5</option>
+            <option>不問</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>在留資格</label>
+          <select>
+            <option selected>特定技能1号</option>
+            <option>特定技能2号</option>
+            <option>技能実習</option>
+            <option>技術・人文知識・国際業務</option>
+            <option>永住者</option>
+            <option>定住者</option>
+            <option>その他</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>雇用条件・福利厚生</label>
+        <textarea rows="3">社会保険完備、交通費支給（月2万円まで）、社員寮あり（月1.5万円）、年間休日105日、有給休暇あり、昇給年1回、賞与年2回</textarea>
+      </div>
+      <div class="form-group">
+        <label>備考</label>
+        <textarea rows="2">日本語研修制度あり。ポルトガル語対応可能なスタッフがいます。</textarea>
+      </div>
+
+      <!-- AI機能エリア -->
+      <div class="mt-24" style="border-top:1px solid var(--gray-200); padding-top:20px;">
+        <h3 style="font-size:15px; margin-bottom:12px;">AI支援ツール</h3>
+        <div class="btn-group">
+          <button class="btn btn-ai" onclick="showAiCheck()">AIで求人票をチェック</button>
+          <button class="btn btn-ai" onclick="showAiTranslation()">AIで翻訳</button>
+        </div>
+
+        <!-- AI校正パネル -->
+        <div id="ai-check-panel" class="ai-panel" style="display:none;">
+          <h4>AI改善提案</h4>
+          <div class="ai-suggestion">
+            <div class="suggestion-type">専門用語の指摘</div>
+            「加工機械の操作」→ 外国人にとって分かりにくい可能性があります。「機械を使った作業」などの表現を検討してください。
+          </div>
+          <div class="ai-suggestion">
+            <div class="suggestion-type">表現の改善</div>
+            「加工作業全般」→ 業務範囲が曖昧です。具体的な作業内容をもう少し詳しく書くと、応募者が仕事内容をイメージしやすくなります。
+          </div>
+          <div class="ai-suggestion">
+            <div class="suggestion-type">やさしい日本語案</div>
+            「原材料の下処理」→「材料を 準備する しごと」のように、やさしい日本語に書き換えることをおすすめします。
+          </div>
+          <div class="ai-suggestion">
+            <div class="suggestion-type">誤字脱字</div>
+            特に指摘事項はありません。
+          </div>
+          <div class="mt-16 text-sm text-muted">※ AI提案は参考情報です。内容を確認のうえ、必要に応じて修正してください。</div>
+        </div>
+
+        <!-- AI翻訳パネル -->
+        <div id="ai-translation-panel" class="ai-panel" style="display:none;">
+          <h4>AI翻訳結果</h4>
+          <div id="translation-tabs">
+            <div class="tabs">
+              <button class="tab-btn active" data-tab="tab-easy-ja">やさしい日本語</button>
+              <button class="tab-btn" data-tab="tab-en">English</button>
+              <button class="tab-btn" data-tab="tab-pt">Portugues</button>
+            </div>
+            <div id="tab-easy-ja" class="tab-content active" style="padding:12px; background:#fff; border-radius:var(--radius); font-size:13px; line-height:1.8;">
+              <p><strong>しごとの ないよう：</strong></p>
+              <p>さかなの たべものを つくる しごとです。</p>
+              <p>ざいりょうを じゅんびします。きかいを つかいます。できた ものを チェックして はこに いれます。</p>
+              <p>はじめての ひとも だいじょうぶです。ていねいに おしえます。</p>
+            </div>
+            <div id="tab-en" class="tab-content" style="padding:12px; background:#fff; border-radius:var(--radius); font-size:13px; line-height:1.8;">
+              <p><strong>Job Description:</strong></p>
+              <p>General processing work on the seafood product manufacturing line. You will be responsible for preparing raw materials, operating processing machinery, and inspecting/packaging products.</p>
+              <p>No experience required. We provide thorough training.</p>
+            </div>
+            <div id="tab-pt" class="tab-content" style="padding:12px; background:#fff; border-radius:var(--radius); font-size:13px; line-height:1.8;">
+              <p><strong>Descricao do trabalho:</strong></p>
+              <p>Trabalho geral de processamento na linha de fabricacao de produtos marinhos. Voce sera responsavel pela preparacao de materias-primas, operacao de maquinas de processamento e inspecao/embalagem de produtos.</p>
+              <p>Nao e necessaria experiencia. Oferecemos treinamento completo.</p>
+            </div>
+          </div>
+          <div class="mt-16 text-sm text-muted">※ AI翻訳は参考です。公開前に内容をご確認ください。</div>
+        </div>
+      </div>
+
+      <div class="mt-24 flex-between">
+        <button class="btn btn-outline" onclick="dummyAction('下書き保存しました')">下書き保存</button>
+        <button class="btn btn-primary" onclick="showScreen('screen-job-detail')">公開確認へ進む</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 求人詳細確認 ========== -->
+<div id="screen-job-detail" class="screen">
+  <header class="app-header">
+    <h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 企業</span></h1>
+    <div class="header-right">
+      <span>株式会社サンプル商事</span>
+      <a href="#" onclick="showScreen('screen-login')">ログアウト</a>
+    </div>
+  </header>
+  <nav class="app-nav">
+    <a data-screen="screen-profile">企業プロフィール</a>
+    <a data-screen="screen-job-list" class="active">求人一覧</a>
+    <a data-screen="screen-applicant-list">応募者一覧</a>
+  </nav>
+  <div class="main-content">
+    <h2 class="page-title">求人詳細確認</h2>
+
+    <div id="job-detail-lang-tabs">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="jd-ja">日本語</button>
+        <button class="tab-btn" data-tab="jd-easy">やさしい日本語</button>
+        <button class="tab-btn" data-tab="jd-en">English</button>
+      </div>
+
+      <!-- 日本語版 -->
+      <div id="jd-ja" class="tab-content active">
+        <div class="card">
+          <dl class="detail-list">
+            <dt>職種</dt><dd>食品加工スタッフ</dd>
+            <dt>業務内容</dt><dd>水産加工品の製造ラインにおける加工作業全般。原材料の下処理、加工機械の操作、製品の検品・梱包作業を担当していただきます。未経験者歓迎、丁寧な研修制度があります。</dd>
+            <dt>必要スキル</dt><dd>特になし（未経験可）。食品衛生関連の資格があれば優遇。</dd>
+            <dt>勤務地</dt><dd>静岡県浜松市中央区中央1-2-3</dd>
+            <dt>雇用形態</dt><dd>正社員</dd>
+            <dt>給与</dt><dd>月給 180,000円〜250,000円</dd>
+            <dt>勤務時間</dt><dd>8:00〜17:00</dd>
+            <dt>日本語レベル</dt><dd>N3以上</dd>
+            <dt>在留資格</dt><dd>特定技能1号</dd>
+            <dt>福利厚生</dt><dd>社会保険完備、交通費支給、社員寮あり、年間休日105日</dd>
+            <dt>備考</dt><dd>日本語研修制度あり。ポルトガル語対応可能。</dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- やさしい日本語版 -->
+      <div id="jd-easy" class="tab-content">
+        <div class="card">
+          <dl class="detail-list">
+            <dt>しごと</dt><dd>たべものを つくる しごとです</dd>
+            <dt>しごとの ないよう</dt><dd>さかなの たべものを つくる こうじょうで はたらきます。ざいりょうを じゅんびします。きかいを つかいます。できた ものを チェックして はこに いれます。はじめての ひとも だいじょうぶです。</dd>
+            <dt>ひつような こと</dt><dd>とくに ありません。はじめての ひとも はたらけます。</dd>
+            <dt>はたらく ばしょ</dt><dd>しずおかけん はままつし</dd>
+            <dt>きゅうりょう</dt><dd>つきに 180,000えん〜250,000えん</dd>
+            <dt>じかん</dt><dd>あさ 8じ〜ゆうがた 5じ</dd>
+            <dt>にほんごの レベル</dt><dd>N3 いじょう</dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- English版 -->
+      <div id="jd-en" class="tab-content">
+        <div class="card">
+          <dl class="detail-list">
+            <dt>Job Title</dt><dd>Food Processing Staff</dd>
+            <dt>Job Description</dt><dd>General processing work on the seafood manufacturing line, including raw material preparation, machine operation, product inspection, and packaging. No experience required - thorough training provided.</dd>
+            <dt>Required Skills</dt><dd>None required. Food hygiene certifications are a plus.</dd>
+            <dt>Location</dt><dd>Chuo-ku, Hamamatsu City, Shizuoka Prefecture</dd>
+            <dt>Employment Type</dt><dd>Full-time</dd>
+            <dt>Salary</dt><dd>180,000 - 250,000 JPY/month</dd>
+            <dt>Working Hours</dt><dd>8:00 - 17:00</dd>
+            <dt>Japanese Level</dt><dd>JLPT N3 or above</dd>
+            <dt>Visa Requirement</dt><dd>Specified Skilled Worker (i)</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-between mt-16">
+      <button class="btn btn-outline" onclick="showScreen('screen-job-edit')">編集に戻る</button>
+      <button class="btn btn-success" onclick="dummyAction('求人を公開しました'); showScreen('screen-job-list')">この内容で公開する</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 応募者一覧 ========== -->
+<div id="screen-applicant-list" class="screen">
+  <header class="app-header">
+    <h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 企業</span></h1>
+    <div class="header-right">
+      <span>株式会社サンプル商事</span>
+      <a href="#" onclick="showScreen('screen-login')">ログアウト</a>
+    </div>
+  </header>
+  <nav class="app-nav">
+    <a data-screen="screen-profile">企業プロフィール</a>
+    <a data-screen="screen-job-list">求人一覧</a>
+    <a data-screen="screen-applicant-list" class="active">応募者一覧</a>
+  </nav>
+  <div class="main-content">
+    <h2 class="page-title">応募者一覧</h2>
+    <div class="filter-bar">
+      <select>
+        <option value="">全求人</option>
+        <option>食品加工スタッフ</option>
+        <option>製造ライン管理補助</option>
+      </select>
+      <select>
+        <option value="">全ステータス</option>
+        <option>未対応</option>
+        <option>面談調整中</option>
+        <option>面談済み</option>
+        <option>内定</option>
+        <option>不採用</option>
+      </select>
+    </div>
+    <div class="card" style="padding:0; overflow:auto;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>氏名</th>
+            <th>応募求人</th>
+            <th>希望職種</th>
+            <th>日本語レベル</th>
+            <th>応募日</th>
+            <th>ステータス</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Nguyen Van An</strong></td>
+            <td>食品加工スタッフ</td>
+            <td>製造・加工</td>
+            <td>N3</td>
+            <td>2026-03-25</td>
+            <td><span class="badge badge-red">未対応</span></td>
+            <td><button class="btn btn-outline btn-sm" onclick="showScreen('screen-applicant-detail')">詳細</button></td>
+          </tr>
+          <tr>
+            <td><strong>Maria Santos</strong></td>
+            <td>食品加工スタッフ</td>
+            <td>食品加工</td>
+            <td>N4</td>
+            <td>2026-03-24</td>
+            <td><span class="badge badge-yellow">面談調整中</span></td>
+            <td><button class="btn btn-outline btn-sm" onclick="showScreen('screen-applicant-detail')">詳細</button></td>
+          </tr>
+          <tr>
+            <td><strong>Li Wei</strong></td>
+            <td>製造ライン管理補助</td>
+            <td>製造管理</td>
+            <td>N2</td>
+            <td>2026-03-22</td>
+            <td><span class="badge badge-blue">面談済み</span></td>
+            <td><button class="btn btn-outline btn-sm" onclick="showScreen('screen-applicant-detail')">詳細</button></td>
+          </tr>
+          <tr>
+            <td><strong>Park Jimin</strong></td>
+            <td>食品加工スタッフ</td>
+            <td>製造・加工</td>
+            <td>N3</td>
+            <td>2026-03-20</td>
+            <td><span class="badge badge-green">内定</span></td>
+            <td><button class="btn btn-outline btn-sm" onclick="showScreen('screen-applicant-detail')">詳細</button></td>
+          </tr>
+          <tr>
+            <td><strong>Tran Thi Mai</strong></td>
+            <td>食品加工スタッフ</td>
+            <td>食品加工</td>
+            <td>N3</td>
+            <td>2026-03-18</td>
+            <td><span class="badge badge-red">未対応</span></td>
+            <td><button class="btn btn-outline btn-sm" onclick="showScreen('screen-applicant-detail')">詳細</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 応募者詳細 ========== -->
+<div id="screen-applicant-detail" class="screen">
+  <header class="app-header">
+    <h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 企業</span></h1>
+    <div class="header-right">
+      <span>株式会社サンプル商事</span>
+      <a href="#" onclick="showScreen('screen-login')">ログアウト</a>
+    </div>
+  </header>
+  <nav class="app-nav">
+    <a data-screen="screen-profile">企業プロフィール</a>
+    <a data-screen="screen-job-list">求人一覧</a>
+    <a data-screen="screen-applicant-list" class="active">応募者一覧</a>
+  </nav>
+  <div class="main-content">
+    <div class="page-title-row">
+      <h2 class="page-title">応募者詳細</h2>
+      <button class="btn btn-outline" onclick="showScreen('screen-applicant-list')">一覧に戻る</button>
+    </div>
+    <div class="card">
+      <div class="card-header">基本情報</div>
+      <dl class="detail-list">
+        <dt>氏名</dt><dd>Nguyen Van An</dd>
+        <dt>国籍</dt><dd>ベトナム</dd>
+        <dt>居住地</dt><dd>静岡県浜松市</dd>
+        <dt>年齢</dt><dd>28歳</dd>
+        <dt>日本語レベル</dt><dd>N3（日本語能力試験）</dd>
+        <dt>希望職種</dt><dd>製造・加工</dd>
+        <dt>在留資格</dt><dd>特定技能1号（取得済み）</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <div class="card-header">スキル・経験</div>
+      <dl class="detail-list">
+        <dt>保有資格</dt><dd>食品衛生責任者、フォークリフト運転免許</dd>
+        <dt>職務経歴</dt><dd>ベトナムにて食品加工工場で3年間勤務。来日後、別の食品会社にて1年間勤務経験あり。</dd>
+        <dt>スキル</dt><dd>食品加工機械操作、品質検査、基本的なPC操作</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <div class="card-header">自己PR</div>
+      <p style="font-size:14px; line-height:1.7;">ベトナムと日本で合計4年間、食品加工の経験があります。品質管理に興味があり、丁寧な作業が得意です。日本語はまだ勉強中ですが、職場でのコミュニケーションには問題ありません。長く安定して働きたいと思っています。</p>
+    </div>
+    <div class="card">
+      <div class="card-header">添付資料</div>
+      <p style="font-size:13px; color:var(--gray-600);">
+        <a href="#" onclick="dummyAction('履歴書をダウンロードします')">履歴書.pdf</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#" onclick="dummyAction('在留カードコピーをダウンロードします')">在留カード（コピー）.pdf</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="#" onclick="dummyAction('資格証明書をダウンロードします')">資格証明書.pdf</a>
+      </p>
+    </div>
+    <div class="card">
+      <div class="card-header">ステータス更新</div>
+      <div class="form-row" style="align-items:end;">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>現在のステータス</label>
+          <select>
+            <option selected>未対応</option>
+            <option>書類確認中</option>
+            <option>面談調整中</option>
+            <option>面談済み</option>
+            <option>内定</option>
+            <option>不採用</option>
+          </select>
+        </div>
+        <div>
+          <button class="btn btn-primary" onclick="dummyAction('ステータスを更新しました')">更新</button>
+        </div>
+      </div>
+    </div>
+    <div class="mt-16">
+      <button class="btn btn-accent" onclick="showScreen('screen-interview')">面談調整へ進む</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 面談調整 ========== -->
+<div id="screen-interview" class="screen">
+  <header class="app-header">
+    <h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 企業</span></h1>
+    <div class="header-right">
+      <span>株式会社サンプル商事</span>
+      <a href="#" onclick="showScreen('screen-login')">ログアウト</a>
+    </div>
+  </header>
+  <nav class="app-nav">
+    <a data-screen="screen-profile">企業プロフィール</a>
+    <a data-screen="screen-job-list">求人一覧</a>
+    <a data-screen="screen-applicant-list" class="active">応募者一覧</a>
+  </nav>
+  <div class="main-content">
+    <div class="page-title-row">
+      <h2 class="page-title">面談調整 - Nguyen Van An</h2>
+      <button class="btn btn-outline" onclick="showScreen('screen-applicant-detail')">応募者詳細に戻る</button>
+    </div>
+    <div class="card">
+      <div class="card-header">面談日時の設定</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>候補日時 1</label>
+          <input type="datetime-local" value="2026-04-03T10:00">
+        </div>
+        <div class="form-group">
+          <label>候補日時 2</label>
+          <input type="datetime-local" value="2026-04-04T14:00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>候補日時 3（任意）</label>
+        <input type="datetime-local">
+      </div>
+      <div class="form-group">
+        <label>面談方法</label>
+        <select>
+          <option selected>オンライン（Zoom）</option>
+          <option>オンライン（Google Meet）</option>
+          <option>オンライン（Microsoft Teams）</option>
+          <option>対面</option>
+          <option>電話</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>メッセージ</label>
+        <textarea placeholder="応募者へのメッセージを入力してください">Nguyen Van An様
+
+この度はご応募いただきありがとうございます。
+面談の候補日時をお送りいたします。
+ご都合のよい日時をご連絡ください。
+
+なお、面談はオンライン（Zoom）で実施いたします。
+ご不明な点がございましたら、お気軽にお問い合わせください。</textarea>
+      </div>
+      <div class="text-right">
+        <button class="btn btn-primary" onclick="dummyAction('面談調整依頼を送信しました')">送信する</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">調整履歴</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>日時</th><th>内容</th><th>ステータス</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2026-03-27 15:30</td>
+            <td>候補日時を送信（4/3 10:00, 4/4 14:00）</td>
+            <td><span class="badge badge-yellow">返信待ち</span></td>
+          </tr>
+          <tr>
+            <td>2026-03-26 09:00</td>
+            <td>応募を確認、面談調整を開始</td>
+            <td><span class="badge badge-green">完了</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

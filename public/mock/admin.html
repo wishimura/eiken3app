@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者向け - 外国人材マッチングシステム</title>
+<link rel="stylesheet" href="common.css">
+<script src="common.js"></script>
+</head>
+<body>
+
+<!-- ===== ログイン ===== -->
+<div id="screen-login" class="screen active">
+<div class="login-wrapper">
+<div class="login-box">
+<h2>外国人材マッチングシステム</h2>
+<p class="login-subtitle">管理者ログイン</p>
+<div class="form-group"><label>メールアドレス</label><input type="email" placeholder="admin@example.jp"></div>
+<div class="form-group"><label>パスワード</label><input type="password" placeholder="パスワード"></div>
+<button class="btn btn-primary btn-lg" onclick="showScreen('screen-dashboard')">ログイン</button>
+</div>
+</div>
+</div>
+
+<!-- ===== ダッシュボード ===== -->
+<div id="screen-dashboard" class="screen">
+<header class="app-header">
+<h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 管理者</span></h1>
+<div class="header-right"><span>管理者</span><a href="#" onclick="showScreen('screen-login')">ログアウト</a></div>
+</header>
+<div class="admin-layout">
+<nav class="admin-sidebar">
+<a data-screen="screen-dashboard" class="active">ダッシュボード</a>
+<a data-screen="screen-company">企業管理</a>
+<a data-screen="screen-talent">人材管理</a>
+<a data-screen="screen-jobs">求人管理</a>
+<a data-screen="screen-progress">進捗管理</a>
+<a data-screen="screen-csv">CSV取込・出力</a>
+<a data-screen="screen-inquiry">問い合わせ</a>
+</nav>
+<main class="admin-main">
+<h2 class="page-title">ダッシュボード</h2>
+<div class="stat-cards">
+<div class="stat-card"><div class="stat-value">42</div><div class="stat-label">登録企業数</div></div>
+<div class="stat-card"><div class="stat-value">187</div><div class="stat-label">登録人材数</div></div>
+<div class="stat-card"><div class="stat-value">28</div><div class="stat-label">公開求人数</div></div>
+<div class="stat-card"><div class="stat-value">64</div><div class="stat-label">応募件数</div></div>
+<div class="stat-card"><div class="stat-value">15</div><div class="stat-label">面談件数</div></div>
+<div class="stat-card"><div class="stat-value">6</div><div class="stat-label">内定件数</div></div>
+</div>
+<div class="card">
+<div class="card-header">KPI進捗サマリー（今月）</div>
+<table class="data-table">
+<thead><tr><th>指標</th><th>目標</th><th>実績</th><th>達成率</th></tr></thead>
+<tbody>
+<tr><td>新規企業登録</td><td>10社</td><td>7社</td><td>70%</td></tr>
+<tr><td>新規人材登録</td><td>30名</td><td>24名</td><td>80%</td></tr>
+<tr><td>応募数</td><td>20件</td><td>18件</td><td>90%</td></tr>
+<tr><td>面談実施</td><td>10件</td><td>8件</td><td>80%</td></tr>
+<tr><td>内定数</td><td>5件</td><td>3件</td><td>60%</td></tr>
+</tbody>
+</table>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+<div class="card">
+<div class="card-header">最近の活動</div>
+<div class="timeline">
+<div class="timeline-item"><div class="timeline-date">2026-03-30 09:15</div><div class="timeline-text">新規企業登録：東海パーツ株式会社</div></div>
+<div class="timeline-item"><div class="timeline-date">2026-03-29 16:40</div><div class="timeline-text">面談実施：Li Wei × サンプル商事</div></div>
+<div class="timeline-item"><div class="timeline-date">2026-03-29 14:00</div><div class="timeline-text">新規応募：Nguyen Van An → 食品加工スタッフ</div></div>
+<div class="timeline-item"><div class="timeline-date">2026-03-28 11:20</div><div class="timeline-text">求人公開：介護スタッフ（ケアネット）</div></div>
+</div>
+</div>
+<div class="card">
+<div class="card-header">要対応アラート</div>
+<div class="alert alert-warning">未対応の応募が 5件 あります</div>
+<div class="alert alert-warning">企業確認待ち: 2社（本人確認書類未提出）</div>
+<div class="alert alert-info">問い合わせ未対応: 3件</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+<!-- ===== 企業管理 ===== -->
+<div id="screen-company" class="screen">
+<header class="app-header">
+<h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 管理者</span></h1>
+<div class="header-right"><span>管理者</span><a href="#" onclick="showScreen('screen-login')">ログアウト</a></div>
+</header>
+<div class="admin-layout">
+<nav class="admin-sidebar">
+<a data-screen="screen-dashboard">ダッシュボード</a>
+<a data-screen="screen-company" class="active">企業管理</a>
+<a data-screen="screen-talent">人材管理</a>
+<a data-screen="screen-jobs">求人管理</a>
+<a data-screen="screen-progress">進捗管理</a>
+<a data-screen="screen-csv">CSV取込・出力</a>
+<a data-screen="screen-inquiry">問い合わせ</a>
+</nav>
+<main class="admin-main">
+<h2 class="page-title">企業管理</h2>
+<div class="filter-bar">
+<input type="text" placeholder="会社名で検索">
+<select><option value="">業種（すべて）</option><option>製造業</option><option>食品加工</option><option>IT</option><option>建設</option><option>介護</option></select>
+<select><option value="">ステータス</option><option>有効</option><option>確認待ち</option><option>利用停止</option></select>
+</div>
+<div class="card" style="padding:0;overflow:auto;">
+<table class="data-table">
+<thead><tr><th>会社名</th><th>業種</th><th>所在地</th><th>登録日</th><th>ステータス</th><th>操作</th></tr></thead>
+<tbody>
+<tr><td><strong>株式会社サンプル商事</strong></td><td>食品加工</td><td>浜松市中央区</td><td>2026-01-15</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-company-detail')">詳細</button></td></tr>
+<tr><td><strong>東海パーツ株式会社</strong></td><td>製造業</td><td>浜松市中央区</td><td>2026-03-30</td><td><span class="badge badge-yellow">確認待ち</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-company-detail')">詳細</button></td></tr>
+<tr><td><strong>浜名湖リゾート株式会社</strong></td><td>宿泊・飲食</td><td>浜松市浜名区</td><td>2026-02-10</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-company-detail')">詳細</button></td></tr>
+<tr><td><strong>磐田ファーム株式会社</strong></td><td>農林水産業</td><td>磐田市</td><td>2026-02-20</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-company-detail')">詳細</button></td></tr>
+<tr><td><strong>社会福祉法人ケアネット</strong></td><td>介護・福祉</td><td>静岡市駿河区</td><td>2026-03-05</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-company-detail')">詳細</button></td></tr>
+<tr><td><strong>株式会社テックソリューション</strong></td><td>IT・情報通信</td><td>静岡市葵区</td><td>2026-03-18</td><td><span class="badge badge-gray">利用停止</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-company-detail')">詳細</button></td></tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</div>
+
+<!-- 企業詳細モーダル -->
+<div id="modal-company-detail" class="modal-overlay">
+<div class="modal-box">
+<button class="modal-close" onclick="closeModal('modal-company-detail')">&times;</button>
+<h3>企業詳細 - 株式会社サンプル商事</h3>
+<dl class="detail-list">
+<dt>会社名</dt><dd>株式会社サンプル商事</dd>
+<dt>業種</dt><dd>食品加工</dd>
+<dt>所在地</dt><dd>静岡県浜松市中央区中央1-2-3</dd>
+<dt>担当者</dt><dd>田中 太郎（tanaka@sample-shoji.co.jp）</dd>
+<dt>登録日</dt><dd>2026-01-15</dd>
+<dt>ステータス</dt><dd><span class="badge badge-green">有効</span></dd>
+<dt>求人数</dt><dd>4件（公開中: 2件）</dd>
+<dt>応募数</dt><dd>8件</dd>
+</dl>
+<div class="mt-16 btn-group">
+<button class="btn btn-outline btn-sm" onclick="dummyAction('利用停止にしました')">利用停止</button>
+<button class="btn btn-outline btn-sm" onclick="dummyAction('確認フラグを設定しました')">確認フラグ</button>
+</div>
+</div>
+</div>
+
+<!-- ===== 人材管理 ===== -->
+<div id="screen-talent" class="screen">
+<header class="app-header">
+<h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 管理者</span></h1>
+<div class="header-right"><span>管理者</span><a href="#" onclick="showScreen('screen-login')">ログアウト</a></div>
+</header>
+<div class="admin-layout">
+<nav class="admin-sidebar">
+<a data-screen="screen-dashboard">ダッシュボード</a>
+<a data-screen="screen-company">企業管理</a>
+<a data-screen="screen-talent" class="active">人材管理</a>
+<a data-screen="screen-jobs">求人管理</a>
+<a data-screen="screen-progress">進捗管理</a>
+<a data-screen="screen-csv">CSV取込・出力</a>
+<a data-screen="screen-inquiry">問い合わせ</a>
+</nav>
+<main class="admin-main">
+<h2 class="page-title">人材管理</h2>
+<div class="filter-bar">
+<input type="text" placeholder="氏名で検索">
+<select><option value="">日本語レベル</option><option>N1</option><option>N2</option><option>N3</option><option>N4</option><option>N5</option></select>
+<select><option value="">ステータス</option><option>有効</option><option>確認待ち</option><option>無効</option></select>
+</div>
+<div class="card" style="padding:0;overflow:auto;">
+<table class="data-table">
+<thead><tr><th>氏名</th><th>希望職種</th><th>日本語レベル</th><th>居住地</th><th>登録日</th><th>ステータス</th><th>操作</th></tr></thead>
+<tbody>
+<tr><td><strong>Nguyen Van An</strong></td><td>製造・加工</td><td>N3</td><td>浜松市</td><td>2026-02-01</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-talent-detail')">詳細</button></td></tr>
+<tr><td><strong>Maria Santos</strong></td><td>食品加工</td><td>N4</td><td>浜松市</td><td>2026-02-15</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-talent-detail')">詳細</button></td></tr>
+<tr><td><strong>Li Wei</strong></td><td>製造管理</td><td>N2</td><td>磐田市</td><td>2026-01-20</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-talent-detail')">詳細</button></td></tr>
+<tr><td><strong>Park Jimin</strong></td><td>製造・加工</td><td>N3</td><td>静岡市</td><td>2026-03-01</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-talent-detail')">詳細</button></td></tr>
+<tr><td><strong>Tran Thi Mai</strong></td><td>食品加工</td><td>N3</td><td>浜松市</td><td>2026-03-10</td><td><span class="badge badge-yellow">確認待ち</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-talent-detail')">詳細</button></td></tr>
+<tr><td><strong>Ahmad Rahman</strong></td><td>介護</td><td>N3</td><td>静岡市</td><td>2026-03-15</td><td><span class="badge badge-green">有効</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-talent-detail')">詳細</button></td></tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</div>
+
+<!-- 人材詳細モーダル -->
+<div id="modal-talent-detail" class="modal-overlay">
+<div class="modal-box">
+<button class="modal-close" onclick="closeModal('modal-talent-detail')">&times;</button>
+<h3>人材詳細 - Nguyen Van An</h3>
+<dl class="detail-list">
+<dt>氏名</dt><dd>Nguyen Van An</dd>
+<dt>国籍</dt><dd>ベトナム</dd>
+<dt>居住地</dt><dd>静岡県浜松市</dd>
+<dt>希望職種</dt><dd>製造・加工</dd>
+<dt>日本語レベル</dt><dd>N3</dd>
+<dt>在留資格</dt><dd>特定技能1号</dd>
+<dt>登録日</dt><dd>2026-02-01</dd>
+<dt>応募数</dt><dd>3件</dd>
+</dl>
+<div class="mt-16">
+<div class="card-header">対応メモ</div>
+<div style="font-size:13px;color:var(--gray-600);margin-top:8px;">
+<p>2026-03-25: 食品加工スタッフに応募。書類確認済。</p>
+<p>2026-03-15: 製造ライン管理補助に応募。面談調整中。</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ===== 求人管理 ===== -->
+<div id="screen-jobs" class="screen">
+<header class="app-header">
+<h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 管理者</span></h1>
+<div class="header-right"><span>管理者</span><a href="#" onclick="showScreen('screen-login')">ログアウト</a></div>
+</header>
+<div class="admin-layout">
+<nav class="admin-sidebar">
+<a data-screen="screen-dashboard">ダッシュボード</a>
+<a data-screen="screen-company">企業管理</a>
+<a data-screen="screen-talent">人材管理</a>
+<a data-screen="screen-jobs" class="active">求人管理</a>
+<a data-screen="screen-progress">進捗管理</a>
+<a data-screen="screen-csv">CSV取込・出力</a>
+<a data-screen="screen-inquiry">問い合わせ</a>
+</nav>
+<main class="admin-main">
+<h2 class="page-title">求人管理</h2>
+<div class="filter-bar">
+<input type="text" placeholder="求人タイトル・企業名で検索">
+<select><option value="">公開状態</option><option>公開中</option><option>下書き</option><option>非公開</option></select>
+<select><option value="">AI校正</option><option>校正済み</option><option>未校正</option></select>
+<select><option value="">翻訳</option><option>翻訳済み</option><option>未翻訳</option></select>
+</div>
+<div class="card" style="padding:0;overflow:auto;">
+<table class="data-table">
+<thead><tr><th>求人タイトル</th><th>企業名</th><th>公開状態</th><th>応募数</th><th>AI校正</th><th>翻訳</th><th>作成日</th><th>操作</th></tr></thead>
+<tbody>
+<tr><td><strong>食品加工スタッフ</strong></td><td>サンプル商事</td><td><span class="badge badge-green">公開中</span></td><td>5</td><td><span class="badge badge-blue">校正済</span></td><td><span class="badge badge-blue">翻訳済</span></td><td>2026-02-01</td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-job-detail')">詳細</button></td></tr>
+<tr><td><strong>製造ライン管理補助</strong></td><td>サンプル商事</td><td><span class="badge badge-green">公開中</span></td><td>3</td><td><span class="badge badge-blue">校正済</span></td><td><span class="badge badge-blue">翻訳済</span></td><td>2026-02-15</td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-job-detail')">詳細</button></td></tr>
+<tr><td><strong>通訳・翻訳サポート</strong></td><td>サンプル商事</td><td><span class="badge badge-yellow">下書き</span></td><td>0</td><td><span class="badge badge-gray">未校正</span></td><td><span class="badge badge-gray">未翻訳</span></td><td>2026-03-20</td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-job-detail')">詳細</button></td></tr>
+<tr><td><strong>ホテルフロントスタッフ</strong></td><td>浜名湖リゾート</td><td><span class="badge badge-green">公開中</span></td><td>2</td><td><span class="badge badge-blue">校正済</span></td><td><span class="badge badge-gray">未翻訳</span></td><td>2026-03-01</td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-job-detail')">詳細</button></td></tr>
+<tr><td><strong>農作業スタッフ</strong></td><td>磐田ファーム</td><td><span class="badge badge-green">公開中</span></td><td>1</td><td><span class="badge badge-gray">未校正</span></td><td><span class="badge badge-gray">未翻訳</span></td><td>2026-03-10</td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-job-detail')">詳細</button></td></tr>
+<tr><td><strong>介護スタッフ</strong></td><td>ケアネット</td><td><span class="badge badge-green">公開中</span></td><td>2</td><td><span class="badge badge-blue">校正済</span></td><td><span class="badge badge-blue">翻訳済</span></td><td>2026-03-15</td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-job-detail')">詳細</button></td></tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</div>
+
+<!-- 求人詳細モーダル -->
+<div id="modal-job-detail" class="modal-overlay">
+<div class="modal-box">
+<button class="modal-close" onclick="closeModal('modal-job-detail')">&times;</button>
+<h3>求人詳細 - 食品加工スタッフ</h3>
+<dl class="detail-list">
+<dt>企業</dt><dd>株式会社サンプル商事</dd>
+<dt>職種</dt><dd>食品加工スタッフ</dd>
+<dt>勤務地</dt><dd>浜松市中央区</dd>
+<dt>雇用形態</dt><dd>正社員</dd>
+<dt>応募数</dt><dd>5件</dd>
+<dt>公開状態</dt><dd><span class="badge badge-green">公開中</span></dd>
+</dl>
+<div style="border-top:1px solid var(--gray-200);margin-top:16px;padding-top:12px;">
+<h4 style="font-size:13px;color:#6366f1;margin-bottom:8px;">AI支援状況</h4>
+<dl class="detail-list">
+<dt>AI校正</dt><dd><span class="badge badge-blue">校正済</span> - 2026-02-01 実施（改善提案 3件 → 反映済み）</dd>
+<dt>翻訳状況</dt><dd><span class="badge badge-blue">翻訳済</span> - 英語版・やさしい日本語版あり（2026-02-02生成）</dd>
+</dl>
+</div>
+</div>
+</div>
+
+<!-- ===== 進捗管理 ===== -->
+<div id="screen-progress" class="screen">
+<header class="app-header">
+<h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 管理者</span></h1>
+<div class="header-right"><span>管理者</span><a href="#" onclick="showScreen('screen-login')">ログアウト</a></div>
+</header>
+<div class="admin-layout">
+<nav class="admin-sidebar">
+<a data-screen="screen-dashboard">ダッシュボード</a>
+<a data-screen="screen-company">企業管理</a>
+<a data-screen="screen-talent">人材管理</a>
+<a data-screen="screen-jobs">求人管理</a>
+<a data-screen="screen-progress" class="active">進捗管理</a>
+<a data-screen="screen-csv">CSV取込・出力</a>
+<a data-screen="screen-inquiry">問い合わせ</a>
+</nav>
+<main class="admin-main">
+<h2 class="page-title">進捗管理</h2>
+<div class="filter-bar">
+<select><option value="">ステータス（すべて）</option><option>未対応</option><option>書類確認中</option><option>面談調整中</option><option>面談済み</option><option>内定</option><option>不採用</option></select>
+<select><option value="">企業（すべて）</option><option>サンプル商事</option><option>浜名湖リゾート</option><option>磐田ファーム</option><option>ケアネット</option></select>
+<input type="text" placeholder="人材名で検索">
+</div>
+<div class="card" style="padding:0;overflow:auto;">
+<table class="data-table">
+<thead><tr><th>人材名</th><th>応募求人</th><th>企業名</th><th>応募日</th><th>ステータス</th><th>面談日</th><th>メモ</th></tr></thead>
+<tbody>
+<tr><td>Nguyen Van An</td><td>食品加工スタッフ</td><td>サンプル商事</td><td>03-25</td><td><span class="badge badge-red">未対応</span></td><td>-</td><td>書類確認待ち</td></tr>
+<tr><td>Maria Santos</td><td>食品加工スタッフ</td><td>サンプル商事</td><td>03-24</td><td><span class="badge badge-yellow">面談調整中</span></td><td>調整中</td><td>候補日送付済み</td></tr>
+<tr><td>Li Wei</td><td>製造ライン管理補助</td><td>サンプル商事</td><td>03-22</td><td><span class="badge badge-blue">面談済み</span></td><td>03-29</td><td>好感触、結果待ち</td></tr>
+<tr><td>Park Jimin</td><td>食品加工スタッフ</td><td>サンプル商事</td><td>03-20</td><td><span class="badge badge-green">内定</span></td><td>03-25</td><td>4月入社予定</td></tr>
+<tr><td>Tran Thi Mai</td><td>食品加工スタッフ</td><td>サンプル商事</td><td>03-18</td><td><span class="badge badge-red">未対応</span></td><td>-</td><td>-</td></tr>
+<tr><td>Ahmad Rahman</td><td>介護スタッフ</td><td>ケアネット</td><td>03-20</td><td><span class="badge badge-yellow">面談調整中</span></td><td>調整中</td><td>日程確認中</td></tr>
+<tr><td>Nguyen Van An</td><td>製造ライン管理補助</td><td>サンプル商事</td><td>03-15</td><td><span class="badge badge-yellow">面談調整中</span></td><td>04-03予定</td><td>Zoom予定</td></tr>
+</tbody>
+</table>
+</div>
+<div class="card mt-24">
+<div class="card-header">フォロー対象者</div>
+<div class="alert alert-warning">Tran Thi Mai - 応募から12日経過、未対応（食品加工スタッフ / サンプル商事）</div>
+<div class="alert alert-info">Li Wei - 面談済み、結果連絡待ち（製造ライン管理補助 / サンプル商事）</div>
+</div>
+</main>
+</div>
+</div>
+
+<!-- ===== CSV取込・出力 ===== -->
+<div id="screen-csv" class="screen">
+<header class="app-header">
+<h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 管理者</span></h1>
+<div class="header-right"><span>管理者</span><a href="#" onclick="showScreen('screen-login')">ログアウト</a></div>
+</header>
+<div class="admin-layout">
+<nav class="admin-sidebar">
+<a data-screen="screen-dashboard">ダッシュボード</a>
+<a data-screen="screen-company">企業管理</a>
+<a data-screen="screen-talent">人材管理</a>
+<a data-screen="screen-jobs">求人管理</a>
+<a data-screen="screen-progress">進捗管理</a>
+<a data-screen="screen-csv" class="active">CSV取込・出力</a>
+<a data-screen="screen-inquiry">問い合わせ</a>
+</nav>
+<main class="admin-main">
+<h2 class="page-title">CSV取込・出力</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+<div class="card">
+<div class="card-header">CSV取込（インポート）</div>
+<div class="form-group">
+<label>取込対象</label>
+<select>
+<option>人材データ</option>
+<option>企業データ</option>
+<option>求人データ</option>
+</select>
+</div>
+<div class="file-upload" onclick="dummyAction('ファイル選択ダイアログを表示します')">
+CSVファイルをここにドラッグ<br>またはクリックして選択<br><br><span style="font-size:12px;color:var(--gray-500);">対応形式: CSV (UTF-8)</span>
+</div>
+<div class="mt-16">
+<button class="btn btn-primary" onclick="dummyAction('CSVを取り込みました（ダミー）')">取り込み実行</button>
+</div>
+<div class="mt-16">
+<div class="card-header">エラーチェック結果</div>
+<div class="alert alert-success mt-8">前回取込: 2026-03-28 - 24件取込成功、エラー0件</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header">CSV出力（エクスポート）</div>
+<div class="form-group">
+<label>出力対象</label>
+<select>
+<option>人材一覧</option>
+<option>企業一覧</option>
+<option>求人一覧</option>
+<option>応募状況一覧</option>
+<option>面談状況一覧</option>
+<option>KPIレポート</option>
+</select>
+</div>
+<div class="form-group">
+<label>期間（任意）</label>
+<div class="form-row">
+<input type="date" value="2026-03-01">
+<input type="date" value="2026-03-30">
+</div>
+</div>
+<button class="btn btn-accent" onclick="dummyAction('CSVをダウンロードしました（ダミー）')">CSV出力</button>
+</div>
+</div>
+<div class="card mt-24">
+<div class="card-header">取込履歴</div>
+<table class="data-table">
+<thead><tr><th>日時</th><th>対象</th><th>件数</th><th>結果</th><th>操作者</th></tr></thead>
+<tbody>
+<tr><td>2026-03-28 14:20</td><td>人材データ</td><td>24件</td><td><span class="badge badge-green">成功</span></td><td>管理者A</td></tr>
+<tr><td>2026-03-20 10:00</td><td>企業データ</td><td>5件</td><td><span class="badge badge-green">成功</span></td><td>管理者A</td></tr>
+<tr><td>2026-03-15 09:30</td><td>人材データ</td><td>18件</td><td><span class="badge badge-yellow">一部エラー（2件）</span></td><td>管理者B</td></tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</div>
+
+<!-- ===== 問い合わせ管理 ===== -->
+<div id="screen-inquiry" class="screen">
+<header class="app-header">
+<h1>外国人材マッチングシステム <span style="font-weight:300;font-size:13px;">- 管理者</span></h1>
+<div class="header-right"><span>管理者</span><a href="#" onclick="showScreen('screen-login')">ログアウト</a></div>
+</header>
+<div class="admin-layout">
+<nav class="admin-sidebar">
+<a data-screen="screen-dashboard">ダッシュボード</a>
+<a data-screen="screen-company">企業管理</a>
+<a data-screen="screen-talent">人材管理</a>
+<a data-screen="screen-jobs">求人管理</a>
+<a data-screen="screen-progress">進捗管理</a>
+<a data-screen="screen-csv">CSV取込・出力</a>
+<a data-screen="screen-inquiry" class="active">問い合わせ</a>
+</nav>
+<main class="admin-main">
+<h2 class="page-title">問い合わせ管理</h2>
+<div class="filter-bar">
+<select><option value="">ステータス（すべて）</option><option>未対応</option><option>対応中</option><option>対応済み</option></select>
+<select><option value="">種別（すべて）</option><option>企業から</option><option>人材から</option><option>システム</option><option>その他</option></select>
+</div>
+<div class="card" style="padding:0;overflow:auto;">
+<table class="data-table">
+<thead><tr><th>日付</th><th>種別</th><th>差出人</th><th>件名</th><th>ステータス</th><th>操作</th></tr></thead>
+<tbody>
+<tr><td>2026-03-29</td><td><span class="badge badge-blue">企業</span></td><td>浜名湖リゾート</td><td>求人掲載内容の変更について</td><td><span class="badge badge-red">未対応</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-inquiry-detail')">詳細</button> <button class="btn btn-success btn-sm" onclick="dummyAction('対応済みにしました')">対応済</button></td></tr>
+<tr><td>2026-03-28</td><td><span class="badge badge-green">人材</span></td><td>Tran Thi Mai</td><td>応募状況の確認</td><td><span class="badge badge-red">未対応</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-inquiry-detail')">詳細</button> <button class="btn btn-success btn-sm" onclick="dummyAction('対応済みにしました')">対応済</button></td></tr>
+<tr><td>2026-03-27</td><td><span class="badge badge-green">人材</span></td><td>Ahmad Rahman</td><td>登録情報の修正依頼</td><td><span class="badge badge-yellow">対応中</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-inquiry-detail')">詳細</button> <button class="btn btn-success btn-sm" onclick="dummyAction('対応済みにしました')">対応済</button></td></tr>
+<tr><td>2026-03-25</td><td><span class="badge badge-blue">企業</span></td><td>サンプル商事</td><td>応募者情報の閲覧権限について</td><td><span class="badge badge-gray">対応済み</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-inquiry-detail')">詳細</button></td></tr>
+<tr><td>2026-03-22</td><td><span class="badge badge-gray">その他</span></td><td>匿名</td><td>システムの利用方法について</td><td><span class="badge badge-gray">対応済み</span></td><td><button class="btn btn-outline btn-sm" onclick="openModal('modal-inquiry-detail')">詳細</button></td></tr>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</div>
+
+<!-- 問い合わせ詳細モーダル -->
+<div id="modal-inquiry-detail" class="modal-overlay">
+<div class="modal-box">
+<button class="modal-close" onclick="closeModal('modal-inquiry-detail')">&times;</button>
+<h3>問い合わせ詳細</h3>
+<dl class="detail-list">
+<dt>日付</dt><dd>2026-03-29</dd>
+<dt>種別</dt><dd>企業から</dd>
+<dt>差出人</dt><dd>浜名湖リゾート株式会社（担当：佐藤様）</dd>
+<dt>件名</dt><dd>求人掲載内容の変更について</dd>
+<dt>内容</dt><dd>現在掲載中の「ホテルフロントスタッフ」の求人について、給与条件を変更したいのですが、編集方法がわかりません。また、英語版の翻訳も更新したいです。対応方法を教えていただけますか。</dd>
+<dt>ステータス</dt><dd><span class="badge badge-red">未対応</span></dd>
+</dl>
+<div class="mt-16">
+<div class="form-group">
+<label>対応メモ</label>
+<textarea placeholder="対応内容を記録"></textarea>
+</div>
+<button class="btn btn-success" onclick="dummyAction('対応済みに更新しました'); closeModal('modal-inquiry-detail')">対応済みにする</button>
+</div>
+</div>
+</div>
+
+</body>
+</html>

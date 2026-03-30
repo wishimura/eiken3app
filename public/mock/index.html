@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>外国人材マッチングシステム - モック</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .role-select {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e8f0f8, #dfe9f3);
+    }
+    .role-container {
+      text-align: center;
+      max-width: 800px;
+      padding: 40px;
+    }
+    .role-container h1 {
+      color: var(--primary);
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .role-container .subtitle {
+      color: var(--gray-600);
+      margin-bottom: 40px;
+      font-size: 14px;
+    }
+    .role-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .role-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 36px 24px;
+      text-align: center;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: 2px solid transparent;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .role-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      text-decoration: none;
+    }
+    .role-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .role-card h3 {
+      font-size: 18px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .role-card p {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.5;
+    }
+    .role-screens {
+      margin-top: 16px;
+      text-align: left;
+      font-size: 12px;
+      color: var(--gray-500);
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="role-select">
+    <div class="role-container">
+      <h1>外国人材マッチングシステム</h1>
+      <p class="subtitle">HTMLモック - ロールを選択してください</p>
+      <div class="role-cards">
+
+        <a href="company.html" class="role-card">
+          <span class="role-icon">&#x1F3E2;</span>
+          <h3>企業向け画面</h3>
+          <p>求人の登録・管理、応募者確認、面談調整を行います。</p>
+          <div class="role-screens">
+            ログイン / プロフィール / 求人管理 / 応募者管理 / 面談調整 / AI支援
+          </div>
+        </a>
+
+        <a href="worker.html" class="role-card">
+          <span class="role-icon">&#x1F464;</span>
+          <h3>外国人人材向け画面</h3>
+          <p>求人検索・閲覧、応募、進捗確認を行います。</p>
+          <div class="role-screens">
+            ログイン / プロフィール / 求人検索 / 応募 / 進捗確認 / 多言語表示
+          </div>
+        </a>
+
+        <a href="admin.html" class="role-card">
+          <span class="role-icon">&#x1F6E0;&#xFE0F;</span>
+          <h3>管理者向け画面</h3>
+          <p>企業・人材・求人・応募状況を一元管理します。</p>
+          <div class="role-screens">
+            ダッシュボード / 企業管理 / 人材管理 / 求人管理 / 進捗管理 / CSV / 問い合わせ
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>
