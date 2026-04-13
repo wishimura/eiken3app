@@ -13,6 +13,7 @@ import {
   recordStudyDay,
   isMilestoneStreak,
 } from "@/lib/gamification";
+import { pickFromDeck } from "@/lib/deck";
 
 type StudyMode = "EN_TO_JA" | "JA_TO_EN";
 
@@ -30,13 +31,6 @@ type WordsResponse =
   | { ok: true; words: Word[] }
   | { ok: false; error: string };
 
-function pickRandomFromPool(pool: Word[], excludeId?: string): Word {
-  const candidates = excludeId && pool.length > 1
-    ? pool.filter((w) => w.id !== excludeId)
-    : pool;
-  return candidates[Math.floor(Math.random() * candidates.length)]!;
-}
-
 export function StudyClient() {
   const [mode, setMode] = useState<StudyMode>("EN_TO_JA");
   const [wordsPool, setWordsPool] = useState<Word[] | null>(null);
@@ -53,6 +47,11 @@ export function StudyClient() {
   const [sessionScore, setSessionScore] = useState(0);
   const [xpGained, setXpGained] = useState<number | null>(null);
   const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const recentIdsRef = useRef<Set<string>>(new Set());
+
+  function pickNextWord(pool: Word[]): Word | null {
+    return pickFromDeck(pool, recentIdsRef.current, (w) => w.id);
+  }
 
   const loadAllWords = useCallback(async () => {
     setDownloadLoading(true);
@@ -70,7 +69,7 @@ export function StudyClient() {
         return;
       }
       setWordsPool(list);
-      setWord(pickRandomFromPool(list));
+      setWord(pickNextWord(list));
       setBookmarked(false);
       setShowAnswer(false);
     } catch {
@@ -119,7 +118,8 @@ export function StudyClient() {
     const currentWordId = word.id;
 
     if (isPoolMode && wordsPool) {
-      const next = pickRandomFromPool(wordsPool, currentWordId);
+      const next = pickNextWord(wordsPool);
+      if (!next) return;
       setWord(next);
       setBookmarked(false);
       setShowAnswer(false);

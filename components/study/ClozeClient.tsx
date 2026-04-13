@@ -12,6 +12,7 @@ import {
   recordStudyDay,
   isMilestoneStreak,
 } from "@/lib/gamification";
+import { pickFromDeck } from "@/lib/deck";
 
 type ClozeQuestion = {
   id: string;
@@ -27,17 +28,6 @@ type ClozeQuestion = {
 type QuestionsResponse =
   | { ok: true; questions: ClozeQuestion[] }
   | { ok: false; error: string };
-
-function pickRandomFromPool(
-  pool: ClozeQuestion[],
-  excludeId?: string,
-): ClozeQuestion | null {
-  const candidates =
-    excludeId && pool.length > 1 ? pool.filter((q) => q.id !== excludeId) : pool;
-  return candidates.length > 0
-    ? candidates[Math.floor(Math.random() * candidates.length)]!
-    : null;
-}
 
 export function ClozeClient() {
   const [questionsPool, setQuestionsPool] = useState<ClozeQuestion[] | null>(null);
@@ -56,6 +46,11 @@ export function ClozeClient() {
   const [correctChoice, setCorrectChoice] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const nextQuestionRef = useRef<ClozeQuestion | null>(null);
+  const recentIdsRef = useRef<Set<string>>(new Set());
+
+  function pickNextQuestion(pool: ClozeQuestion[]): ClozeQuestion | null {
+    return pickFromDeck(pool, recentIdsRef.current, (q) => q.id);
+  }
 
   const loadAllQuestions = useCallback(async () => {
     setDownloadLoading(true);
@@ -73,7 +68,7 @@ export function ClozeClient() {
         return;
       }
       setQuestionsPool(list);
-      setQuestion(pickRandomFromPool(list));
+      setQuestion(pickNextQuestion(list));
       setFeedback(null);
       setFeedbackType(null);
       setBookmarked(false);
@@ -151,7 +146,7 @@ export function ClozeClient() {
 
     const currentId = question.id;
     const pool = questionsPool ?? [];
-    const next = pickRandomFromPool(pool, currentId);
+    const next = pickNextQuestion(pool);
     nextQuestionRef.current = next ?? (pool.length > 0 ? pool[0]! : null);
 
     void fetch("/api/study/cloze/answer", {
