@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; status?: string }>;
 }) {
   const supabase = getSupabaseServerClient();
   const {
@@ -19,7 +19,7 @@ export default async function LoginPage({
     redirect("/study");
   }
 
-  const { error } = await searchParams;
+  const { error, status } = await searchParams;
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -34,6 +34,14 @@ export default async function LoginPage({
 
       <div className="mx-auto -mt-8 w-full max-w-md px-4">
         <div className="card-study space-y-6 rounded-[20px] bg-card p-8">
+          {status === "email_confirmed" && (
+            <p
+              className="rounded-xl bg-primary/10 px-4 py-3 text-sm text-primary"
+              role="status"
+            >
+              メールアドレスの確認が完了しました。ログインしてください。
+            </p>
+          )}
           {error === "invalid_credentials" && (
             <p
               className="rounded-xl bg-destructive/10 px-4 py-3 text-sm text-destructive"
