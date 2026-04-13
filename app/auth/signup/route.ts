@@ -22,6 +22,18 @@ export async function POST(request: Request) {
   });
 
   if (error) {
+    const msg = error.message.toLowerCase();
+    // 「すでに登録済み」系のエラーは、確認メール再送として check_email 画面に誘導
+    if (
+      msg.includes("already registered") ||
+      msg.includes("already been registered") ||
+      msg.includes("user already") ||
+      msg.includes("email already")
+    ) {
+      return NextResponse.redirect(
+        new URL("/signup?status=check_email", request.url),
+      );
+    }
     return NextResponse.redirect(
       new URL("/signup?error=signup_failed", request.url),
     );

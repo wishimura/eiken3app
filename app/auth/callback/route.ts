@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   const code = url.searchParams.get("code");
 
   if (!code) {
-    return NextResponse.redirect(new URL("/login?error=invalid_credentials", url.origin));
+    return NextResponse.redirect(new URL("/login?status=email_confirmed", url.origin));
   }
 
   const { supabase, applyCookiesToResponse } =
@@ -14,7 +14,9 @@ export async function GET(request: Request) {
   const { error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
-    return NextResponse.redirect(new URL("/login?error=invalid_credentials", url.origin));
+    // PKCEコードの交換失敗（別ブラウザで開いた等）でもメール確認自体は成功している
+    // ログイン画面で「メール確認完了、ログインしてください」と表示
+    return NextResponse.redirect(new URL("/login?status=email_confirmed", url.origin));
   }
 
   const type = url.searchParams.get("type");

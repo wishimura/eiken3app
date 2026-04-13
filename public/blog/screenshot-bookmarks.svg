@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="375" height="812" viewBox="0 0 375 812">
+  <defs>
+    <linearGradient id="navGrad3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3a8a"/>
+      <stop offset="100%" stop-color="#152e75"/>
+    </linearGradient>
+    <linearGradient id="btnGrad3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a3a8a"/>
+      <stop offset="100%" stop-color="#2563b0"/>
+    </linearGradient>
+    <linearGradient id="progressGrad3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a3a8a"/>
+      <stop offset="100%" stop-color="#2563b0"/>
+    </linearGradient>
+    <filter id="cardShadow3" x="-5%" y="-3%" width="110%" height="112%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1a3a8a" flood-opacity="0.07"/>
+    </filter>
+    <clipPath id="phoneClip3">
+      <rect x="0" y="0" width="375" height="812" rx="40"/>
+    </clipPath>
+  </defs>
+
+  <rect width="375" height="812" rx="40" fill="#eef1f8"/>
+  <g clip-path="url(#phoneClip3)">
+
+    <!-- Status Bar -->
+    <rect x="0" y="0" width="375" height="50" fill="#eef1f8"/>
+    <text x="32" y="32" font-family="Inter" font-size="15" font-weight="700" fill="#1a1a2e">9:41</text>
+    <rect x="290" y="20" width="22" height="11" rx="2" stroke="#1a1a2e" stroke-width="1.2" fill="none"/>
+    <rect x="292" y="22" width="16" height="7" rx="1" fill="#1a1a2e"/>
+    <rect x="314" y="23" width="2" height="5" rx="1" fill="#1a1a2e"/>
+
+    <!-- Page Title -->
+    <text x="187" y="78" font-family="'Rounded Mplus 1c'" font-size="20" font-weight="800" fill="#1a1a2e" text-anchor="middle">ブックマーク復習</text>
+
+    <!-- Tab Switcher -->
+    <rect x="16" y="94" width="343" height="44" rx="14" fill="#e2e6f0"/>
+    <rect x="20" y="98" width="167" height="36" rx="12" fill="url(#btnGrad3)"/>
+    <text x="104" y="121" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white" text-anchor="middle">単語カード</text>
+    <text x="271" y="121" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="#64748b" text-anchor="middle">穴埋め</text>
+
+    <!-- Study Card -->
+    <rect x="16" y="152" width="343" height="320" rx="20" fill="white" filter="url(#cardShadow3)"/>
+
+    <!-- Card Header -->
+    <text x="32" y="182" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="700" fill="#64748b">ブックマーク復習</text>
+    <text x="330" y="182" font-family="Inter" font-size="16" fill="#f97316" text-anchor="end">★</text>
+
+    <!-- Mode Toggle -->
+    <rect x="110" y="194" width="155" height="32" rx="16" fill="#e2e6f0"/>
+    <rect x="114" y="198" width="73" height="24" rx="12" fill="url(#btnGrad3)"/>
+    <text x="150" y="215" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="white" text-anchor="middle">英→日</text>
+    <text x="228" y="215" font-family="'Rounded Mplus 1c'" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">日→英</text>
+
+    <!-- Flashcard Area -->
+    <rect x="32" y="238" width="311" height="140" rx="16" fill="#f8fafc" stroke="#e2e6f0" stroke-width="1"/>
+    <text x="187" y="290" font-family="Inter" font-size="32" font-weight="700" fill="#1a1a2e" text-anchor="middle">difficult</text>
+    <text x="187" y="326" font-family="'Rounded Mplus 1c'" font-size="18" font-weight="700" fill="#64748b" text-anchor="middle">難しい</text>
+
+    <!-- Action Buttons -->
+    <rect x="32" y="394" width="148" height="44" rx="14" fill="none" stroke="#2563b0" stroke-width="2"/>
+    <text x="106" y="421" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="#2563b0" text-anchor="middle">あとで練習</text>
+
+    <rect x="195" y="394" width="148" height="44" rx="14" fill="url(#btnGrad3)"/>
+    <text x="269" y="421" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="700" fill="white" text-anchor="middle">知ってる!</text>
+
+    <!-- Bookmark List Preview -->
+    <rect x="16" y="488" width="343" height="230" rx="20" fill="white" filter="url(#cardShadow3)"/>
+    <text x="32" y="518" font-family="'Rounded Mplus 1c'" font-size="14" font-weight="800" fill="#1a1a2e">ブックマーク一覧</text>
+    <text x="330" y="518" font-family="Inter,'Rounded Mplus 1c'" font-size="11" font-weight="700" fill="#64748b" text-anchor="end">5件</text>
+
+    <!-- List Header -->
+    <text x="32" y="544" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="700" fill="#94a3b8">単語</text>
+    <text x="170" y="544" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="700" fill="#94a3b8">意味</text>
+    <text x="310" y="544" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="700" fill="#94a3b8" text-anchor="end">スコア</text>
+    <line x1="32" y1="550" x2="343" y2="550" stroke="#e2e6f0" stroke-width="1"/>
+
+    <!-- Word row 1 -->
+    <rect x="28" y="554" width="323" height="36" rx="8" fill="#f0f4ff"/>
+    <text x="38" y="577" font-family="Inter" font-size="13" font-weight="700" fill="#1a1a2e">difficult</text>
+    <text x="170" y="577" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="700" fill="#64748b">難しい</text>
+    <text x="310" y="577" font-family="Inter" font-size="12" font-weight="700" fill="#2563b0" text-anchor="end">3</text>
+
+    <!-- Word row 2 -->
+    <text x="38" y="611" font-family="Inter" font-size="13" font-weight="700" fill="#1a1a2e">environment</text>
+    <text x="170" y="611" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="700" fill="#64748b">環境</text>
+    <text x="310" y="611" font-family="Inter" font-size="12" font-weight="700" fill="#2563b0" text-anchor="end">5</text>
+    <line x1="32" y1="621" x2="343" y2="621" stroke="#e2e6f0" stroke-width="0.5"/>
+
+    <!-- Word row 3 -->
+    <text x="38" y="645" font-family="Inter" font-size="13" font-weight="700" fill="#1a1a2e">experience</text>
+    <text x="170" y="645" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="700" fill="#64748b">経験</text>
+    <text x="310" y="645" font-family="Inter" font-size="12" font-weight="700" fill="#2563b0" text-anchor="end">2</text>
+    <line x1="32" y1="655" x2="343" y2="655" stroke="#e2e6f0" stroke-width="0.5"/>
+
+    <!-- Word row 4 -->
+    <text x="38" y="679" font-family="Inter" font-size="13" font-weight="700" fill="#1a1a2e">necessary</text>
+    <text x="170" y="679" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="700" fill="#64748b">必要な</text>
+    <text x="310" y="679" font-family="Inter" font-size="12" font-weight="700" fill="#2563b0" text-anchor="end">4</text>
+    <line x1="32" y1="689" x2="343" y2="689" stroke="#e2e6f0" stroke-width="0.5"/>
+
+    <!-- Word row 5 -->
+    <text x="38" y="709" font-family="Inter" font-size="13" font-weight="700" fill="#1a1a2e">important</text>
+    <text x="170" y="709" font-family="'Rounded Mplus 1c'" font-size="13" font-weight="700" fill="#64748b">重要な</text>
+    <text x="310" y="709" font-family="Inter" font-size="12" font-weight="700" fill="#2563b0" text-anchor="end">6</text>
+
+    <!-- Bottom Tab Bar -->
+    <rect x="0" y="732" width="375" height="80" fill="url(#navGrad3)"/>
+    <!-- Nav item 1 - 学習 -->
+    <g transform="translate(47,745)">
+      <rect x="8" y="0" width="16" height="12" rx="2" fill="rgba(255,255,255,0.5)"/>
+      <text x="16" y="32" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle">学習</text>
+    </g>
+    <!-- Nav item 2 - 復習 (active) -->
+    <g transform="translate(141,745)">
+      <rect x="-12" y="-4" width="56" height="52" rx="12" fill="rgba(255,255,255,0.12)"/>
+      <circle cx="16" cy="6" r="7" fill="none" stroke="white" stroke-width="1.5"/>
+      <path d="M13,6 L16,9 L19,3" fill="none" stroke="white" stroke-width="1.5"/>
+      <text x="16" y="32" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="700" fill="white" text-anchor="middle">復習</text>
+    </g>
+    <!-- Nav item 3 - マイページ -->
+    <g transform="translate(235,745)">
+      <circle cx="16" cy="5" r="5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+      <path d="M6,18 Q16,10 26,18" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+      <text x="16" y="32" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle">マイページ</text>
+    </g>
+    <!-- Nav item 4 - 管理 -->
+    <g transform="translate(329,745)">
+      <rect x="4" y="0" width="16" height="3" rx="1" fill="rgba(255,255,255,0.5)"/>
+      <rect x="4" y="5" width="16" height="3" rx="1" fill="rgba(255,255,255,0.5)"/>
+      <rect x="4" y="10" width="16" height="3" rx="1" fill="rgba(255,255,255,0.5)"/>
+      <text x="12" y="32" font-family="'Rounded Mplus 1c'" font-size="10" font-weight="700" fill="rgba(255,255,255,0.5)" text-anchor="middle">管理</text>
+    </g>
+
+    <!-- Home indicator -->
+    <rect x="122" y="798" width="131" height="5" rx="2.5" fill="#1a1a2e" opacity="0.2"/>
+  </g>
+</svg>

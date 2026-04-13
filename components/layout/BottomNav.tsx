@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, User, Settings, Bookmark } from "lucide-react";
+import { BookOpen, User, Settings, Bookmark, PlayCircle } from "lucide-react";
 
 const items = [
   { href: "/study", label: "学習", icon: BookOpen },
+  { href: "/grammar", label: "文法", icon: PlayCircle },
   { href: "/study/bookmarks", label: "復習", icon: Bookmark },
   { href: "/me", label: "マイページ", icon: User },
   { href: "/admin", label: "管理", icon: Settings },
