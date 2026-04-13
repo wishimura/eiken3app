@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Check, Play, Trophy } from "lucide-react";
+import { Check, Play, Trophy, ClipboardList } from "lucide-react";
+import { VideoQuizModal } from "./VideoQuizModal";
 
 type Props = {
   playlistId: string;
@@ -71,26 +72,41 @@ export function GrammarClient({ playlistId, initialWatchedIds }: Props) {
     () => new Set(initialWatchedIds),
   );
   const [loading, setLoading] = useState(true);
+  const [quizVideoId, setQuizVideoId] = useState<string | null>(null);
+  const [autoQuizShown, setAutoQuizShown] = useState<Set<string>>(new Set());
 
-  const markWatched = useCallback(async (videoId: string) => {
-    if (pendingMarkRef.current.has(videoId)) return;
-    pendingMarkRef.current.add(videoId);
-    setWatched((prev) => {
-      if (prev.has(videoId)) return prev;
-      const next = new Set(prev);
-      next.add(videoId);
-      return next;
-    });
-    try {
-      await fetch("/api/grammar/watched", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ videoId }),
+  const markWatched = useCallback(
+    async (videoId: string) => {
+      if (pendingMarkRef.current.has(videoId)) return;
+      pendingMarkRef.current.add(videoId);
+      const wasAlreadyWatched = watched.has(videoId);
+      setWatched((prev) => {
+        if (prev.has(videoId)) return prev;
+        const next = new Set(prev);
+        next.add(videoId);
+        return next;
       });
-    } catch {
-      // ignore; localStorage fallback below preserves UI state
-    }
-  }, []);
+      try {
+        await fetch("/api/grammar/watched", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ videoId }),
+        });
+      } catch {
+        // ignore; localStorage fallback below preserves UI state
+      }
+      // 初めて見終わった時だけ、確認テストを自動で開く
+      if (!wasAlreadyWatched && !autoQuizShown.has(videoId)) {
+        setAutoQuizShown((prev) => {
+          const next = new Set(prev);
+          next.add(videoId);
+          return next;
+        });
+        setQuizVideoId(videoId);
+      }
+    },
+    [watched, autoQuizShown],
+  );
 
   const toggleWatched = useCallback(
     async (videoId: string) => {
@@ -338,20 +354,31 @@ export function GrammarClient({ playlistId, initialWatchedIds }: Props) {
                     </span>
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => void toggleWatched(id)}
-                    aria-label={
-                      isWatched ? "視聴済みを解除" : "視聴済みにする"
-                    }
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors ${
-                      isWatched
-                        ? "border-transparent bg-[oklch(0.55_0.16_145)] text-white"
-                        : "border-border bg-card text-muted-foreground hover:bg-muted"
-                    }`}
-                  >
-                    <Check className="h-4 w-4" strokeWidth={3} />
-                  </button>
+                  <div className="flex shrink-0 flex-col items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => void toggleWatched(id)}
+                      aria-label={
+                        isWatched ? "視聴済みを解除" : "視聴済みにする"
+                      }
+                      className={`flex h-9 w-9 items-center justify-center rounded-full border transition-colors ${
+                        isWatched
+                          ? "border-transparent bg-[oklch(0.55_0.16_145)] text-white"
+                          : "border-border bg-card text-muted-foreground hover:bg-muted"
+                      }`}
+                    >
+                      <Check className="h-4 w-4" strokeWidth={3} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setQuizVideoId(id)}
+                      aria-label="確認テストを開く"
+                      title="確認テスト"
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-primary transition-colors hover:bg-primary/10"
+                    >
+                      <ClipboardList className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               </li>
             );
@@ -363,6 +390,14 @@ export function GrammarClient({ playlistId, initialWatchedIds }: Props) {
           )}
         </ul>
       </Card>
+
+      {quizVideoId && (
+        <VideoQuizModal
+          videoId={quizVideoId}
+          videoTitle={titles[quizVideoId]}
+          onClose={() => setQuizVideoId(null)}
+        />
+      )}
     </div>
   );
 }
