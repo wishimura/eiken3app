@@ -25,7 +25,7 @@ import { execSync } from "node:child_process";
 const PLAYLIST_ID =
   process.env.PLAYLIST_ID ?? "PL4XvPDGlQIXzcAw-I7w8LNsyblSUr7KLR";
 const QUESTIONS_PER_VIDEO = 5;
-const MODEL = "claude-haiku-4-5-20251001";
+const MODEL = "claude-sonnet-4-6";
 
 type VideoInfo = {
   id: string;
@@ -116,18 +116,32 @@ ${contentBlock}
 - 単語の意味問題なら、その単語の意味と類義語/反義語を1つ添える程度でOK
 - 解説は120文字以内を目安に
 
+【最重要：出力前の自己チェック】
+出力する前に、各問題について必ず以下を確認してください:
+1. correct_choiceで指定した番号の選択肢を、問題文の( )に実際に入れてみる
+2. 入れた結果、英文として文法的に正しく、意味が通るか確認する
+3. もし不自然・重複・破綻していたら、その問題は破棄して別の問題を作り直す
+4. 解説で示している答えと correct_choice の選択肢が一致しているか確認する
+   （例: 解説で「fan」が正解と説明してるのに correct_choice が「of」を指してたらNG）
+
+【絶対NG例】
+❌ 問題: She is a ( ) of tennis. / 選択肢: fan, of, about, in / 正解: of
+   → ( )にofを入れると「She is a of of tennis」となり破綻。fanが正解。
+
+口調は中学生〜小学校高学年が読みやすい優しい語尾でお願いします（〜だよ、〜なんだ、など。ただし固すぎず軽すぎず）。
+
 必ず以下のJSON形式のみで出力してください。前置きや説明は不要:
 
 {
   "questions": [
     {
-      "question_text": "次の文の( )に入る最も適切なものを選びなさい。( )I was 10, I lived in Tokyo.",
+      "question_text": "次の文の( )に入る最も適切なものを選びなさい。( ) I was 10, I lived in Tokyo.",
       "choice_1": "Since",
       "choice_2": "Until",
       "choice_3": "When",
       "choice_4": "During",
       "correct_choice": 3,
-      "explanation": "「10歳の時」という時点を指すのでWhen。Since=『〜以来ずっと』、Until=『〜まで(継続)』、During=『〜の間中』(後ろは名詞)"
+      "explanation": "「10歳のとき」という"その時点"を表すからWhenが正解だよ✨ Since=「〜以来ずっと」、Until=「〜まで」、During=「〜の間ずっと」（うしろは名詞だけ）"
     }
   ]
 }`;
