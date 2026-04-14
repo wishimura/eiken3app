@@ -140,8 +140,8 @@ export function VideoQuizModal({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border px-5 py-4">
           <div className="flex min-w-0 flex-col">
-            <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-              確認テスト
+            <span className="text-[11px] font-semibold uppercase tracking-widest text-primary">
+              ✨ ミニクイズ
             </span>
             {videoTitle && (
               <span className="truncate text-sm font-medium text-foreground">
@@ -163,7 +163,7 @@ export function VideoQuizModal({
         <div className="flex-1 overflow-y-auto p-5">
           {loading && (
             <p className="py-12 text-center text-sm text-muted-foreground">
-              問題を読み込み中…
+              クイズをよみこみ中…⏳
             </p>
           )}
           {error && (
@@ -174,7 +174,7 @@ export function VideoQuizModal({
           {!loading && !error && questions.length === 0 && (
             <div className="py-10 text-center">
               <p className="text-sm text-muted-foreground">
-                この動画にはまだテストが用意されていません。
+                この動画にはまだクイズがないみたい💦 また見にきてね！
               </p>
             </div>
           )}
@@ -187,10 +187,10 @@ export function VideoQuizModal({
               <>
                 <div className="mb-4 flex items-center justify-between text-xs font-medium text-muted-foreground">
                   <span>
-                    {index + 1} / {total} 問目
+                    {index + 1} / {total}問目
                   </span>
                   <span>
-                    正解 {correctCount} / {index + (revealed ? 1 : 0)}
+                    せいかい {correctCount} / {index + (revealed ? 1 : 0)}
                   </span>
                 </div>
 
@@ -261,7 +261,9 @@ export function VideoQuizModal({
 
                 {revealed && current.explanation && (
                   <div className="mt-4 rounded-2xl bg-muted/50 px-4 py-3 text-sm text-foreground">
-                    <span className="font-semibold text-primary">解説: </span>
+                    <span className="font-semibold text-primary">
+                      💡 ポイント:{" "}
+                    </span>
                     {current.explanation}
                   </div>
                 )}
@@ -270,16 +272,36 @@ export function VideoQuizModal({
 
           {finished && (
             <div className="py-8 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white">
-                <Check className="h-8 w-8" strokeWidth={3} />
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white text-3xl">
+                {correctCount === total
+                  ? "🏆"
+                  : correctCount >= total * 0.6
+                    ? "🎉"
+                    : "💪"}
               </div>
-              <h3 className="text-lg font-bold text-foreground">完了!</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {correctCount} / {total} 問正解
+              <h3 className="text-xl font-bold text-foreground">
+                {correctCount === total
+                  ? "ぜんもん せいかい〜！"
+                  : correctCount >= total * 0.6
+                    ? "よくできました！"
+                    : "おつかれさま！"}
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {correctCount} / {total}問せいかい
               </p>
               {correctCount === total && (
-                <p className="mt-2 text-sm font-semibold text-[oklch(0.55_0.16_145)]">
-                  🎉 全問正解!
+                <p className="mt-3 text-sm font-semibold text-[oklch(0.55_0.16_145)]">
+                  ✨ 天才かも！動画ばっちり理解できてるね✨
+                </p>
+              )}
+              {correctCount >= total * 0.6 && correctCount < total && (
+                <p className="mt-3 text-sm font-medium text-primary">
+                  すごい！この調子でがんばろう👍
+                </p>
+              )}
+              {correctCount < total * 0.6 && (
+                <p className="mt-3 text-sm font-medium text-primary">
+                  もう一回みなおしたら、もっとできるよ！🌱
                 </p>
               )}
             </div>
@@ -295,14 +317,14 @@ export function VideoQuizModal({
                 disabled={selected === null}
                 className="btn-primary-gradient min-h-[48px] w-full rounded-xl border-0 text-base font-medium"
               >
-                答え合わせ
+                こたえ合わせ！
               </Button>
             ) : (
               <Button
                 onClick={handleNext}
                 className="btn-primary-gradient min-h-[48px] w-full rounded-xl border-0 text-base font-medium"
               >
-                {index + 1 >= total ? "結果を見る" : "次の問題"}
+                {index + 1 >= total ? "けっか発表！" : "つぎの問題 →"}
               </Button>
             )}
           </div>
@@ -313,7 +335,7 @@ export function VideoQuizModal({
               onClick={onClose}
               className="btn-primary-gradient min-h-[48px] w-full rounded-xl border-0 text-base font-medium"
             >
-              閉じる
+              とじる
             </Button>
           </div>
         )}
