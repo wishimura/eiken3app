@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { GuestLoginButton } from "@/components/auth/GuestLoginButton";
 
 export const dynamic = "force-dynamic";
 
@@ -90,6 +91,12 @@ export default async function LoginPage({
               ログイン
             </Button>
           </form>
+          <div className="relative flex items-center py-1">
+            <div className="flex-1 border-t border-border" />
+            <span className="px-3 text-xs text-muted-foreground">または</span>
+            <div className="flex-1 border-t border-border" />
+          </div>
+          <GuestLoginButton />
           <div className="space-y-2 text-center text-sm text-muted-foreground">
             <p>
               <a
