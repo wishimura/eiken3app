@@ -5,7 +5,7 @@ import { flushSync } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Star, Flame } from "lucide-react";
-import { playCorrectSound, playFlipSound, playLaterSound, playXpGainSound, playStreakBonusSound } from "@/lib/sounds";
+import { playCorrectSound, playFlipSound, playLaterSound, playXpGainSound, playStreakBonusSound, speakEnglish } from "@/lib/sounds";
 import {
   calculateXpGain,
   addXp,
@@ -309,7 +309,10 @@ export function StudyClient() {
               if (!word) return;
               const next = !showAnswer;
               setShowAnswer(next);
-              if (next) playFlipSound();
+              if (next) {
+                playFlipSound();
+                speakEnglish(word.english);
+              }
             }}
             aria-label={showAnswer ? "問題を表示" : "答えをめくる"}
           >

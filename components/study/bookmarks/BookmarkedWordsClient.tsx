@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Flame } from "lucide-react";
-import { playCorrectSound, playFlipSound, playLaterSound } from "@/lib/sounds";
+import { playCorrectSound, playFlipSound, playLaterSound, speakEnglish } from "@/lib/sounds";
 
 type Word = { id: string; english: string; japanese: string };
 
@@ -234,7 +234,10 @@ export function BookmarkedWordsClient() {
               if (!word) return;
               const next = !showAnswer;
               setShowAnswer(next);
-              if (next) playFlipSound();
+              if (next) {
+                playFlipSound();
+                speakEnglish(word.english);
+              }
             }}
             aria-label={showAnswer ? "問題を表示" : "答えをめくる"}
           >

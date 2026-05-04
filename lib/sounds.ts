@@ -15,6 +15,21 @@ function getContext(): AudioContext | null {
   return audioContext;
 }
 
+export function speakEnglish(text: string) {
+  if (typeof window === "undefined" || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  utterance.rate = 0.85;
+  utterance.pitch = 1.0;
+  const voices = window.speechSynthesis.getVoices();
+  const enVoice = voices.find(
+    (v) => v.lang.startsWith("en") && v.name.includes("Samantha"),
+  ) ?? voices.find((v) => v.lang.startsWith("en-"));
+  if (enVoice) utterance.voice = enVoice;
+  window.speechSynthesis.speak(utterance);
+}
+
 function playTone(
   frequency: number,
   duration: number,
